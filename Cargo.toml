@@ -6,9 +6,10 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+anyhow = "1.0.75"
 axum = "0.6.20"
 serde = { version = "1.0.188", features = ["derive"] }
-surrealdb = "1.0.0"
+surrealdb = { version = "1.0.0", features = ["kv-rocksdb"] }
 tokio = { version = "1.32.0", features = ["full"] }
 tracing = "0.1.37"
 tracing-subscriber = "0.3.17"

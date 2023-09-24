@@ -1,4 +1,3 @@
--- Define NS and DB
 USE NS data;
 DEFINE DATABASE data;
 
