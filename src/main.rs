@@ -5,40 +5,23 @@ use axum::{
     Json, Router,
 };
 use serde::{Deserialize, Serialize};
-use std::env;
-use surrealdb::opt::RecordId;
-use surrealdb::Surreal;
-use surrealdb::{
-    engine::local::{Db, File},
-    opt::Config,
-};
 use tokio::signal;
+use sea_orm::{Database, ConnectionTrait, DbBackend};
+
+const DATABASE_URL: &str = "mysql://root:password@localhost:3306";
+const DB_NAME: &str = "biotrack_db";
+
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     // initialize tracing
     tracing_subscriber::fmt::init();
 
-    println!("Setting up database...");
-
-    // setup db
-    let config = Config::default().strict();
-    let path = env::current_dir()?.join("database");
-    println!("Database path: {:?}", path);
-    let schema = if path.exists() {
-        None
-    } else {
-        // import the schema
-        Some(include_str!("../schema.surql"))
+    let db = Database::connect(DATABASE_URL).await?;
+    let db = match db.get_database_backend() {
+        DbBackend::Sqlite => db,
+        db => panic!("Unsupported database backend {:?}", db),
     };
-
-    let db = Surreal::new::<File>(("C:\\Users\\LeoDo\\Documents\\GitHub\\biotrack\\database", config)).await?;
-    if let Some(schema) = schema {
-        db.query(schema).await?;
-    }
-    db.use_ns("data").use_db("data").await?;
-
-    println!("Connected to database! Listening at http://localhost:3000");
 
     let app = Router::new()
         .route("/users", post(create_user))
@@ -129,5 +112,19 @@ async fn get_user(
 struct User {
     first_name: String,
     last_name: String,
-    sessions: Vec<RecordId>,
+}
+
+struct GameSession {
+    user: User,
+    game: Game,
+    points: i32,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+struct Game {
+    name: String,
+    id: String,
+    /// The password a game needs to have to send a score report
+    password: String,
 }
