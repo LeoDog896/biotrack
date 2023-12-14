@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 use tokio::signal;
 use sea_orm::{Database, ConnectionTrait, DbBackend};
 
-const DATABASE_URL: &str = "mysql://root:password@localhost:3306";
+const DATABASE_URL: &str = "sqlite::memory:";
 const DB_NAME: &str = "biotrack_db";
 
 
