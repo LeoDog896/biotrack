@@ -30,3 +30,5 @@ Returns a session id.
 ### POST `/game/<id>/finish`
 
 Finish a session with a `score` and `data` as a String.
+If `continue` is true, a score block will still be created,
+but the session will not be marked as finished.
