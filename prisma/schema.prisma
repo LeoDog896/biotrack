@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  email       String   @unique
+  name        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  sessions    Session[]
+  scoreLedger ScoreBlock[]
+}
+
+model ScoreBlock {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  session   Session  @relation(fields: [sessionId], references: [id])
+  sessionId Int
+  score     Int
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int
+  /// Any extra individual data
+  data      String
+}
+
+model Session {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  game       Game     @relation(fields: [gameId], references: [id])
+  gameId     Int
+  user       User[]
+  /// Any extra data that was sent with the session
+  data       String
+  /// The score blocks associated with this session
+  scoreBlock ScoreBlock[]
+}
+
+model Game {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  sessions  Session[]
+}
