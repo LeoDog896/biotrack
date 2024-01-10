@@ -17,6 +17,8 @@ client doesn't support streaming.
 ### POST `/<id>/join`
 
 Join a game with a `player` uuid.
+This does not guarantee that the player *joins* the game;
+rather, the player sends a request to join.
 
 ### GET `/<id>/active`
 
