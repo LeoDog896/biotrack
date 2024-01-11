@@ -19,7 +19,9 @@
 	$: if (state[0] === 'checkPlayer') scannedData = '';
 
 	let scannedData = '';
-	$: player = browser ? globalThis.fetch(`/player/id/${scannedData}`).then((r) => r.json()) : undefined;
+	$: player = browser
+		? globalThis.fetch(`/player/id/${scannedData}`).then((r) => r.json())
+		: undefined;
 	const decoder = new TextDecoder('utf-8');
 
 	async function onScan() {

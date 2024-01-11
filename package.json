@@ -20,7 +20,7 @@
 		"@playwright/test": "^1.28.1",
 		"@prisma/client": "^5.8.0",
 		"@sveltejs/adapter-auto": "^3.0.0",
-		"@sveltejs/kit": "^2.0.0",
+		"@sveltejs/kit": "^2.3.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@types/eslint": "8.56.0",
 		"@types/w3c-web-nfc": "^1.0.4",
