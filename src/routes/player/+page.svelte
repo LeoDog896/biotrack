@@ -2,6 +2,7 @@
 	import { browser } from '$app/environment';
 	import { enhance } from '$app/forms';
 	import { isCuid } from '@paralleldrive/cuid2';
+	import { z } from 'zod';
 
 	// TODO: move to shallow routing
 	type State =
@@ -34,9 +35,19 @@
 				alert('Argh! Cannot read data from the NFC tag. Try another one?');
 			});
 
+			const schema = z.object({
+				message: z.object({
+					records: z.array(
+						z.object({
+							data: z.instanceof(DataView)
+						})
+					),
+				}),
+			})
+
 			// TODO: verify structural integrity of this
 			ndef.addEventListener('reading', (ev) => {
-				scannedData = decoder.decode(ev.message.records[0].data);
+				scannedData = decoder.decode(schema.parse(ev).message.records[0].data);
 			});
 		} catch (error) {
 			alert('Argh! ' + error);
