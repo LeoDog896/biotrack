@@ -1,11 +1,12 @@
 import { json } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 import { prisma } from '$lib/prismaConnection.js';
 
 export const POST = async ({ params, url }) => {
 	const userId = url.searchParams.get('user');
 
 	if (!userId) {
-		return json({ error: 'User ID not specified' });
+		error(400, 'User ID not specified');
 	}
 
 	const game = await prisma.game.findUnique({
@@ -15,7 +16,7 @@ export const POST = async ({ params, url }) => {
 	});
 
 	if (!game) {
-		return json({ error: 'Game not found' });
+		error(400, 'Game not found');
 	}
 
 	const user = await prisma.user.findUnique({
@@ -25,7 +26,7 @@ export const POST = async ({ params, url }) => {
 	});
 
 	if (!user) {
-		return json({ error: 'User not found' });
+		error(400, 'User not found');
 	}
 
 	const joinRequest = await prisma.joinRequest.create({
