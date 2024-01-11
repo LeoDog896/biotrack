@@ -7,16 +7,18 @@
 		| ['permissionWaiting', state?: never]
 		| ['permissionDenied', state?: never]
 		| ['home', state?: never]
-		| ['fetchPlayer', state?: never]
+		| ['checkPlayer', state?: never]
 		| ['writing', state: string]
-		| ['newPlayer', state?: never];
+		| ['newPlayer', state?: never]
+		| ['findPlayer', state?: never];
+
 	let state: State = ['permissionWaiting'];
 
 	$: if (state[0] === 'writing') write();
-	$: if (state[0] === 'fetchPlayer') data = '';
+	$: if (state[0] === 'checkPlayer') scannedData = '';
 
-	let data = '';
-	$: player = browser ? globalThis.fetch(`/player/id/${data}`).then((r) => r.json()) : undefined;
+	let scannedData = '';
+	$: player = browser ? globalThis.fetch(`/player/id/${scannedData}`).then((r) => r.json()) : undefined;
 	const decoder = new TextDecoder('utf-8');
 
 	async function onScan() {
@@ -30,7 +32,7 @@
 			});
 
 			ndef.addEventListener('reading', (ev) => {
-				data = decoder.decode(ev.message.records[0].data);
+				scannedData = decoder.decode(ev.message.records[0].data);
 			});
 		} catch (error) {
 			alert('Argh! ' + error);
@@ -55,6 +57,8 @@
 	const changeState = (newState: State) => () => (state = newState);
 
 	export let form;
+	export let data;
+
 	$: if (form && form.player && state[0] === 'newPlayer') {
 		state = ['writing', form.player?.id];
 	}
@@ -64,11 +68,12 @@
 	{#if state[0] === 'permissionWaiting'}
 		<button class="scan" on:click={onScan}>Enable NFC Scanning</button>
 	{:else if state[0] === 'home'}
-		<button on:click={changeState(['fetchPlayer'])}>Fetch Player</button>
+		<button on:click={changeState(['findPlayer'])}>Find Player</button>
+		<button on:click={changeState(['checkPlayer'])}>Check Player</button>
 		<button on:click={changeState(['newPlayer'])}>New Player</button>
-	{:else if state[0] === 'fetchPlayer'}
-		{#if data}
-			{#if isCuid(data)}
+	{:else if state[0] === 'checkPlayer'}
+		{#if scannedData}
+			{#if isCuid(scannedData)}
 				{#await player}
 					<p class="big">Loading...</p>
 				{:then player}
@@ -77,7 +82,7 @@
 					<p class="big">Error: <span class="error">{error.message}</span></p>
 				{/await}
 			{:else}
-				<p class="big">Invalid CUID <span class="error">{data}</span></p>
+				<p class="big">Invalid CUID <span class="error">{scannedData}</span></p>
 			{/if}
 		{:else}
 			<p class="big">Press NFC Card to read</p>
@@ -87,6 +92,13 @@
 			<input bind:value={fullName} placeholder="Full Name" name="name" />
 			<button type="submit" disabled={fullName.length < 2}>Create Player</button>
 		</form>
+	{:else if state[0] === 'findPlayer'}
+		<input bind:value={fullName} placeholder="Search Name" />
+		<div class="names">
+			{#each data.users as user}
+				<button class="name">{user.name}</button>
+			{/each}
+		</div>
 	{:else if state[0] === 'writing'}
 		<p class="big">Press NFC Card to write</p>
 		<ul>
@@ -101,6 +113,11 @@
 <style>
 	p {
 		text-align: center;
+	}
+
+	div.names {
+		height: 100%;
+		overflow-y: scroll;
 	}
 
 	p.big {
@@ -145,6 +162,13 @@
 		font-size: 2rem;
 		padding: 3rem;
 		height: 100%;
+	}
+
+	button.name {
+		height: min-content;
+		font-size: 1rem;
+		width: 100%;
+		margin: 1rem 0;
 	}
 
 	button:disabled {
