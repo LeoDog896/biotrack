@@ -1,6 +1,6 @@
 <script lang="ts">
 	let hasBeenClicked = false;
-	let data = "";
+	let data = '';
 	const decoder = new TextDecoder('utf-8');
 
 	async function onScan() {
