@@ -16,34 +16,26 @@
         vy: 0,
     };
 
-    function keydown(event: KeyboardEvent) {
-        player1.vy = 0;
-        player2.vy = 0;
+    const keyMap: Record<string, boolean> = {
+        'ArrowUp': false,
+        'ArrowDown': false,
+        'w': false,
+        's': false,
+    }
 
-        if (event.key === 'ArrowUp') {
-            player1.vy = -1;
-        } else if (event.key === 'ArrowDown') {
-            player1.vy = 1;
-        }
-        
-        if (event.key === 'w') {
-            player2.vy = -1;
-        } else if (event.key === 's') {
-            player2.vy = 1;
-        }
+    function updateVelocities() {
+        player1.vy = (keyMap['w'] ? -1 : 0) + (keyMap['s'] ? 1 : 0);
+        player2.vy = (keyMap['ArrowUp'] ? -1 : 0) + (keyMap['ArrowDown'] ? 1 : 0);
+    }
+
+    function keydown(event: KeyboardEvent) {
+        keyMap[event.key] = true;
+        updateVelocities()
     }
 
     function keyup(event: KeyboardEvent) {
-        switch (event.key) {
-            case 'ArrowUp':
-            case 'ArrowDown':
-                player1.vy = 0;
-                break;
-            case 'w':
-            case 's':
-                player2.vy = 0;
-                break;
-        }
+        keyMap[event.key] = false;
+        updateVelocities()
     }
 
     const xPad = 50;
