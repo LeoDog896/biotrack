@@ -3,6 +3,7 @@
 	import { enhance } from '$app/forms';
 	import { isCuid } from '@paralleldrive/cuid2';
 
+	// TODO: move to shallow routing
 	type State =
 		| ['permissionWaiting', state?: never]
 		| ['permissionDenied', state?: never]
@@ -31,6 +32,7 @@
 				alert('Argh! Cannot read data from the NFC tag. Try another one?');
 			});
 
+			// TODO: verify structural integrity of this
 			ndef.addEventListener('reading', (ev) => {
 				scannedData = decoder.decode(ev.message.records[0].data);
 			});
