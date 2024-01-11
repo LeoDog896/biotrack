@@ -1,4 +1,8 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
+	import { enhance } from '$app/forms';
+	import { isCuid } from '@paralleldrive/cuid2';
+
 	type State =
 		| ['permissionWaiting', state?: never]
 		| ['permissionDenied', state?: never]
@@ -8,10 +12,11 @@
 		| ['newPlayer', state?: never];
 	let state: State = ['permissionWaiting'];
 
-    $: if (state[0] === 'writing') write();
-    $: if (state[0] === 'fetchPlayer') data = '';
+	$: if (state[0] === 'writing') write();
+	$: if (state[0] === 'fetchPlayer') data = '';
 
-    let data = '';
+	let data = '';
+	$: player = browser ? globalThis.fetch(`/player/id/${data}`).then((r) => r.json()) : undefined;
 	const decoder = new TextDecoder('utf-8');
 
 	async function onScan() {
@@ -34,12 +39,12 @@
 
 	async function write() {
 		try {
-            if (state[0] !== 'writing') {
-                return;
-            }
+			if (state[0] !== 'writing') {
+				return;
+			}
 			const ndef = new NDEFReader();
 			await ndef.write(state[1]);
-            state = ['home'];
+			state = ['home'];
 		} catch (error) {
 			alert('Argh! ' + error);
 		}
@@ -48,6 +53,11 @@
 	let fullName = '';
 
 	const changeState = (newState: State) => () => (state = newState);
+
+	export let form;
+	$: if (form && form.player && state[0] === 'newPlayer') {
+		state = ['writing', form.player?.id];
+	}
 </script>
 
 <main>
@@ -58,35 +68,44 @@
 		<button on:click={changeState(['newPlayer'])}>New Player</button>
 	{:else if state[0] === 'fetchPlayer'}
 		{#if data}
-            <p class="big">Welcome {data}</p>
-        {:else}
-            <p class="big">Press NFC Card to read</p>
-        {/if}
+			{#if isCuid(data)}
+				{#await player}
+					<p class="big">Loading...</p>
+				{:then player}
+					<p class="big">Welcome {player?.name}</p>
+				{:catch error}
+					<p class="big">Error: {error.message}</p>
+				{/await}
+			{:else}
+				<p class="big">Invalid CUID "{data}"</p>
+			{/if}
+		{:else}
+			<p class="big">Press NFC Card to read</p>
+		{/if}
 	{:else if state[0] === 'newPlayer'}
-		<input bind:value={fullName} placeholder="Full Name" />
-		<button 
-            disabled={fullName.length < 2}
-            on:click={() => state = ['writing', fullName]}
-        >Write</button>
+		<form use:enhance method="POST" action="?/create">
+			<input bind:value={fullName} placeholder="Full Name" name="name" />
+			<button type="submit" disabled={fullName.length < 2}>Create Player</button>
+		</form>
 	{:else if state[0] === 'writing'}
-        <p class="big">Press NFC Card to write</p>
-            <ul>
-                <li>Length: {state[1].length}</li>
-                <li>Data: {state[1]}</li>
-            </ul>
-    {:else}
-        <p>Unknown state {state[0]}</p>
-    {/if}
+		<p class="big">Press NFC Card to write</p>
+		<ul>
+			<li>Length: {state[1].length}</li>
+			<li>Data: {state[1]}</li>
+		</ul>
+	{:else}
+		<p>Unknown state {state[0]}</p>
+	{/if}
 </main>
 
 <style>
-    p {
-        text-align: center;
-    }
+	p {
+		text-align: center;
+	}
 
-    p.big {
-        font-size: 4rem;
-    }
+	p.big {
+		font-size: 4rem;
+	}
 
 	input {
 		margin: 2rem 1rem;
@@ -95,14 +114,18 @@
 		text-align: center;
 	}
 
-	main {
-		padding: 1rem;
+	main,
+	form {
 		width: 100%;
 		height: 100%;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-around;
 		gap: 1rem;
+	}
+
+	main {
+		padding: 1rem;
 	}
 
 	button {

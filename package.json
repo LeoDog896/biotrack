@@ -16,6 +16,7 @@
 	},
 	"devDependencies": {
 		"@fontsource/ibm-plex-mono": "^5.0.8",
+		"@paralleldrive/cuid2": "^2.2.2",
 		"@playwright/test": "^1.28.1",
 		"@prisma/client": "^5.8.0",
 		"@sveltejs/adapter-auto": "^3.0.0",
