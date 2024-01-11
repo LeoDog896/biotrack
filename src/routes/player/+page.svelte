@@ -72,12 +72,12 @@
 				{#await player}
 					<p class="big">Loading...</p>
 				{:then player}
-					<p class="big">Welcome {player?.name}</p>
+					<p class="big">Welcome <span class="blue">{player?.name}</span></p>
 				{:catch error}
-					<p class="big">Error: {error.message}</p>
+					<p class="big">Error: <span class="error">{error.message}</span></p>
 				{/await}
 			{:else}
-				<p class="big">Invalid CUID "{data}"</p>
+				<p class="big">Invalid CUID <span class="error">{data}</span></p>
 			{/if}
 		{:else}
 			<p class="big">Press NFC Card to read</p>
@@ -126,12 +126,21 @@
 
 	main {
 		padding: 1rem;
+		--color: oklch(60.68% 0.138 242.47);
+	}
+
+	span.blue {
+		color: var(--color);
+	}
+
+	span.error {
+		color: red;
 	}
 
 	button {
 		margin: 0;
 		padding: 0;
-		border: 0.5rem dashed oklch(60.68% 0.138 242.47);
+		border: 0.5rem dashed var(--color);
 		background-color: oklch(60.68% 0.138 242.47 / 20.86%);
 		font-size: 2rem;
 		padding: 3rem;
