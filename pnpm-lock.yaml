@@ -29,6 +29,9 @@ devDependencies:
   '@typescript-eslint/parser':
     specifier: ^6.0.0
     version: 6.16.0(eslint@8.56.0)(typescript@5.3.3)
+  '@vitejs/plugin-basic-ssl':
+    specifier: ^1.0.2
+    version: 1.0.2(vite@5.0.10)
   eslint:
     specifier: ^8.56.0
     version: 8.56.0
@@ -800,6 +803,15 @@ packages:
 
   /@ungap/structured-clone@1.2.0:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
+    dev: true
+
+  /@vitejs/plugin-basic-ssl@1.0.2(vite@5.0.10):
+    resolution: {integrity: sha512-DKHKVtpI+eA5fvObVgQ3QtTGU70CcCnedalzqmGSR050AzKZMdUzgC8KmlOneHWH8dF2hJ3wkC9+8FDVAaDRCw==}
+    engines: {node: '>=14.6.0'}
+    peerDependencies:
+      vite: ^3.0.0 || ^4.0.0 || ^5.0.0
+    dependencies:
+      vite: 5.0.10
     dev: true
 
   /@vitest/expect@1.1.1:
