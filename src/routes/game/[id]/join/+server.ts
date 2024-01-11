@@ -1,5 +1,5 @@
 import { json } from '@sveltejs/kit';
-import { prisma } from '$lib/prismaConnection.js'
+import { prisma } from '$lib/prismaConnection.js';
 
 export const POST = async ({ params, url }) => {
 	const userId = url.searchParams.get('user');
@@ -33,7 +33,7 @@ export const POST = async ({ params, url }) => {
 			gameId: game.id,
 			userId: user.id
 		}
-	})
+	});
 
 	return json(joinRequest);
 };
