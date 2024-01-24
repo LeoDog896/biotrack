@@ -5,6 +5,10 @@
 <slot />
 
 <style global>
+	:global(:root) {
+		--color: oklch(60.68% 0.138 242.47);
+	}
+
 	:global(html, body) {
 		margin: 0;
 		padding: 0;

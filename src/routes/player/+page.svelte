@@ -41,9 +41,9 @@
 						z.object({
 							data: z.instanceof(DataView)
 						})
-					),
-				}),
-			})
+					)
+				})
+			});
 
 			// TODO: verify structural integrity of this
 			ndef.addEventListener('reading', (ev) => {
@@ -158,11 +158,10 @@
 
 	main {
 		padding: 1rem;
-		--color: oklch(60.68% 0.138 242.47);
 	}
 
 	span.blue {
-		color: var(--color);
+		color: var(--primary);
 	}
 
 	span.error {
@@ -172,7 +171,7 @@
 	button {
 		margin: 0;
 		padding: 0;
-		border: 0.5rem dashed var(--color);
+		border: 0.5rem dashed var(--primary);
 		background-color: oklch(60.68% 0.138 242.47 / 20.86%);
 		font-size: 2rem;
 		padding: 3rem;

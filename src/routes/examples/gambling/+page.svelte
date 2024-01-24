@@ -14,26 +14,26 @@
 </script>
 
 <div class="wrapper">
-    <main>
-        <h1>Number Guessing</h1>
+	<main>
+		<h1>Number Guessing</h1>
 
-        <p>Guess a number from 1-5</p>
+		<p>Guess a number from 1-5</p>
 
-        <input type="number" bind:value={guess} min="1" max="5" />
+		<input type="number" bind:value={guess} min="1" max="5" />
 
-        <button on:click={checkGuess}>Check Guess</button>
-    </main>
+		<button on:click={checkGuess}>Check Guess</button>
+	</main>
 </div>
 
 <style>
-    main {
-        text-align: center;
-    }
+	main {
+		text-align: center;
+	}
 
-    div.wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-    }
+	div.wrapper {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100%;
+	}
 </style>
