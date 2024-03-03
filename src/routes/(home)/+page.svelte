@@ -32,6 +32,7 @@
 					<img src={AndroidLogo} alt="Android Logo" width="20" height="20" />
 					<img src={ChromeLogo} alt="Chrome Logo" width="20" height="20" />
 				</h2>
+				<p>(chromium derivatives may not function; sorry!)</p>
 				<p>
 					Your browser may report this URL as unsafe. Despite this,
 					continue anyway; the page is safe. <a href="/unsafe">More
