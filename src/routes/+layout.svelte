@@ -9,6 +9,10 @@
 		--color: oklch(60.68% 0.138 242.47);
 	}
 
+	:global(a) {
+		color: var(--color);
+	}
+
 	:global(html, body) {
 		margin: 0;
 		padding: 0;
