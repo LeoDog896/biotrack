@@ -19,6 +19,11 @@
 					<img src={AndroidLogo} alt="Android Logo" width="20" height="20" />
 					<img src={ChromeLogo} alt="Chrome Logo" width="20" height="20" />
 				</h2>
+				<p>
+					Your browser may report this URL as unsafe. Despite this,
+					continue anyway; the page is safe. <a href="/unsafe">More
+					Information</a>.
+				</p>
 				<QR
 					data="https://{data.localAddress}:5173/player"
 					anchorOuterFill="#0954b8"
@@ -43,14 +48,7 @@
 		width: 30%;
 		padding: 1rem;
 		background-color: rgba(0, 0, 0, 0.1);
-
-		h1 {
-			text-align: center;
-		}
-
-		h2 {
-			text-align: center;
-		}
+		text-align: center;
 	}
 
 	.qr-container {
