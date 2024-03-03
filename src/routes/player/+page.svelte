@@ -12,7 +12,8 @@
 		| ['checkPlayer', state?: never]
 		| ['writing', state: string]
 		| ['newPlayer', state?: never]
-		| ['findPlayer', state?: never];
+		| ['findPlayer', state?: never]
+		| ['initializationError', state?: never];
 
 	let state: State = ['permissionWaiting'];
 
@@ -50,7 +51,9 @@
 				scannedData = decoder.decode(schema.parse(ev).message.records[0].data);
 			});
 		} catch (error) {
-			alert('Argh! ' + error);
+			if (error instanceof ReferenceError) {
+				state = ['initializationError'];
+			}
 		}
 	}
 
@@ -120,6 +123,11 @@
 			<li>Length: {state[1].length}</li>
 			<li>Data: {state[1]}</li>
 		</ul>
+	{:else if state[0] === 'initializationError'}
+		<p>This device or browser does not support NFC.</p>
+		<p>
+			Please use the <b>Chrome</b> browser on an <b>Android</b> device to use this feature.
+		</p>
 	{:else}
 		<p>Unknown state {state[0]}</p>
 	{/if}

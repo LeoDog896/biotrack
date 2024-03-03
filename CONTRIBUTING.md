@@ -23,7 +23,10 @@ To set up the database, run
 
 ```sh
 npx prisma generate
+npx prisma migrate dev
 ```
+
+This sets up a SQLite database in the `prisma` directory.
 
 Whenever you make changes to `prisma/schema.prisma`, run
 
