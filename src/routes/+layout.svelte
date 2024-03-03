@@ -25,7 +25,7 @@
 		font-family: 'IBM Plex Mono', sans-serif;
 	}
 
-	::global(*) {
+	:global(*) {
 		box-sizing: border-box;
 	}
 </style>
