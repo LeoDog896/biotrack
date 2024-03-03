@@ -14,12 +14,19 @@
 			Welcome to biotrack! This is a web application for managing <b>players</b>
 			who create <b>sessions</b> in <b>games</b> and their resulting <b>data</b>. 
 		</p>
+		<p>
+			To get started, you can <a href="/dashboard">go to the dashboard</a> or
+			manage players by <a href="/player">going to player management</a> (<b>mobile-only</b>, see qr code →).
+		</p>
+		<p>
+			Want to hack the software? <a href="https://github.com/LeoDog896/biotrack">
+			Find it on GitHub.</a>
+		</p>
 	</div>
 	{#if data.localAddress}
 		<div class="qr-container">
 			<div class="qr">
 				<h1>Scan for Player Management</h1>
-				<p>(or <a href="/player">click here</a>)</p>
 				<h2>
 					Requires
 					<img src={AndroidLogo} alt="Android Logo" width="20" height="20" />
@@ -36,7 +43,7 @@
 					moduleFill="black"
 					anchorInnerFill="black"
 				/>
-				<p>Want to go to the <a href="/dashboard">dashboard</a> instead?</p>
+				<p>Not signing in players? Want to go to the <a href="/dashboard">dashboard</a> instead?</p>
 			</div>
 		</div>
 	{/if}
@@ -54,6 +61,7 @@
 	.info {
 		max-width: 800px;
 		margin: 0 auto;
+		padding: 0 1rem;
 	}
 
 	.qr {
@@ -61,6 +69,7 @@
 		padding: 1rem;
 		background-color: rgba(0, 0, 0, 0.1);
 		text-align: center;
+		width: 100%;
 	}
 
 	h1 img {
@@ -73,6 +82,10 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		width: 100%;
+		max-width: 400px;
+	}
+
+	main {
+		display: flex;
 	}
 </style>

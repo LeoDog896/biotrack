@@ -7,6 +7,7 @@
 <style global>
 	:global(:root) {
 		--color: oklch(60.68% 0.138 242.47);
+		--primary: var(--color);
 	}
 
 	:global(a) {

@@ -100,7 +100,8 @@
 					<p class="big">Error: <span class="error">{error.message}</span></p>
 				{/await}
 			{:else}
-				<p class="big">Invalid CUID <span class="error">{scannedData}</span></p>
+				<p class="big">Invalid CUID</p>
+				<p><span class="error long-text">{scannedData}</span></p>
 			{/if}
 		{:else}
 			<p class="big">Press NFC Card to read</p>
@@ -166,6 +167,8 @@
 
 	main {
 		padding: 1rem;
+		width: 100%;
+		height: 100%;
 	}
 
 	span.blue {
@@ -201,5 +204,13 @@
 		display: block;
 		width: 100%;
 		height: 100%;
+	}
+
+	.long-text {
+		white-space: normal;
+		word-break: break-all;
+		overflow-wrap: anywhere;
+		text-overflow: ellipsis;
+		font-size: 1rem;
 	}
 </style>
