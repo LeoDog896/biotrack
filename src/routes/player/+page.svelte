@@ -9,9 +9,9 @@
 	$: state = $page.state.state;
 
 	$: if (state && (state[0] === 'writing' || state[0] === 'eraseData')) write();
-	$: if (state && state[0] === 'checkPlayer') scannedData = '';
+	$: if (state && state[0] === 'checkPlayer') scannedData = undefined;
 
-	let scannedData = '';
+	let scannedData: string | undefined = undefined;
 	$: player = browser
 		? globalThis.fetch(`/player/id/${scannedData}`).then((r) => r.json())
 		: undefined;
@@ -23,7 +23,7 @@
 		});
 	}
 
-	async function onScan() {
+	async function beginScanning() {
 		try {
 			const ndef = new NDEFReader();
 			await ndef.scan();
@@ -43,13 +43,14 @@
 				})
 			});
 
-			// TODO: verify structural integrity of this
 			ndef.addEventListener('reading', (ev) => {
 				scannedData = decoder.decode(schema.parse(ev).message.records[0].data);
 			});
 		} catch (error) {
 			if (error instanceof ReferenceError) {
 				setState(['initializationError']);
+			} else {
+				alert('Argh! ' + error);
 			}
 		}
 	}
@@ -92,7 +93,7 @@
 			<button on:click={changeState(['newPlayer'])}>New Player</button>
 			<button on:click={changeState(['eraseData'])}>Erase Data</button>
 		{:else if state[0] === 'checkPlayer'}
-			{#if scannedData}
+			{#if scannedData !== undefined}
 				{#if isCuid(scannedData)}
 					{#await player}
 						<p class="big">Loading...</p>
@@ -103,7 +104,11 @@
 					{/await}
 				{:else}
 					<p class="big">Invalid CUID</p>
-					<p><span class="error long-text">{scannedData}</span></p>
+					{#if scannedData.length > 0}
+						<p><span class="error long-text">{scannedData}</span></p>
+					{:else}
+						<p><span class="error">Error:</span> no data.</p>
+					{/if}
 				{/if}
 			{:else}
 				<p class="big">Press NFC Card to read</p>
@@ -138,7 +143,7 @@
 			<p>Unknown state {state[0]}</p>
 		{/if}
 	{:else}
-		<button class="scan" on:click={onScan}>Enable NFC Scanning</button>
+		<button class="scan" on:click={beginScanning}>Enable NFC Scanning</button>
 	{/if}
 </main>
 
