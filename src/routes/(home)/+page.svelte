@@ -12,15 +12,17 @@
 		<h1>biotrack <img src="/logo.svg" alt="biotrack" /></h1>
 		<p>
 			Welcome to biotrack! This is a web application for managing <b>players</b>
-			who create <b>sessions</b> in <b>games</b> and their resulting <b>data</b>. 
+			who create <b>sessions</b> in <b>games</b> and their resulting <b>data</b>.
 		</p>
 		<p>
-			To get started, you can <a href="/dashboard">go to the dashboard</a> or
-			manage players by <a href="/player">going to player management</a> (<b>mobile-only</b>, see qr code →).
+			To get started, you can <a href="/dashboard">go to the dashboard</a> or manage players by
+			<a href="/player">going to player management</a>
+			(<b>mobile-only</b>, see qr code →).
 		</p>
 		<p>
 			Want to hack the software? <a href="https://github.com/LeoDog896/biotrack">
-			Find it on GitHub.</a>
+				Find it on GitHub.</a
+			>
 		</p>
 	</div>
 	{#if data.localAddress}
@@ -34,9 +36,8 @@
 				</h2>
 				<p>(chromium derivatives may not function; sorry!)</p>
 				<p>
-					Your browser may report this URL as unsafe. Despite this,
-					continue anyway; the page is safe. <a href="/unsafe">More
-					Information</a>.
+					Your browser may report this URL as unsafe. Despite this, continue anyway; the page is
+					safe. <a href="/unsafe">More Information</a>.
 				</p>
 				<QR
 					data="https://{data.localAddress}:5173/player"

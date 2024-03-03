@@ -61,11 +61,11 @@
 			if (state[0] === 'writing') {
 				const ndef = new NDEFReader();
 				await ndef.write(state[1]);
-				setState(['home'])
+				setState(['home']);
 			} else if (state[0] === 'eraseData') {
 				const ndef = new NDEFReader();
 				await ndef.write('');
-				setState(['home'])
+				setState(['home']);
 			}
 		} catch (error) {
 			alert('Argh! ' + error);
@@ -117,10 +117,7 @@
 			<input bind:value={fullName} placeholder="Search Name" />
 			<div class="names">
 				{#each data.users as user}
-					<button 
-						class="name"
-						on:click={changeState(['writing', user.id])}
-					>{user.name}</button>
+					<button class="name" on:click={changeState(['writing', user.id])}>{user.name}</button>
 				{/each}
 			</div>
 		{:else if state[0] === 'writing'}
