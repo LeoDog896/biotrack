@@ -13,11 +13,12 @@
 		| ['writing', state: string]
 		| ['newPlayer', state?: never]
 		| ['findPlayer', state?: never]
-		| ['initializationError', state?: never];
+		| ['initializationError', state?: never]
+		| ['eraseData', state?: never];
 
 	let state: State = ['permissionWaiting'];
 
-	$: if (state[0] === 'writing') write();
+	$: if (state[0] === 'writing' || state[0] === 'eraseData') write();
 	$: if (state[0] === 'checkPlayer') scannedData = '';
 
 	let scannedData = '';
@@ -59,12 +60,15 @@
 
 	async function write() {
 		try {
-			if (state[0] !== 'writing') {
-				return;
+			if (state[0] === 'writing') {
+				const ndef = new NDEFReader();
+				await ndef.write(state[1]);
+				state = ['home'];
+			} else if (state[0] === 'eraseData') {
+				const ndef = new NDEFReader();
+				await ndef.write('');
+				state = ['home'];
 			}
-			const ndef = new NDEFReader();
-			await ndef.write(state[1]);
-			state = ['home'];
 		} catch (error) {
 			alert('Argh! ' + error);
 		}
@@ -89,6 +93,7 @@
 		<button on:click={changeState(['findPlayer'])}>Find Player</button>
 		<button on:click={changeState(['checkPlayer'])}>Check Player</button>
 		<button on:click={changeState(['newPlayer'])}>New Player</button>
+		<button on:click={changeState(['eraseData'])}>Erase Data</button>
 	{:else if state[0] === 'checkPlayer'}
 		{#if scannedData}
 			{#if isCuid(scannedData)}
@@ -115,7 +120,10 @@
 		<input bind:value={fullName} placeholder="Search Name" />
 		<div class="names">
 			{#each data.users as user}
-				<button class="name">{user.name}</button>
+				<button 
+					class="name"
+					on:click={changeState(['writing', user.id])}
+				>{user.name}</button>
 			{/each}
 		</div>
 	{:else if state[0] === 'writing'}
@@ -129,6 +137,9 @@
 		<p>
 			Please use the <b>Chrome</b> browser on an <b>Android</b> device to use this feature.
 		</p>
+	{:else if state[0] === 'eraseData'}
+		<p class="big">Press NFC Card to erase</p>
+		<p class="error">Warning: This will erase all data on the card (<i>not</i> player data)</p>
 	{:else}
 		<p>Unknown state {state[0]}</p>
 	{/if}
