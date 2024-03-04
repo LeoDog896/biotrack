@@ -51,10 +51,6 @@
 	{/if}
 </main>
 
-<svelte:head>
-	<title>biotrack</title>
-</svelte:head>
-
 <style lang="scss">
 	main {
 		margin: 1rem;
