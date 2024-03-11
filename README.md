@@ -4,6 +4,16 @@ simple game tracking service for different players & games.
 
 ## API
 
+```mermaid
+sequenceDiagram
+    Card Scanner->>Server: Join <id>
+    Server->>Game: Client requested join
+    Game->>Server: Acknowledge
+    Server->>Card Scanner: Notify Game Start
+    Game->>Server: Finish Game
+    Server->>Card Scanner: Notify Finish Game
+```
+
 ### GET `/game/<id>/queue`
 
 Stream of player join events for a game. Returns a stream of JSON objects,
