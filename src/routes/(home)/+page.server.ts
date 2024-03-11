@@ -4,17 +4,19 @@ const interfaces = networkInterfaces();
 
 let localAddress: string | undefined;
 
-for (const networks of Object.values(interfaces)) {
+for (const [key, networks] of Object.entries(interfaces)) {
 	if (!networks) continue;
-	for (const net of networks) {
-		if (net.address.startsWith('192.168')) {
-			localAddress = net.address;
+	for (const { address } of networks) {
+		if ((key === "Wi-Fi" && address.includes('.')) || address.startsWith('192.168')) {
+			localAddress = address;
 			break;
 		}
 	}
 }
 
-if (!localAddress) throw new Error('No local address found');
+if (!localAddress) {
+	throw new Error('No local address found');
+}
 
 export const load = async () => {
 	return {
