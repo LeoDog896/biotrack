@@ -21,7 +21,10 @@
 			(<b>mobile-only</b>, see qr code →).
 		</p>
 		<p>
-			Want to hack the software, or connect your games to this platform? <a class="noUnderscore" href="https://github.com/LeoDog896/biotrack">
+			Want to hack the software, or connect your games to this platform? <a
+				class="noUnderscore"
+				href="https://github.com/LeoDog896/biotrack"
+			>
 				<MdiGithub /> <span class="underscore">Find it on GitHub.</span></a
 			>
 		</p>

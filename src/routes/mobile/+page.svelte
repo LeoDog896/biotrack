@@ -135,7 +135,8 @@
 		{:else if state[0] === 'initializationError'}
 			<p>This device or browser does not support NFC.</p>
 			<p>
-				Please use the <b>Chrome</b>/<b>Chromium</b> browser on an <b>Android</b> device to use this feature.
+				Please use the <b>Chrome</b>/<b>Chromium</b> browser on an <b>Android</b> device to use this
+				feature.
 			</p>
 		{:else if state[0] === 'eraseData'}
 			<p class="big">Press NFC Card to erase</p>

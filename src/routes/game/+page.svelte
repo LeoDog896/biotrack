@@ -1,10 +1,10 @@
 <main>
-    <h1>Games</h1>
+	<h1>Games</h1>
 </main>
 
 <style lang="scss">
-    main {
-        text-align: center;
-        margin: 1rem;
-    }
+	main {
+		text-align: center;
+		margin: 1rem;
+	}
 </style>
