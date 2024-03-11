@@ -1,6 +1,7 @@
 <script>
 	import AndroidLogo from './android.svg?url';
-	import ChromeLogo from './chrome.svg?url';
+	import ChromiumLogo from './chromium.svg?url';
+	import MdiGithub from '~icons/mdi/github';
 
 	import QR from '@svelte-put/qr/img/QR.svelte';
 
@@ -16,12 +17,12 @@
 		</p>
 		<p>
 			To get started, you can <a href="/dashboard">go to the dashboard</a> or manage players by
-			<a href="/player">going to player management</a>
+			<a href="/mobile">going to player management</a>
 			(<b>mobile-only</b>, see qr code →).
 		</p>
 		<p>
-			Want to hack the software? <a href="https://github.com/LeoDog896/biotrack">
-				Find it on GitHub.</a
+			Want to hack the software, or connect your games to this platform? <a class="noUnderscore" href="https://github.com/LeoDog896/biotrack">
+				<MdiGithub /> <span class="underscore">Find it on GitHub.</span></a
 			>
 		</p>
 	</div>
@@ -29,22 +30,22 @@
 		<div class="qr-container">
 			<div class="qr">
 				<h1>Scan for Player Management</h1>
-				<h2>
-					Requires
-					<img src={AndroidLogo} alt="Android Logo" width="20" height="20" />
-					<img src={ChromeLogo} alt="Chrome Logo" width="20" height="20" />
-				</h2>
-				<p>(chromium derivatives may not function; sorry!)</p>
-				<p>
-					Your browser may report this URL as unsafe. Despite this, continue anyway; the page is
-					safe. <a href="/unsafe">More Information</a>.
-				</p>
 				<QR
-					data="https://{data.localAddress}:5173/player"
+					data="https://{data.localAddress}:5173/mobile"
 					anchorOuterFill="#198acd"
 					moduleFill="black"
 					anchorInnerFill="black"
 				/>
+				<h2>
+					Requires
+					<img src={AndroidLogo} alt="Android Logo" width="20" height="20" />
+					<img src={ChromiumLogo} alt="Chromium Logo" width="20" height="20" />
+				</h2>
+				<p>(non-chrome chromium derivatives may not function)</p>
+				<p>
+					Your browser may report this URL as unsafe. Despite this, continue anyway; the page is
+					safe. <a href="/unsafe">More Information</a>.
+				</p>
 				<p>Not signing in players? Want to go to the <a href="/dashboard">dashboard</a> instead?</p>
 			</div>
 		</div>
@@ -85,5 +86,17 @@
 
 	main {
 		display: flex;
+	}
+
+	a.noUnderscore {
+		:global(svg) {
+			vertical-align: middle;
+		}
+
+		text-decoration: none;
+	}
+
+	.underscore {
+		text-decoration: underline;
 	}
 </style>

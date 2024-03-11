@@ -31,5 +31,6 @@
 
 	main {
 		max-width: 800px;
+		padding: 2rem;
 	}
 </style>

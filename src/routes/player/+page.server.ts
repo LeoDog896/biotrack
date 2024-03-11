@@ -1,8 +1,8 @@
 import { prisma } from '$lib/prismaConnection';
 import { fail } from '@sveltejs/kit';
-import type { Actions, PageServerLoad } from './$types';
+import type { Actions } from './$types';
 
-export const load: PageServerLoad = async () => {
+export const load = async () => {
 	return {
 		users: await prisma.user.findMany()
 	};
