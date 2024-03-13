@@ -10,9 +10,15 @@ importers:
 
   reader:
     devDependencies:
+      '@trpc/server':
+        specifier: 10.45.2
+        version: 10.45.2
       tsx:
         specifier: ^4.7.1
         version: 4.7.1
+      zod:
+        specifier: ^3.22.4
+        version: 3.22.4
 
   website:
     devDependencies:
@@ -756,6 +762,10 @@ packages:
       vitefu: 0.2.5(vite@5.0.11)
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /@trpc/server@10.45.2:
+    resolution: {integrity: sha512-wOrSThNNE4HUnuhJG6PfDRp4L2009KDVxsd+2VYH8ro6o/7/jwYZ8Uu5j+VaW+mOmc8EHerHzGcdbGNQSAUPgg==}
     dev: true
 
   /@types/cookie@0.6.0:
