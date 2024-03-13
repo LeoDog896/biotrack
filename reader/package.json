@@ -1,0 +1,11 @@
+{
+  "name": "reader",
+  "private": true,
+  "scripts": {
+    "start": "tsx src/index.ts"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "tsx": "^4.7.1"
+  }
+}
