@@ -1,8 +1,9 @@
 import { json } from '@sveltejs/kit';
 import { error } from '@sveltejs/kit';
 import { prisma } from '$lib/prismaConnection.js';
+import type { RequestHandler } from './$types';
 
-export const POST = async ({ params, url }) => {
+export const POST: RequestHandler = async ({ params, url }) => {
 	const userId = url.searchParams.get('user');
 
 	if (!userId) {
