@@ -30,9 +30,9 @@ Join a game with a `player` uuid.
 This does not guarantee that the player _joins_ the game;
 rather, the player sends a request to join.
 
-### GET `/game/<id>/active`
+### GET `/game/<id>/session`
 
-Check if a game is active. Returns a boolean.
+Returns a game's active session, if any.
 
 ### POST `/game/<id>/ack`
 
