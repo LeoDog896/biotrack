@@ -2,6 +2,7 @@ import { json } from '@sveltejs/kit';
 import { error } from '@sveltejs/kit';
 import { prisma } from '$lib/prismaConnection.js';
 import type { RequestHandler } from './$types';
+import { validateGame } from '$lib/server/validateGame';
 
 export const POST: RequestHandler = async ({ params, url }) => {
 	const userId = url.searchParams.get('user');
@@ -10,15 +11,7 @@ export const POST: RequestHandler = async ({ params, url }) => {
 		error(400, 'User ID not specified');
 	}
 
-	const game = await prisma.game.findUnique({
-		where: {
-			id: parseInt(params.id)
-		}
-	});
-
-	if (!game) {
-		error(400, 'Game not found');
-	}
+	const game = await validateGame(params.id);
 
 	const user = await prisma.user.findUnique({
 		where: {

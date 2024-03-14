@@ -1,21 +1,15 @@
 import { json } from '@sveltejs/kit';
 import { prisma } from '$lib/prismaConnection';
 import { error } from 'console';
+import { validateGame } from '$lib/server/validateGame';
+import type { RequestHandler } from './$types';
 
-export const GET = async ({ params }) => {
-	const game = await prisma.game.findUnique({
-		where: {
-			id: parseInt(params.id)
-		}
-	});
-
-	if (!game) {
-		error(400, 'Game not found');
-	}
+export const GET: RequestHandler = async ({ params }) => {
+	const game = await validateGame(params.id);
 
 	const session = await prisma.session.findFirst({
 		where: {
-			gameId: parseInt(params.id),
+			gameId: game.id,
 			active: true
 		}
 	});

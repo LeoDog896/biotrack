@@ -1,21 +1,10 @@
 import { prisma } from '$lib/prismaConnection';
 import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
+import { validateGame } from '$lib/server/validateGame';
 
 export const POST: RequestHandler = async ({ params, url }) => {
-	if (!params.id) {
-		error(400, 'No game id provided');
-	}
-
-	const game = await prisma.game.findUnique({
-		where: {
-			id: parseInt(params.id)
-		}
-	});
-
-	if (!game) {
-		error(400, 'Game not found');
-	}
+	const game = await validateGame(params.id);
 
 	const ids = url.searchParams.getAll('id');
 
