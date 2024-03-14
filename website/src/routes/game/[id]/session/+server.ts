@@ -5,7 +5,7 @@ import { error } from 'console';
 export const GET = async ({ params }) => {
 	const session = await prisma.session.findFirst({
 		where: {
-			gameId: params.id,
+			gameId: parseInt(params.id),
 			active: true
 		}
 	});
