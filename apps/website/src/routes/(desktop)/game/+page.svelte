@@ -23,9 +23,11 @@
 {#if data.games.length === 0}
 	<p>No games registered. Perhaps <a href="/game/new">create one</a>?</p>
 {:else}
+<ul>
 	{#each filteredGames as game}
-		<a href={`game/${game.id}`}>{game.name}</a>
+		<li><a href={`game/${game.id}`}>{game.name}</a></li>
 	{/each}
+</ul>
 {/if}
 
 <style lang="scss">
