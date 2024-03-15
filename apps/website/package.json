@@ -30,6 +30,7 @@
 		"@types/w3c-web-nfc": "^1.0.4",
 		"@vitejs/plugin-basic-ssl": "^1.0.2",
 		"cuid": "^3.0.0",
+		"dayjs": "^1.11.10",
 		"fuse.js": "^7.0.0",
 		"prisma": "^5.11.0",
 		"sass": "^1.71.1",

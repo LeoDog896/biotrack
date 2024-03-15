@@ -4,7 +4,7 @@
 
 <main>
     {#if $page.error}
-        <h1>{$page.error.message}</h1>
+        <h1>Error: {$page.error.message}</h1>
         <p>Check the recent logs.</p>
     {:else}
         <h1>Unknown Error</h1>

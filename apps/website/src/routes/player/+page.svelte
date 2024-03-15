@@ -24,11 +24,15 @@
 	{:else}
 		<input type="text" placeholder="Search for a player" bind:value={input} />
 
-		{#each filteredUsers as user}
-			<a href={`/player/${user.id}`}>
-				<h2>{user.name}</h2>
-			</a>
-		{/each}
+		{#if filteredUsers.length === 0}
+			<p>No players found. Perhaps change your query?</p>
+		{:else}
+			{#each filteredUsers as user}
+				<a href={`/player/${user.id}`}>
+					<h2>{user.name}</h2>
+				</a>
+			{/each}
+		{/if}
 	{/if}
 </main>
 

@@ -1,5 +1,13 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import duration from 'dayjs/plugin/duration';
+	import relativeTime from 'dayjs/plugin/relativeTime';
+	import dayjs from 'dayjs';
+	import Back from '$lib/components/Back.svelte';
+
+
+	dayjs.extend(duration);
+	dayjs.extend(relativeTime);
 
 	export let data;
 
@@ -7,9 +15,14 @@
 	const assignNameInput = (x: string) => (nameInput = x);
 	$: assignNameInput(data.user.name);
 	let nameSubmissionButton: HTMLButtonElement;
+
+	function formatDate(date: Date) {
+		return date.toLocaleString();
+	}
 </script>
 
 <main>
+	<Back />
 	<h1>
 		Player
 		<span class="gray">//</span>
@@ -24,9 +37,9 @@
 		</form>
 	</h1>
 	<p>cuid: {data.user.id}</p>
-	<p>created at: {data.user.createdAt}</p>
+	<p>created at: {formatDate(data.user.createdAt)}</p>
 	{#if data.user.updatedAt.toString() !== data.user.createdAt.toString()}
-		<p>updated at: {data.user.updatedAt}</p>
+		<p>last updated at: {formatDate(data.user.updatedAt)}, ~{dayjs.duration(dayjs(data.user.updatedAt).diff(dayjs(data.user.createdAt))).humanize()} after creation</p>
 	{/if}
 </main>
 
