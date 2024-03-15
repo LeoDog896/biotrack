@@ -17,6 +17,7 @@
 	"devDependencies": {
 		"@fontsource/ibm-plex-mono": "^5.0.8",
 		"@iconify-json/bx": "^1.1.10",
+		"@iconify-json/fa-brands": "^1.1.8",
 		"@iconify-json/mdi": "^1.1.64",
 		"@paralleldrive/cuid2": "^2.2.2",
 		"@playwright/test": "^1.28.1",

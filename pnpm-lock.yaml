@@ -110,6 +110,9 @@ importers:
       '@iconify-json/bx':
         specifier: ^1.1.10
         version: 1.1.10
+      '@iconify-json/fa-brands':
+        specifier: ^1.1.8
+        version: 1.1.8
       '@iconify-json/mdi':
         specifier: ^1.1.64
         version: 1.1.64
@@ -491,6 +494,12 @@ packages:
 
   /@iconify-json/bx@1.1.10:
     resolution: {integrity: sha512-4JzMDYhs/hkU9mO8nNMNKZwHn706oQaD46URyUuD4fP/XAWGf01vg6wKITmQseEHsHDrtKAXjwcumfnTUDi3OQ==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: true
+
+  /@iconify-json/fa-brands@1.1.8:
+    resolution: {integrity: sha512-0HVT1+7hDww2vTtGyX4maUyiEXDYd6CK57bOGJ3hc3fjmXpMI9QKdej21pPSv1jBZ2nGzTlg8WJ2yNtN88/lFQ==}
     dependencies:
       '@iconify/types': 2.0.0
     dev: true

@@ -2,6 +2,8 @@
 	import AndroidLogo from './android.svg?url';
 	import ChromiumLogo from './chromium.svg?url';
 	import MdiGithub from '~icons/mdi/github';
+	import FaBrandsRaspberryPi from '~icons/fa-brands/raspberry-pi';
+	import MdiComputer from '~icons/mdi/computer';
 
 	import QR from '@svelte-put/qr/img/QR.svelte';
 
@@ -15,9 +17,12 @@
 		who create <b>sessions</b> in <b>games</b> and their resulting <b>data</b>.
 	</p>
 	<p>
-		To get started, you can <a href="/dashboard">go to the dashboard</a>, or
-		go to the <a href="/scanner">
-			Raspberry-PI powered scanner
+		To get started, you can
+		<a href="/dashboard" class="noUnderscore"
+			><MdiComputer /> <span class="underscore">go to the dashboard</span></a
+		>, or go to the
+		<a href="/scanner" class="noUnderscore">
+			<FaBrandsRaspberryPi /> <span class="underscore">Raspberry-PI powered scanner</span>
 		</a> to sign in others.
 	</p>
 	<p>
@@ -46,8 +51,9 @@
 			</h2>
 			<p>(non-chrome chromium derivatives may not function)</p>
 			<p>
-				Your browser may report this URL as unsafe. Despite this, continue anyway; the page is
-				safe. <a href="/unsafe">More Information</a>.
+				Your browser may report this URL as unsafe. Despite this, continue anyway; the page is safe. <a
+					href="/unsafe">More Information</a
+				>.
 			</p>
 			<p>Not signing in players? Want to go to the <a href="/dashboard">dashboard</a> instead?</p>
 		</div>
@@ -55,7 +61,6 @@
 </main>
 
 <style lang="scss">
-
 	main {
 		max-width: 800px;
 		margin: 0 auto;
