@@ -1,5 +1,9 @@
+<script lang="ts">
+	import MdiLockOpenAlert from '~icons/mdi/lock-open-alert';
+</script>
+
 <p><a href="/">← back home</a></p>
-<h1>Your connection is not private</h1>
+<h1>Your connection is not private <MdiLockOpenAlert width="2rem" height="2rem" /></h1>
 <h2>A small browser mishap</h2>
 <p>
 	If your browser reports this page as unsafe, it is mistaken. While the warning is accurate
@@ -12,3 +16,11 @@
 	page is essentially acting like how a true malicious connection would act; by faking an HTTPS
 	certificate, this <i>could</i> be some Man-in-the-Middle attack.
 </p>
+
+<style>
+	h1 {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
+</style>
