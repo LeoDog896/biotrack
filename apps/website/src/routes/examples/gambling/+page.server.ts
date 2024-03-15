@@ -9,13 +9,13 @@ if (!stream.body) {
 	throw new Error('No stream body');
 }
 
-stream.body
-	.pipeThrough(new TextDecoderStream())
-	.pipeTo(new WritableStream({
+stream.body.pipeThrough(new TextDecoderStream()).pipeTo(
+	new WritableStream({
 		write(chunk) {
 			console.log(chunk);
 		}
-	}));
+	})
+);
 
 export const load: PageServerLoad = async () => {
 	return {

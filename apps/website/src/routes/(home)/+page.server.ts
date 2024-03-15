@@ -11,7 +11,7 @@ for (const [key, networks] of Object.entries(interfaces)) {
 			localAddress = address;
 			break;
 		}
-		
+
 		if ((key === 'Wi-Fi' && address.includes('.')) || address.startsWith('192.168')) {
 			localAddress = address;
 			break;

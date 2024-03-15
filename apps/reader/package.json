@@ -1,13 +1,13 @@
 {
-  "name": "reader",
-  "private": true,
-  "scripts": {
-    "start": "tsx src/index.ts"
-  },
-  "license": "MIT",
-  "devDependencies": {
-    "@trpc/server": "10.45.2",
-    "tsx": "^4.7.1",
-    "zod": "^3.22.4"
-  }
+	"name": "reader",
+	"private": true,
+	"scripts": {
+		"start": "tsx src/index.ts"
+	},
+	"license": "MIT",
+	"devDependencies": {
+		"@trpc/server": "10.45.2",
+		"tsx": "^4.7.1",
+		"zod": "^3.22.4"
+	}
 }

@@ -39,13 +39,15 @@ export const POST: RequestHandler = async ({ params, url }) => {
 			active: !finished,
 			data,
 			scoreBlock: {
-				set: [...scoreBlocks, {
-					id: cuid(),
-					score: parseInt(score),
-					data,
-					sessionId: session.id
-					
-				}]
+				set: [
+					...scoreBlocks,
+					{
+						id: cuid(),
+						score: parseInt(score),
+						data,
+						sessionId: session.id
+					}
+				]
 			}
 		}
 	});

@@ -1,4 +1,18 @@
 {
-    "private": true,
-    "packageManager": "pnpm@8.6.10"
+	"private": true,
+	"packageManager": "pnpm@8.6.10",
+	"scripts": {
+		"lint": "prettier --check . && eslint .",
+		"format": "prettier --write ."
+	},
+	"devDependencies": {
+		"@types/eslint": "^8.56.5",
+		"@typescript-eslint/eslint-plugin": "^7.2.0",
+		"@typescript-eslint/parser": "^7.2.0",
+		"eslint": "^8.56.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-plugin-svelte": "^2.35.1",
+		"prettier": "^3.1.1",
+		"prettier-plugin-svelte": "^3.1.2"
+	}
 }

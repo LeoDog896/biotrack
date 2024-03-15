@@ -8,19 +8,21 @@ export const POST: RequestHandler = async ({ params, url }) => {
 
 	const ids = url.searchParams.getAll('id');
 
-	const joinRequests = await Promise.all(ids.map(async (id) => {
-		const joinRequest = await prisma.joinRequest.findUnique({
-			where: {
-				id: parseInt(id)
+	const joinRequests = await Promise.all(
+		ids.map(async (id) => {
+			const joinRequest = await prisma.joinRequest.findUnique({
+				where: {
+					id: parseInt(id)
+				}
+			});
+
+			if (!joinRequest) {
+				error(400, 'Join request not found');
 			}
-		});
 
-		if (!joinRequest) {
-			error(400, 'Join request not found');
-		}
-
-		return joinRequest;
-	}));
+			return joinRequest;
+		})
+	);
 
 	if (joinRequests.length !== ids.length) {
 		for (const id of ids) {
@@ -43,7 +45,7 @@ export const POST: RequestHandler = async ({ params, url }) => {
 				connect: joinRequests.map((jr) => {
 					return {
 						id: jr.userId
-					}
+					};
 				})
 			}
 		}
@@ -59,5 +61,5 @@ export const POST: RequestHandler = async ({ params, url }) => {
 
 	return json({
 		session
-	})
+	});
 };

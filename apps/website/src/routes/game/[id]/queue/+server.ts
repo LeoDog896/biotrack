@@ -7,17 +7,15 @@ export const GET = async ({ params }) => {
 	const readable = new ReadableStream({
 		start(ctr) {
 			listener = (event: JoinRequest) => {
-				if (event.gameId !== parseInt(params.id))
-					return;
-				
+				if (event.gameId !== parseInt(params.id)) return;
+
 				ctr.enqueue(JSON.stringify(event));
 			};
 
 			joinRequestEvent.on(listener);
 		},
 		cancel() {
-			if (listener)
-				joinRequestEvent.off(listener);
+			if (listener) joinRequestEvent.off(listener);
 		}
 	});
 
@@ -26,5 +24,5 @@ export const GET = async ({ params }) => {
 			'Cache-Control': 'no-cache',
 			'content-type': 'text/event-stream'
 		}
-	})
+	});
 };

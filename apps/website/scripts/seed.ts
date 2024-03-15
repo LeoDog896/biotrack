@@ -3,20 +3,19 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-    await prisma.game.create({
-        data: {
-            id: 1,
-            name: 'Guess the Number',
-        }
-    });
-    await prisma.game.create({
-        data: {
-            id: 2,
-            name: 'Pong',
-        }
-    });
+	await prisma.game.create({
+		data: {
+			id: 1,
+			name: 'Guess the Number'
+		}
+	});
+	await prisma.game.create({
+		data: {
+			id: 2,
+			name: 'Pong'
+		}
+	});
 }
-
 
 main()
 	.then(async () => {
