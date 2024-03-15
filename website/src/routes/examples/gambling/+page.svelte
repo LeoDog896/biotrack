@@ -1,5 +1,6 @@
 <script lang="ts">
-	// TODO: connect to game API
+	let waiting = true;
+
 	let guess = 0;
 
 	function checkGuess() {

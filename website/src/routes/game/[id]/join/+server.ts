@@ -3,6 +3,7 @@ import { error } from '@sveltejs/kit';
 import { prisma } from '$lib/prismaConnection.js';
 import type { RequestHandler } from './$types';
 import { validateGame } from '$lib/server/validateGame';
+import { joinRequestEvent } from '$lib/server/joinRequests';
 
 export const POST: RequestHandler = async ({ params, url }) => {
 	const userId = url.searchParams.get('user');
@@ -29,6 +30,8 @@ export const POST: RequestHandler = async ({ params, url }) => {
 			userId: user.id
 		}
 	});
+
+	joinRequestEvent.emit(joinRequest);
 
 	return json(joinRequest);
 };
