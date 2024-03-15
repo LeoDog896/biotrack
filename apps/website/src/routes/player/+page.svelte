@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Fuse from 'fuse.js';
+	import MdiAccountPlus from '~icons/mdi/account-plus';
 
 	export let data;
 
@@ -13,20 +14,34 @@
 </script>
 
 <main>
-	<h1>Players</h1>
+	<div class="title">
+		<h1>Players</h1>
+		<a href="/player/new"><MdiAccountPlus width="100%" height="2rem" /></a>
+	</div>
 
-	<input type="text" placeholder="Search for a player" bind:value={input} />
+	{#if data.users.length === 0}
+		<p>No players found. Perhaps <a href="/player/new">create one</a>?</p>
+	{:else}
+		<input type="text" placeholder="Search for a player" bind:value={input} />
 
-	{#each filteredUsers as user}
-		<a href={`/player/${user.id}`}>
-			<h2>{user.name}</h2>
-		</a>
-	{/each}
+		{#each filteredUsers as user}
+			<a href={`/player/${user.id}`}>
+				<h2>{user.name}</h2>
+			</a>
+		{/each}
+	{/if}
 </main>
 
 <style lang="scss">
 	main {
 		text-align: center;
 		margin: 1rem;
+	}
+
+	.title {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 1rem;
 	}
 </style>

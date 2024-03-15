@@ -7,6 +7,8 @@
 <style global>
 	:global(:root) {
 		--color: oklch(60.68% 0.138 242.47);
+		--success: oklch(60.68% 0.138 158.82);
+		--error: oklch(60.68% 0.138 18.69);
 		--primary: var(--color);
 	}
 

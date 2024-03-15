@@ -2,12 +2,6 @@ import { prisma } from '$lib/prismaConnection';
 import { fail } from '@sveltejs/kit';
 import type { Actions } from './$types';
 
-export const load = async () => {
-	return {
-		users: await prisma.user.findMany()
-	};
-};
-
 export const actions = {
 	create: async ({ request }) => {
 		const data = await request.formData();

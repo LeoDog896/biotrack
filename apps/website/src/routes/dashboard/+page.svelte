@@ -1,11 +1,11 @@
 <script lang="ts">
 	const links = [
 		{
-			name: 'Player Management',
+			name: 'Player Dashboard',
 			link: '/player'
 		},
 		{
-			name: 'Game Overview',
+			name: 'Game Dashboard',
 			link: '/game'
 		}
 	];
