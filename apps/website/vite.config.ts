@@ -12,7 +12,8 @@ export default defineConfig({
 		})
 	],
 	server: {
-		proxy: {}
+		proxy: {},
+		port: 5000,
 	},
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']

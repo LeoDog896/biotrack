@@ -17,13 +17,24 @@
 		who create <b>sessions</b> in <b>games</b> and their resulting <b>data</b>.
 	</p>
 	<p>
-		To get started, you can
-		<a href="/dashboard" class="noUnderscore"
-			><MdiComputer /> <span class="underscore">go to the dashboard</span></a
-		>, or go to the
-		<a href="/scanner" class="noUnderscore">
-			<FaBrandsRaspberryPi /> <span class="underscore">Raspberry-PI powered scanner</span>
-		</a> to sign in others.
+		To get started, you can:
+</p>
+	<ul>
+		<li>
+			<a href="/dashboard" class="noUnderscore"
+				><MdiComputer /> <span class="underscore">go to the dashboard</span></a
+			>
+		</li>
+		<li>
+			<a href="/scanner" class="noUnderscore">
+				<FaBrandsRaspberryPi /> <span class="underscore">use the Raspberry-PI powered check-in</span>
+			</a>
+		</li>
+	</ul>
+	<p>
+		Your browser may report this URL as unsafe. Despite this, continue anyway; the page is safe. <a
+			href="/unsafe">More Information</a
+		>.
 	</p>
 	<p>
 		Want to hack the software, or connect your games to this platform? <a
@@ -50,12 +61,6 @@
 				<img src={ChromiumLogo} alt="Chromium Logo" width="20" height="20" />
 			</h2>
 			<p>(non-chrome chromium derivatives may not function)</p>
-			<p>
-				Your browser may report this URL as unsafe. Despite this, continue anyway; the page is safe. <a
-					href="/unsafe">More Information</a
-				>.
-			</p>
-			<p>Not signing in players? Want to go to the <a href="/dashboard">dashboard</a> instead?</p>
 		</div>
 	</details>
 </main>

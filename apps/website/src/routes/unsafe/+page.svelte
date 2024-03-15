@@ -1,6 +1,6 @@
 <div class="wrap">
 	<main>
-		<p><a href="/">&lt;- back home</a></p>
+		<p><a href="/">← back home</a></p>
 		<h1>Your connection is not private</h1>
 		<h2>A small browser mishap</h2>
 		<p>
