@@ -14,37 +14,31 @@
 	$: filteredUsers = input ? fuse.search(input).map(({ item }) => item) : data.users;
 </script>
 
-<main>
-	<h1>New Player</h1>
+<h1>New Player</h1>
 
-	<form method="POST" use:enhance>
-		<input type="text" name="name" placeholder="Name" bind:value={input} required />
+<form method="POST" use:enhance>
+	<input type="text" name="name" placeholder="Name" bind:value={input} required />
 
-		<button type="submit">Submit</button>
-	</form>
+	<button type="submit">Submit</button>
+</form>
 
-	{#if input}
-		{#if filteredUsers.length === 0}
-			<p>No similar players found. You're good to go!</p>
-		{:else}
-			<h2>Similar Players</h2>
+{#if input}
+	{#if filteredUsers.length === 0}
+		<p>No similar players found. You're good to go!</p>
+	{:else}
+		<h2>Similar Players</h2>
 
-			{#each filteredUsers as user}
-				<a href={`/player/${user.id}`}>
-					<h3>{user.name}</h3>
-				</a>
-			{/each}
-		{/if}
-	{:else if form && form.success && form.message}
-		<p class="success">{form.message}</p>
+		{#each filteredUsers as user}
+			<a href={`/player/${user.id}`}>
+				<h3>{user.name}</h3>
+			</a>
+		{/each}
 	{/if}
-</main>
+{:else if form && form.success && form.message}
+	<p class="success">{form.message}</p>
+{/if}
 
 <style>
-	main {
-		text-align: center;
-	}
-
 	.success {
 		color: var(--success);
 	}

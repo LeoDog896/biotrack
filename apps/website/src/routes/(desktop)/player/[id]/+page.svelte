@@ -20,37 +20,31 @@
 	}
 </script>
 
-<main>
-	<Back />
-	<h1>
-		Player
-		<span class="gray">//</span>
-		<form use:enhance action="/player/{data.user.id}?/name" method="POST">
-			<input
-				type="text"
-				name="name"
-				value={nameInput}
-				on:change={() => nameSubmissionButton.click()}
-			/>
-			<button type="submit" hidden bind:this={nameSubmissionButton}></button>
-		</form>
-	</h1>
-	<p>cuid: {data.user.id}</p>
-	<p>created at: {formatDate(data.user.createdAt)}</p>
-	{#if data.user.updatedAt.toString() !== data.user.createdAt.toString()}
-		<p>
-			last updated at: {formatDate(data.user.updatedAt)}, ~{dayjs
-				.duration(dayjs(data.user.updatedAt).diff(dayjs(data.user.createdAt)))
-				.humanize()} after creation
-		</p>
-	{/if}
-</main>
+<Back />
+<h1>
+	Player
+	<span class="gray">//</span>
+	<form use:enhance action="/player/{data.user.id}?/name" method="POST">
+		<input
+			type="text"
+			name="name"
+			value={nameInput}
+			on:change={() => nameSubmissionButton.click()}
+		/>
+		<button type="submit" hidden bind:this={nameSubmissionButton}></button>
+	</form>
+</h1>
+<p>cuid: {data.user.id}</p>
+<p>created at: {formatDate(data.user.createdAt)}</p>
+{#if data.user.updatedAt.toString() !== data.user.createdAt.toString()}
+	<p>
+		last updated at: {formatDate(data.user.updatedAt)}, ~{dayjs
+			.duration(dayjs(data.user.updatedAt).diff(dayjs(data.user.createdAt)))
+			.humanize()} after creation
+	</p>
+{/if}
 
 <style lang="scss">
-	main {
-		padding: 1rem;
-	}
-
 	h1 {
 		text-align: center;
 		display: flex;

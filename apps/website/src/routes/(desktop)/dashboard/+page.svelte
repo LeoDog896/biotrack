@@ -13,29 +13,21 @@
 	export let data;
 </script>
 
-<main>
-	<h1>Dashboard</h1>
+<h1>Dashboard</h1>
 
-	<h2>Quick Links</h2>
-	<ul>
-		{#each links as link}
-			<li>
-				<a href={link.link}>{link.name}</a>
-			</li>
-		{/each}
-	</ul>
+<h2>Quick Links</h2>
+<ul>
+	{#each links as link}
+		<li>
+			<a href={link.link}>{link.name}</a>
+		</li>
+	{/each}
+</ul>
 
-	<h2>Statistics</h2>
+<h2>Statistics</h2>
 
-	<ul>
-		<li>Players: {data.players}</li>
-		<li>Games: {data.games}</li>
-		<li>Sessions: {data.sessions}</li>
-	</ul>
-</main>
-
-<style lang="scss">
-	main {
-		padding: 1rem;
-	}
-</style>
+<ul>
+	<li>Players: {data.players}</li>
+	<li>Games: {data.games}</li>
+	<li>Sessions: {data.sessions}</li>
+</ul>

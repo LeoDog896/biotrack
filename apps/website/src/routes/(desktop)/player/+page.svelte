@@ -13,38 +13,30 @@
 	$: filteredUsers = input ? fuse.search(input).map(({ item }) => item) : data.users;
 </script>
 
-<main>
-	<div class="title">
-		<h1>Players</h1>
-		<a href="/player/new"><MdiAccountPlus width="100%" height="2rem" /></a>
-	</div>
+<div class="title">
+	<h1>Players</h1>
+	<a href="/player/new"><MdiAccountPlus width="100%" height="2rem" /></a>
+</div>
 
-	{#if data.users.length === 0}
-		<p>No players found. Perhaps <a href="/player/new">create one</a>?</p>
+{#if data.users.length === 0}
+	<p>No players found. Perhaps <a href="/player/new">create one</a>?</p>
+{:else}
+	<input type="text" placeholder="Search for a player" bind:value={input} />
+
+	{#if filteredUsers.length === 0}
+		<p>No players found. Perhaps change your query?</p>
 	{:else}
-		<input type="text" placeholder="Search for a player" bind:value={input} />
-
-		{#if filteredUsers.length === 0}
-			<p>No players found. Perhaps change your query?</p>
-		{:else}
-			{#each filteredUsers as user}
-				<a href={`/player/${user.id}`}>
-					<h2>{user.name}</h2>
-				</a>
-			{/each}
-		{/if}
+		{#each filteredUsers as user}
+			<a href={`/player/${user.id}`}>
+				<h2>{user.name}</h2>
+			</a>
+		{/each}
 	{/if}
-</main>
+{/if}
 
 <style lang="scss">
-	main {
-		text-align: center;
-		margin: 1rem;
-	}
-
 	.title {
 		display: flex;
-		justify-content: center;
 		align-items: center;
 		gap: 1rem;
 	}
