@@ -12,13 +12,21 @@ export const load = async ({ params }) => {
 		error(404, 'User not found');
 	}
 
+	const scoreBlocks = await prisma.scoreBlock.findMany({
+		where: {
+			userId: user.id
+		}
+	});
+
+	const score = scoreBlocks.reduce((acc, block) => acc + block.score, 0);
+
 	return {
-		user
+		user,
+		score
 	};
 };
 
 export const actions = {
-	// TODO: minor security vulnerability
 	name: async ({ request, params }) => {
 		const data = await request.formData();
 		const name = data.get('name');

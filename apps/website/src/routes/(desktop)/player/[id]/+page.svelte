@@ -32,6 +32,7 @@
 </form>
 
 <p>cuid: {data.user.id}</p>
+<p>score: {data.score}</p>
 <p>created at: {formatDate(data.user.createdAt)}</p>
 {#if data.user.updatedAt.toString() !== data.user.createdAt.toString()}
 	<p>
