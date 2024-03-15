@@ -11,6 +11,9 @@ export default defineConfig({
 			compiler: 'svelte'
 		})
 	],
+	server: {
+        proxy: {}
+    },
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']
 	}
