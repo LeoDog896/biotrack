@@ -3,7 +3,6 @@
 	import duration from 'dayjs/plugin/duration';
 	import relativeTime from 'dayjs/plugin/relativeTime';
 	import dayjs from 'dayjs';
-	import Back from '$lib/components/Back.svelte';
 
 	dayjs.extend(duration);
 	dayjs.extend(relativeTime);
@@ -20,20 +19,18 @@
 	}
 </script>
 
-<Back />
-<h1>
-	Player
-	<span class="gray">//</span>
-	<form use:enhance action="/player/{data.user.id}?/name" method="POST">
-		<input
+<form use:enhance action="/player/{data.user.id}?/name" method="POST">
+	<div class="name">
+		Name: <input
 			type="text"
 			name="name"
 			value={nameInput}
 			on:change={() => nameSubmissionButton.click()}
 		/>
-		<button type="submit" hidden bind:this={nameSubmissionButton}></button>
-	</form>
-</h1>
+	</div>
+	<button type="submit" hidden bind:this={nameSubmissionButton}></button>
+</form>
+
 <p>cuid: {data.user.id}</p>
 <p>created at: {formatDate(data.user.createdAt)}</p>
 {#if data.user.updatedAt.toString() !== data.user.createdAt.toString()}
@@ -45,27 +42,18 @@
 {/if}
 
 <style lang="scss">
-	h1 {
-		text-align: center;
-		display: flex;
-		justify-content: center;
-		gap: 1rem;
-		align-items: center;
-	}
-
-	form {
-		display: flex;
-		gap: 1rem;
-		align-items: center;
-	}
 
 	input {
 		padding: 0.5rem;
 		font-size: 1rem;
-		text-align: center;
+		width: 100%;
 	}
 
-	.gray {
-		opacity: 0.5;
+	.name {
+		margin-top: 1rem;
+		display: flex;
+		justify-content: center;
+		gap: 1rem;
+		align-items: center;
 	}
 </style>
