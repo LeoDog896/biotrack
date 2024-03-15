@@ -49,7 +49,6 @@
 {/if}
 
 <style lang="scss">
-
 	input {
 		padding: 0.5rem;
 		font-size: 1rem;

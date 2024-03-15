@@ -3,13 +3,14 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-
-	if (await prisma.game.findFirst({
-		where: {
-			id: 1,
-			name: 'Guess the Number'
-		}
-	})) {
+	if (
+		await prisma.game.findFirst({
+			where: {
+				id: 1,
+				name: 'Guess the Number'
+			}
+		})
+	) {
 		console.log('The database is already seeded with the test games.');
 		return;
 	}

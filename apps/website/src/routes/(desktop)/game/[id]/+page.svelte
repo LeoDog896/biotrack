@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 
-    export let data;
-    let nameInput = data.game.name;
-    let nameSubmissionButton: HTMLButtonElement;
+	export let data;
+	let nameInput = data.game.name;
+	let nameSubmissionButton: HTMLButtonElement;
 </script>
 
 <form use:enhance action="/game/{data.game.id}?/name" method="POST">
@@ -18,12 +18,10 @@
 	<button type="submit" hidden bind:this={nameSubmissionButton}></button>
 </form>
 
-
 <p>id: {data.game.id}</p>
-<p>Max Players: {data.game.playerCount ?? "Arbitrary"}</p>
+<p>Max Players: {data.game.playerCount ?? 'Arbitrary'}</p>
 
 <style lang="scss">
-
 	input {
 		padding: 0.5rem;
 		font-size: 1rem;
