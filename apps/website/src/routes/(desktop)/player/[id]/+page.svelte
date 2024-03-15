@@ -5,7 +5,6 @@
 	import dayjs from 'dayjs';
 	import Back from '$lib/components/Back.svelte';
 
-
 	dayjs.extend(duration);
 	dayjs.extend(relativeTime);
 
@@ -39,7 +38,11 @@
 	<p>cuid: {data.user.id}</p>
 	<p>created at: {formatDate(data.user.createdAt)}</p>
 	{#if data.user.updatedAt.toString() !== data.user.createdAt.toString()}
-		<p>last updated at: {formatDate(data.user.updatedAt)}, ~{dayjs.duration(dayjs(data.user.updatedAt).diff(dayjs(data.user.createdAt))).humanize()} after creation</p>
+		<p>
+			last updated at: {formatDate(data.user.updatedAt)}, ~{dayjs
+				.duration(dayjs(data.user.updatedAt).diff(dayjs(data.user.createdAt)))
+				.humanize()} after creation
+		</p>
 	{/if}
 </main>
 

@@ -16,9 +16,7 @@
 		Welcome to biotrack! This is a web application for managing <b>players</b>
 		who create <b>sessions</b> in <b>games</b> and their resulting <b>data</b>.
 	</p>
-	<p>
-		To get started, you can:
-</p>
+	<p>To get started, you can:</p>
 	<ul>
 		<li>
 			<a href="/dashboard" class="noUnderscore"
@@ -27,7 +25,8 @@
 		</li>
 		<li>
 			<a href="/scanner" class="noUnderscore">
-				<FaBrandsRaspberryPi /> <span class="underscore">use the Raspberry-PI powered check-in</span>
+				<FaBrandsRaspberryPi />
+				<span class="underscore">use the Raspberry-PI powered check-in</span>
 			</a>
 		</li>
 	</ul>

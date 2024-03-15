@@ -1,4 +1,4 @@
-import { prisma } from "$lib/prismaConnection";
+import { prisma } from '$lib/prismaConnection';
 
 export const load = async () => {
 	return {

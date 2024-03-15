@@ -18,8 +18,6 @@ const reader = stream.body!.on('data', (chunk) => {
 	console.log(chunk.toString());
 });
 
-
-
 export const load: PageServerLoad = async () => {
 	return {
 		number: random(1, 5)
