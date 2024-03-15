@@ -13,7 +13,8 @@
 		"format": "prettier --write .",
 		"test:integration": "playwright test",
 		"test:unit": "vitest",
-		"studio": "prisma studio"
+		"studio": "prisma studio",
+		"seed": "tsx scripts/seed.ts"
 	},
 	"devDependencies": {
 		"@fontsource/ibm-plex-mono": "^5.0.8",
@@ -46,6 +47,7 @@
 		"svelte-check": "^3.6.0",
 		"ts-typed-events": "^3.0.0",
 		"tslib": "^2.4.1",
+		"tsx": "^4.7.1",
 		"typescript": "^5.0.0",
 		"unplugin-icons": "^0.18.5",
 		"vite": "^5.0.11",

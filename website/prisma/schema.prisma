@@ -63,4 +63,6 @@ model Game {
   // Sessions; only one can be "active" at a time.
   sessions     Session[]
   joinRequests JoinRequest[]
+  // Amount of players this game takes. Leave null for unknown.
+  playerCount  Int?
 }

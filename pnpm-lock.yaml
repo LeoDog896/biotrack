@@ -112,6 +112,9 @@ importers:
       tslib:
         specifier: ^2.4.1
         version: 2.6.2
+      tsx:
+        specifier: ^4.7.1
+        version: 4.7.1
       typescript:
         specifier: ^5.0.0
         version: 5.3.3
