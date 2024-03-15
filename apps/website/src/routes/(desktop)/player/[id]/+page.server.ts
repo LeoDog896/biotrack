@@ -22,7 +22,16 @@ export const load = async ({ params }) => {
 
 	return {
 		user,
-		score
+		score,
+		sessions: await prisma.session.count({
+			where: {
+				user: {
+					some: {
+						id: user.id
+					}
+				}
+			}
+		})
 	};
 };
 
