@@ -33,5 +33,7 @@ export const POST: RequestHandler = async ({ params, url }) => {
 
 	joinRequestEvent.emit(joinRequest);
 
-	return json(joinRequest);
+	return json({
+		joinRequest
+	});
 };
