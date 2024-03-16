@@ -19,10 +19,15 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
         },
         select: {
             name: true,
+            id: true
         }
     });
 
     if (!officer) {
         redirect(302, "/login");
+    }
+
+    return {
+        officer
     }
 }
