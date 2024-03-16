@@ -10,7 +10,7 @@ export const GET: RequestHandler = async ({ params }) => {
 			listener = (event: JoinRequest) => {
 				if (event.gameId !== parseInt(params.id)) return;
 
-				ctr.enqueue(JSON.stringify(event) + "\n");
+				ctr.enqueue(JSON.stringify(event) + '\n');
 			};
 
 			joinRequestEvent.on(listener);

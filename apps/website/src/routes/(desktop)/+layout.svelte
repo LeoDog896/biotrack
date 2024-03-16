@@ -14,7 +14,8 @@
 
 <footer>
 	<div>
-		having issues? <a href="/ping">ping everyone</a> or <a href="https://github.com/LeoDog896/biotrack/issues/new">report it on the bug tracker</a>
+		having issues? <a href="/ping">ping everyone</a> or
+		<a href="https://github.com/LeoDog896/biotrack/issues/new">report it on the bug tracker</a>
 	</div>
 </footer>
 

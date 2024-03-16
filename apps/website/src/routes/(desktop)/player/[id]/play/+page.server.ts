@@ -20,7 +20,7 @@ export const load = async ({ params }) => {
 
 	const joinRequests = await prisma.joinRequest.findMany({
 		where: {
-			userId: params.id,
+			userId: params.id
 		},
 		include: {
 			game: true,
@@ -28,7 +28,10 @@ export const load = async ({ params }) => {
 		}
 	});
 
-	const activeJoinRequest = joinRequests.find((joinRequest) => !joinRequest.acknowledged && !joinRequest.supersededJoinRequest && !joinRequest.cancelled);
+	const activeJoinRequest = joinRequests.find(
+		(joinRequest) =>
+			!joinRequest.acknowledged && !joinRequest.supersededJoinRequest && !joinRequest.cancelled
+	);
 
 	const user = await prisma.user.findUnique({
 		where: {
@@ -80,4 +83,4 @@ export const actions = {
 			joinRequest
 		};
 	}
-}
+};
