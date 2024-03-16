@@ -4,7 +4,8 @@ import { error } from '@sveltejs/kit';
 export const load = async ({ params }) => {
 	const user = await prisma.user.findUnique({
 		where: {
-			id: params.id
+			id: params.id,
+			archived: false
 		}
 	});
 
@@ -65,7 +66,8 @@ export const actions = {
 
 		const player = await prisma.user.findUnique({
 			where: {
-				id: params.id
+				id: params.id,
+				archived: false
 			}
 		});
 
@@ -85,6 +87,32 @@ export const actions = {
 		return {
 			success: true,
 			message: 'Name updated'
+		};
+	},
+	archive: async ({ params }) => {
+		const user = await prisma.user.findUnique({
+			where: {
+				id: params.id,
+				archived: false
+			}
+		});
+
+		if (!user) {
+			return error(404, 'User not found');
+		}
+
+		await prisma.user.update({
+			where: {
+				id: params.id
+			},
+			data: {
+				archived: true
+			}
+		});
+
+		return {
+			success: true,
+			message: 'Player archived'
 		};
 	}
 };

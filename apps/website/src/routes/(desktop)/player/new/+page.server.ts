@@ -17,7 +17,8 @@ export const actions = {
 
 		const user = await prisma.user.create({
 			data: {
-				name
+				name,
+				archived: false
 			}
 		});
 

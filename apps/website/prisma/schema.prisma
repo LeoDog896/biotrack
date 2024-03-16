@@ -15,6 +15,7 @@ model User {
   sessions    Session[]
   scoreLedger ScoreBlock[]
   joinRequest JoinRequest?
+  archived    Boolean  @default(false)
 }
 
 model ScoreBlock {

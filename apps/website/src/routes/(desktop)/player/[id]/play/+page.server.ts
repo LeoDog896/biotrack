@@ -35,7 +35,8 @@ export const load = async ({ params }) => {
 
 	const user = await prisma.user.findUnique({
 		where: {
-			id: params.id
+			id: params.id,
+			archived: false
 		}
 	});
 

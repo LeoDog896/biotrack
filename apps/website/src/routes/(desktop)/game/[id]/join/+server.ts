@@ -16,7 +16,8 @@ export const POST: RequestHandler = async ({ params, url }) => {
 
 	const user = await prisma.user.findUnique({
 		where: {
-			id: userId
+			id: userId,
+			archived: false
 		}
 	});
 

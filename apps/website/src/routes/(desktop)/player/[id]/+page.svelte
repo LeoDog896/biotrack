@@ -23,13 +23,13 @@
 		return date.toLocaleString();
 	}
 
-	function showDeleteModal() {
+	function showArchiveModal() {
 		pushState('', {
-			modalShowing: 'delete'
+			modalShowing: 'archive'
 		})
 	}
 
-	let deleteInput = '';
+	let archiveInput = '';
 </script>
 
 <h2>General Information</h2>
@@ -74,24 +74,25 @@
 
 <h2>Actions</h2>
 
-<button on:click={showDeleteModal}>delete</button>
+<button on:click={showArchiveModal}>archive</button>
 
-{#if $page.state.modalShowing === 'delete'}
+{#if $page.state.modalShowing === 'archive'}
 	<Modal on:close={() => history.back()}>
-		<h2>Delete {data.user.name}?</h2>
-		<p>Are you sure you want to delete {data.user.name}?</p>
+		<h2>Archive {data.user.name}?</h2>
+		<p>Are you sure you want to archive {data.user.name}?</p>
+		<p>This takes away their ability to use their card, and hides this player</p>
 		<p>Type <b>{data.user.name}</b> to confirm.</p>
 		<input
 			class="bottom-margin"
 			type="text"
-			bind:value={deleteInput}
+			bind:value={archiveInput}
 			placeholder="Type the name to confirm"
 		/>
 		<div class="buttons">
-			<form action="/player/{data.user.id}?/delete" method="POST">
+			<form action="/player/{data.user.id}?/archive" method="POST">
 				<button class="red" type="submit" disabled={
-					deleteInput !== data.user.name
-				}>Yes, delete</button>
+					archiveInput !== data.user.name
+				}>Yes, archive</button>
 			</form>
 			<button on:click={() => history.back()}>No, cancel</button>
 		</div>
