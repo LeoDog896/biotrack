@@ -1,11 +1,17 @@
 <script lang="ts">
+    import MdiShieldAdd from '~icons/mdi/shield-add';
+
 	export let data;
 
 	$: officers = data.officers.filter((officer) => officer.id !== data.officer.id);
 </script>
 
-<h1>Officers</h1>
-
+<div class="title">
+    <h1>Officers</h1>
+    {#if data.officer.admin}
+        <a href="/officer/add"><MdiShieldAdd width="2rem" height="2rem" /></a>
+    {/if}
+</div>
 <h2>My Account</h2>
 
 <p>id: <span class="accent">{data.officer.id}</span></p>
@@ -32,6 +38,12 @@
 	.accent {
 		color: var(--color);
 	}
+
+    .title {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
 
 	.true {
 		color: var(--success);

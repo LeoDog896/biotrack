@@ -9,6 +9,7 @@
 		--color: oklch(60.68% 0.138 242.47);
 		--success: oklch(60.68% 0.138 158.82);
 		--error: oklch(60.68% 0.138 18.69);
+		--warning: oklch(60.68% 0.138 62.47);
 		--primary: var(--color);
 	}
 
