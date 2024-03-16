@@ -1,6 +1,11 @@
 import { initTRPC } from '@trpc/server';
-import { createHTTPServer } from '@trpc/server/adapters/standalone';
+import { applyWSSHandler } from '@trpc/server/adapters/ws';
 import { z } from 'zod';
+import ws from 'ws';
+
+const wss = new ws.Server({
+	port: 2022,
+});
 
 const t = initTRPC.create();
 
@@ -15,18 +20,26 @@ const appRouter = t.router({
 				data: z.string()
 			})
 		)
-		.mutation(() => {
+		.mutation(async () => {
 			// TODO: write to card
+			return 'done';
 		})
 });
 
-// Export the app router type to be imported on the client side
+const handler = applyWSSHandler({ wss, router: appRouter });
+
 export type AppRouter = typeof appRouter;
 
-// Create HTTP server
-const { listen } = createHTTPServer({
-	router: appRouter
+wss.on('connection', (ws) => {
+	console.log(`+ Connection (${wss.clients.size})`);
+	ws.once('close', () => {
+		console.log(`- Connection (${wss.clients.size})`);
+	});
 });
+console.log('✅ WebSocket Server listening on ws://localhost:3001');
 
-// Listen on port 2022
-listen(2022);
+process.on('SIGTERM', () => {
+	console.log('SIGTERM');
+	handler.broadcastReconnectNotification();
+	wss.close();
+});

@@ -101,9 +101,15 @@ importers:
       '@trpc/server':
         specifier: 10.45.2
         version: 10.45.2
+      '@types/ws':
+        specifier: ^8.5.10
+        version: 8.5.10
       tsx:
         specifier: ^4.7.1
         version: 4.7.1
+      ws:
+        specifier: ^8.16.0
+        version: 8.16.0
       zod:
         specifier: ^3.22.4
         version: 3.22.4
@@ -1106,6 +1112,12 @@ packages:
 
   /@types/w3c-web-nfc@1.0.4:
     resolution: {integrity: sha512-AxTfPROOzdBhpBhrmwNn19gk36nK9SwRppSVe2C2y0TFuz/nzJ1m9oYC5DNoMeajEhHL44M+zxcH8GTkhgYteQ==}
+    dev: true
+
+  /@types/ws@8.5.10:
+    resolution: {integrity: sha512-vmQSUcfalpIq0R9q7uTo2lXs6eGIpt9wtnLdMv9LVpIjCA/+ufZRozlVoVelIYixx1ugCBKDhn89vnsEGOCx9A==}
+    dependencies:
+      '@types/node': 20.11.6
     dev: true
 
   /@typescript-eslint/eslint-plugin@7.2.0(@typescript-eslint/parser@7.2.0)(eslint@8.56.0)(typescript@5.3.3):
