@@ -33,8 +33,8 @@ export const POST: RequestHandler = async ({ params, url }) => {
 				id: user.id
 			},
 			acknowledged: false,
-			cancelled: false,
-			supersededJoinRequest: {
+			terminated: false,
+			linkedJoinRequest: {
 				is: null
 			}
 		}
@@ -52,15 +52,23 @@ export const POST: RequestHandler = async ({ params, url }) => {
 					id: user.id
 				}
 			},
-			precedingJoinRequest: {
-				connect: existingJoinRequest
-					? {
-							id: existingJoinRequest.id
-					  }
-					: undefined
-			}
 		}
 	});
+
+	if (existingJoinRequest) {
+		await prisma.joinRequest.update({
+			where: {
+				id: existingJoinRequest.id
+			},
+			data: {
+				linkedJoinRequest: {
+					connect: {
+						nextJoinRequestId: joinRequest.id
+					}
+				}
+			}
+		});
+	}
 
 	joinRequestEvent.emit(joinRequest);
 

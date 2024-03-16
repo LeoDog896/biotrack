@@ -38,10 +38,16 @@ CREATE TABLE "JoinRequest" (
     "userId" TEXT NOT NULL,
     "gameId" INTEGER NOT NULL,
     "acknowledged" BOOLEAN NOT NULL DEFAULT false,
-    "precedingJoinRequestId" INTEGER,
     CONSTRAINT "JoinRequest_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "JoinRequest_gameId_fkey" FOREIGN KEY ("gameId") REFERENCES "Game" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "JoinRequest_precedingJoinRequestId_fkey" FOREIGN KEY ("precedingJoinRequestId") REFERENCES "JoinRequest" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+    CONSTRAINT "JoinRequest_gameId_fkey" FOREIGN KEY ("gameId") REFERENCES "Game" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "LinkedJoinRequest" (
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    "nextJoinRequestId" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    CONSTRAINT "LinkedJoinRequest_nextJoinRequestId_fkey" FOREIGN KEY ("nextJoinRequestId") REFERENCES "JoinRequest" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -65,7 +71,7 @@ CREATE TABLE "_SessionToUser" (
 CREATE UNIQUE INDEX "JoinRequest_userId_key" ON "JoinRequest"("userId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "JoinRequest_precedingJoinRequestId_key" ON "JoinRequest"("precedingJoinRequestId");
+CREATE UNIQUE INDEX "LinkedJoinRequest_nextJoinRequestId_key" ON "LinkedJoinRequest"("nextJoinRequestId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_SessionToUser_AB_unique" ON "_SessionToUser"("A", "B");

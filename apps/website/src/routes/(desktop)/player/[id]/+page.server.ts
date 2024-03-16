@@ -41,8 +41,8 @@ export const load = async ({ params }) => {
 			where: {
 				userId: user.id,
 				acknowledged: false,
-				cancelled: false,
-				supersededJoinRequest: {
+				terminated: false,
+				linkedJoinRequest: {
 					is: null
 				}
 			}

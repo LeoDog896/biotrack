@@ -24,13 +24,13 @@ export const load = async ({ params }) => {
 		},
 		include: {
 			game: true,
-			supersededJoinRequest: true
+			linkedJoinRequest: true
 		}
 	});
 
 	const activeJoinRequest = joinRequests.find(
 		(joinRequest) =>
-			!joinRequest.acknowledged && !joinRequest.supersededJoinRequest && !joinRequest.cancelled
+			!joinRequest.acknowledged && !joinRequest.linkedJoinRequest && !joinRequest.terminated
 	);
 
 	const user = await prisma.user.findUnique({
@@ -59,8 +59,7 @@ export const actions = {
 			where: {
 				userId: params.id,
 				acknowledged: false,
-				cancelled: false,
-				supersededJoinRequest: {
+				linkedJoinRequest: {
 					is: null
 				}
 			}
@@ -75,7 +74,7 @@ export const actions = {
 				id: joinRequest.id
 			},
 			data: {
-				cancelled: true
+				terminated: true
 			}
 		});
 

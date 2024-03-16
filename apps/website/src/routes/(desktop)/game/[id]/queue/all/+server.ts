@@ -10,8 +10,8 @@ export const GET: RequestHandler = async ({ params }) => {
 		where: {
 			gameId: parseInt(params.id),
 			acknowledged: false,
-			cancelled: false,
-			supersededJoinRequest: {
+			terminated: false,
+			linkedJoinRequest: {
 				is: null
 			}
 		}

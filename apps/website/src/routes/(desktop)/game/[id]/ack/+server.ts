@@ -14,8 +14,8 @@ export const POST: RequestHandler = async ({ params, url }) => {
 				where: {
 					id: parseInt(id),
 					acknowledged: false,
-					cancelled: false,
-					supersededJoinRequest: {
+					terminated: false,
+					linkedJoinRequest: {
 						is: null
 					}
 				}

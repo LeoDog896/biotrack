@@ -55,14 +55,24 @@ model JoinRequest {
   gameId    Int
 
   acknowledged Boolean @default(false)
-  cancelled    Boolean @default(false)
 
   // not null if the join request was
   // cancelled before being acknowledged
-  supersededJoinRequest JoinRequest? @relation("adjacentJoinRequest")
+  linkedJoinRequest LinkedJoinRequest? @relation
 
-  precedingJoinRequest JoinRequest? @relation("adjacentJoinRequest", fields: [precedingJoinRequestId], references: [id])
-  precedingJoinRequestId Int? @unique
+  // a fancier state that indicates that this was terminated
+  // with no new join request; via admin action or otherwise
+  terminated Boolean @default(false)
+}
+
+model LinkedJoinRequest {
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  nextJoinRequest JoinRequest @relation(fields: [nextJoinRequestId], references: [id])
+  nextJoinRequestId Int @unique
+
+  @@id([nextJoinRequestId])
 }
 
 model Game {
