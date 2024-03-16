@@ -3,7 +3,8 @@ CREATE TABLE "User" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "name" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
+    "updatedAt" DATETIME NOT NULL,
+    "archived" BOOLEAN NOT NULL DEFAULT false
 );
 
 -- CreateTable
@@ -38,6 +39,7 @@ CREATE TABLE "JoinRequest" (
     "userId" TEXT NOT NULL,
     "gameId" INTEGER NOT NULL,
     "acknowledged" BOOLEAN NOT NULL DEFAULT false,
+    "terminated" BOOLEAN NOT NULL DEFAULT false,
     CONSTRAINT "JoinRequest_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "JoinRequest_gameId_fkey" FOREIGN KEY ("gameId") REFERENCES "Game" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
@@ -66,9 +68,6 @@ CREATE TABLE "_SessionToUser" (
     CONSTRAINT "_SessionToUser_A_fkey" FOREIGN KEY ("A") REFERENCES "Session" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT "_SessionToUser_B_fkey" FOREIGN KEY ("B") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
-
--- CreateIndex
-CREATE UNIQUE INDEX "JoinRequest_userId_key" ON "JoinRequest"("userId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "LinkedJoinRequest_nextJoinRequestId_key" ON "LinkedJoinRequest"("nextJoinRequestId");

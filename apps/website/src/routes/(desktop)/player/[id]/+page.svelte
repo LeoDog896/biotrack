@@ -63,8 +63,8 @@
 {#if data.user.updatedAt.toString() !== data.user.createdAt.toString()}
 	<p>
 		last updated at: {data.user.updatedAt.toLocaleString()}, ~{dayjs
-			.duration(dayjs(data.user.updatedAt).diff(dayjs(data.user.createdAt)))
-			.humanize()} after creation
+			.duration(dayjs(data.user.updatedAt).diff(dayjs()))
+			.humanize()} ago
 	</p>
 {/if}
 

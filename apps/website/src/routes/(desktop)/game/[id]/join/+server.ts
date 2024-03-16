@@ -43,32 +43,18 @@ export const POST: RequestHandler = async ({ params, url }) => {
 
 	const joinRequest = await prisma.joinRequest.create({
 		data: {
-			game: {
-				connect: {
-					id: game.id
-				}
-			},
-			user: {
-				connect: {
-					id: user.id
-				}
-			},
+			gameId: game.id,
+			userId: user.id
 		}
 	});
 
 	if (existingJoinRequest) {
-		await prisma.joinRequest.update({
-			where: {
-				id: existingJoinRequest.id
-			},
+		await prisma.linkedJoinRequest.create({
 			data: {
-				linkedJoinRequest: {
-					connect: {
-						nextJoinRequestId: joinRequest.id
-					}
-				}
+				nextJoinRequestId: joinRequest.id,
+				
 			}
-		});
+		})
 	}
 
 	joinRequestEvent.emit(joinRequest);

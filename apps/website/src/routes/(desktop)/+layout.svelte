@@ -1,3 +1,14 @@
+<script lang="ts">
+	import { pushState } from "$app/navigation";
+	import Modal from "$lib/components/Modal.svelte";
+	import { page } from "$app/stores";
+	import { enhance } from "$app/forms";
+
+	const showPingModal = () => pushState('', {
+		modalShowing: 'ping'
+	})
+</script>
+
 <nav>
 	<a href="/" class="title"><img src="/logo.svg" alt="biotrack" /> biotrack</a>
 	<div class="links">
@@ -10,11 +21,20 @@
 
 <main>
 	<slot />
+
+	{#if $page.state.modalShowing === 'ping'}
+		<Modal on:close={() => history.back()}>
+			<h2>ping everyone</h2>
+			<p>send a message to everyone</p>
+			<textarea name="message" rows="5" cols="30" placeholder="Message" required></textarea>
+			<button>send</button>
+		</Modal>
+	{/if}
 </main>
 
 <footer>
 	<div>
-		having issues? <a href="/ping">ping everyone</a> or
+		having issues? <button on:click={showPingModal}>ping everyone</button> or
 		<a href="https://github.com/LeoDog896/biotrack/issues/new">report it on the bug tracker</a>
 	</div>
 </footer>
@@ -27,6 +47,11 @@
 		padding: 1rem;
 		border-bottom: 2px solid black;
 		height: 4rem;
+	}
+
+	textarea {
+		display: block;
+		margin-bottom: 1rem;
 	}
 
 	.title {

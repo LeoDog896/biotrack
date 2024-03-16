@@ -29,5 +29,16 @@
 <ul>
 	<li>Players: {data.players}</li>
 	<li>Games: {data.games}</li>
-	<li>Sessions: {data.sessions}</li>
+	<li>
+		Sessions: {data.sessions}
+		{#if data.sessions > 0}
+			(active: {data.activeSessions})
+		{/if}
+	</li>
+	<li>
+		Join Requests: {data.joinRequests}
+		{#if data.joinRequests > 0}
+			(active: {data.activeJoinRequests})
+		{/if}
+	</li>
 </ul>

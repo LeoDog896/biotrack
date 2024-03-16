@@ -33,8 +33,8 @@
 {#if data.game.updatedAt.toString() !== data.game.createdAt.toString()}
 	<p>
 		last updated at: {data.game.updatedAt.toLocaleString()}, ~{dayjs
-			.duration(dayjs(data.game.updatedAt).diff(dayjs(data.game.createdAt)))
-			.humanize()} after creation
+			.duration(dayjs(data.game.updatedAt).diff(dayjs()))
+			.humanize()} ago
 	</p>
 {/if}
 

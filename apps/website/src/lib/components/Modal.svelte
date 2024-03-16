@@ -34,6 +34,11 @@
 		top: 0px;
 		left: 0px;
 		z-index: 10;
+
+		&:hover {
+			background: rgba(0, 0, 0, 0.5);
+			color: black;
+		}
 	}
 
     div {

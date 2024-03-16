@@ -14,7 +14,7 @@ model User {
   updatedAt   DateTime @updatedAt
   sessions    Session[]
   scoreLedger ScoreBlock[]
-  joinRequest JoinRequest?
+  joinRequest JoinRequest[]
   archived    Boolean  @default(false)
 }
 
@@ -51,7 +51,7 @@ model JoinRequest {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   user      User     @relation(fields: [userId], references: [id])
-  userId    String   @unique
+  userId    String   
   game      Game     @relation(fields: [gameId], references: [id])
   gameId    Int
 
