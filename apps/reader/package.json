@@ -2,7 +2,8 @@
 	"name": "reader",
 	"private": true,
 	"scripts": {
-		"start": "tsx src/index.ts"
+		"start": "tsx src/index.ts",
+		"pm2": "pm2 start pnpm --name \"carnival reader\" -- start"
 	},
 	"license": "MIT",
 	"devDependencies": {
