@@ -5,7 +5,6 @@
 	import { trpc } from '$lib/trpc/client';
 	import Toaster from './Toaster.svelte';
 
-
 	const showPingModal = () =>
 		pushState('', {
 			modalShowing: 'ping'
@@ -21,7 +20,7 @@
 	}
 </script>
 
-<Toaster officerName={data.officer.name} />
+<Toaster officerName={data.officer.name} officerId={data.officer.id} />
 
 <nav>
 	<a href="/" class="title"><img src="/logo.svg" alt="biotrack" /> biotrack</a>

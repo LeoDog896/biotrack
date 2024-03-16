@@ -5,6 +5,7 @@
 	import Message from './Message.svelte';
 
     export let officerName: string;
+	export let officerId: string;
 
     onMount(() => {
 		const { unsubscribe } = trpc().pingSubscription.subscribe(undefined, {
@@ -15,6 +16,7 @@
 					position: 'bottom-right',
                     props: {
                         author: officerName,
+						id: officerId,
                         message: value
                     }
 				});

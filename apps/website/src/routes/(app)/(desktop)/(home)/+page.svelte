@@ -32,7 +32,7 @@
 	<li>
 		<div class="flexLink">
 			<MdiShareVariant />
-			<span>share this URL with other officers: {data.localAddress}:5000</span>
+			<span>share this URL with other officers: <b>{data.localAddress}:5000</b></span>
 		</div>
 	</li>
 </ul>
