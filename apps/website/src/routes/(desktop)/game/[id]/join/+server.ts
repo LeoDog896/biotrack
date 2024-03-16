@@ -26,8 +26,12 @@ export const POST: RequestHandler = async ({ params, url }) => {
 
 	const existingJoinRequest = await prisma.joinRequest.findFirst({
 		where: {
-			gameId: game.id,
-			userId: user.id,
+			game: {
+				id: game.id
+			},
+			user: {
+				id: user.id
+			},
 			acknowledged: false,
 			cancelled: false,
 			supersededJoinRequest: {
@@ -38,9 +42,23 @@ export const POST: RequestHandler = async ({ params, url }) => {
 
 	const joinRequest = await prisma.joinRequest.create({
 		data: {
-			gameId: game.id,
-			userId: user.id,
-			precedingJoinRequestId: existingJoinRequest?.id
+			game: {
+				connect: {
+					id: game.id
+				}
+			},
+			user: {
+				connect: {
+					id: user.id
+				}
+			},
+			precedingJoinRequest: {
+				connect: existingJoinRequest
+					? {
+							id: existingJoinRequest.id
+					  }
+					: undefined
+			}
 		}
 	});
 
