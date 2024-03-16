@@ -28,7 +28,7 @@ export const load = async ({ params }) => {
 		}
 	});
 
-	const activeJoinRequest = joinRequests.find((joinRequest) => !joinRequest.acknowledged && !joinRequest.supersededJoinRequest);
+	const activeJoinRequest = joinRequests.find((joinRequest) => !joinRequest.acknowledged && !joinRequest.supersededJoinRequest && !joinRequest.cancelled);
 
 	const user = await prisma.user.findUnique({
 		where: {
@@ -48,3 +48,36 @@ export const load = async ({ params }) => {
 		user
 	};
 };
+
+export const actions = {
+	// cancels the active join request
+	cancel: async ({ params }) => {
+		const joinRequest = await prisma.joinRequest.findFirst({
+			where: {
+				userId: params.id,
+				acknowledged: false,
+				cancelled: false,
+				supersededJoinRequest: {
+					is: null
+				}
+			}
+		});
+
+		if (!joinRequest) {
+			return error(400, 'No active join request');
+		}
+
+		await prisma.joinRequest.update({
+			where: {
+				id: joinRequest.id
+			},
+			data: {
+				cancelled: true
+			}
+		});
+
+		return {
+			joinRequest
+		};
+	}
+}

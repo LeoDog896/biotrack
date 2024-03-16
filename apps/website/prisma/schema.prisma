@@ -55,6 +55,7 @@ model JoinRequest {
   gameId    Int
 
   acknowledged Boolean @default(false)
+  cancelled    Boolean @default(false)
 
   // not null if the join request was
   // cancelled before being acknowledged

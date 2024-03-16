@@ -66,4 +66,17 @@
 		background-color: white;
 		z-index: 1;
 	}
+
+	:global(button) {
+		cursor: pointer;
+		border: 1px solid black;
+		border-radius: 0;
+		background-color: white;
+		text-align: center;
+
+		&:hover {
+			background-color: var(--color);
+			color: white;
+		}
+	}
 </style>

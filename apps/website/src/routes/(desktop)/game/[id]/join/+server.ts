@@ -29,6 +29,7 @@ export const POST: RequestHandler = async ({ params, url }) => {
 			gameId: game.id,
 			userId: user.id,
 			acknowledged: false,
+			cancelled: false,
 			supersededJoinRequest: {
 				is: null
 			}

@@ -16,6 +16,11 @@
 				at
 				{data.activeJoinRequest.createdAt.toLocaleString()}
 			</li>
+			<li>
+				<form method="POST" action="?/cancel">
+					<button type="submit">cancel join request</button>
+				</form>
+			</li>
 		</ul>
 	{/if}
 	{#if data.activeSession}
