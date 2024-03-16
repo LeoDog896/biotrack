@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from "$app/forms";
+    import AdminWarning from '../AdminWarning.svelte';
 
     let admin = false;
 
@@ -32,27 +33,7 @@
     </div>
 
     {#if admin}
-        <div class="warning">
-            <h2>Warning</h2>
-            <p>
-                Admins have the following permissions:
-            </p>
-            <ul>
-                <li>Can not be managed by other admins</li>
-                <li>Can deactivate other users</li>
-                <li>Can invalidate game sessions</li>
-                <li>Can deactivate and make new officers</li>
-            </ul>
-            <p>
-                If you're absolutely sure you want to create an admin,
-                type in the officer's name below (<b>{officerNameInput}</b>):
-            </p>
-            <input
-                type="text"
-                bind:value={officerNameInputConfirm}
-                placeholder="Confirm Officer Name"
-            />
-        </div>
+        <AdminWarning bind:officerNameInput bind:officerNameInputConfirm />
     {/if}
 
     <button type="submit" disabled={shouldStopSubmission}>Create</button>
@@ -71,13 +52,6 @@
     .formInput {
         display: flex;
         gap: 1rem;
-    }
-
-    .warning {
-        border-left: 5px solid var(--warning);
-        padding: 1rem;
-        padding-left: 1rem;
-        background-color: rgba(0, 0, 0, 0.05);
     }
 
     button {

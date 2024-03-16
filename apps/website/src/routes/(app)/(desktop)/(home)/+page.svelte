@@ -4,6 +4,7 @@
 	import MdiGithub from '~icons/mdi/github';
 	import FaBrandsRaspberryPi from '~icons/fa-brands/raspberry-pi';
 	import MdiComputer from '~icons/mdi/computer';
+	import MdiShareVariant from '~icons/mdi/share-variant';
 
 	import QR from '@svelte-put/qr/img/QR.svelte';
 
@@ -27,6 +28,12 @@
 			<FaBrandsRaspberryPi />
 			<span class="underscore">use the Raspberry-PI powered check-in</span>
 		</a>
+	</li>
+	<li>
+		<div class="flexLink">
+			<MdiShareVariant />
+			<span>share this URL with other officers: {data.localAddress}:5000</span>
+		</div>
 	</li>
 </ul>
 <p>
@@ -76,6 +83,11 @@
 		width: 1em;
 		height: 1em;
 		vertical-align: middle;
+	}
+
+	.flexLink {
+		display: flex;
+		gap: 0.5rem;
 	}
 
 	a.noUnderscore {
