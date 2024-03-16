@@ -1,7 +1,7 @@
 import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { prisma } from '$lib/prismaConnection';
-import cuid from 'cuid';
+import { createId } from '@paralleldrive/cuid2';
 import { validateGame } from '$lib/server/validateGame';
 
 export const POST: RequestHandler = async ({ params, url }) => {
@@ -42,7 +42,7 @@ export const POST: RequestHandler = async ({ params, url }) => {
 				set: [
 					...scoreBlocks,
 					{
-						id: cuid(),
+						id: createId(),
 						score: parseInt(score),
 						data,
 						sessionId: session.id

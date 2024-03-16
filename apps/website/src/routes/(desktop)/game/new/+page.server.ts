@@ -1,5 +1,6 @@
 import { prisma } from '$lib/prismaConnection';
 import { error } from '@sveltejs/kit';
+import { createId } from '@paralleldrive/cuid2';
 
 export const actions = {
 	default: async ({ request }) => {
@@ -17,7 +18,8 @@ export const actions = {
 
 		await prisma.game.create({
 			data: {
-				name
+				name,
+				token: createId()
 			}
 		});
 

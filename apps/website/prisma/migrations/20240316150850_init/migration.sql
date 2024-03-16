@@ -58,7 +58,17 @@ CREATE TABLE "Game" (
     "name" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
-    "playerCount" INTEGER
+    "playerCount" INTEGER,
+    "token" TEXT NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "Officer" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "name" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "admin" BOOLEAN NOT NULL DEFAULT false,
+    "archived" BOOLEAN NOT NULL DEFAULT false
 );
 
 -- CreateTable

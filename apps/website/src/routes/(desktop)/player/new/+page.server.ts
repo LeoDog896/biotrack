@@ -1,5 +1,6 @@
 import { prisma } from '$lib/prismaConnection.js';
 import { error } from '@sveltejs/kit';
+import { createId } from '@paralleldrive/cuid2';
 
 export const actions = {
 	default: async ({ request }) => {
@@ -17,6 +18,7 @@ export const actions = {
 
 		const user = await prisma.user.create({
 			data: {
+				id: createId(),
 				name,
 				archived: false
 			}

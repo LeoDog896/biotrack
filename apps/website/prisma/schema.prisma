@@ -8,7 +8,8 @@ datasource db {
 }
 
 model User {
-  id          String   @id @default(cuid())
+  // cuid2
+  id          String   @id
   name        String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -19,7 +20,7 @@ model User {
 }
 
 model ScoreBlock {
-  id        String   @id @default(cuid())
+  id        String   @id
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   session   Session  @relation(fields: [sessionId], references: [id])
@@ -86,4 +87,19 @@ model Game {
   joinRequests JoinRequest[]
   // Amount of players this game takes. Leave null for unknown.
   playerCount  Int?
+  // The token to use to authenticate the game.
+  token        String
+}
+
+// An "officer" is one who can use the biotrack panel.
+model Officer {
+  // cuid2
+  id        String   @id
+  // officer's name
+  name      String
+  // password; hashed
+  password  String
+  // whether the officer is an admin; i.e. it can manage other officers
+  admin     Boolean  @default(false)
+  archived  Boolean  @default(false)
 }

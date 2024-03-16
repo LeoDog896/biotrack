@@ -1,6 +1,7 @@
 import { prisma } from '$lib/prismaConnection';
 import { fail } from '@sveltejs/kit';
 import type { Actions } from './$types';
+import { createId } from '@paralleldrive/cuid2';
 
 export const actions = {
 	create: async ({ request }) => {
@@ -17,6 +18,7 @@ export const actions = {
 
 		const player = await prisma.user.create({
 			data: {
+				id: createId(),
 				name
 			}
 		});

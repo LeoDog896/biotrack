@@ -15,11 +15,14 @@ async function main() {
 		return;
 	}
 
+	// usually, these tokens would be some kind of UID
+
 	await prisma.game.create({
 		data: {
 			id: 1,
 			name: 'Guess the Number',
-			playerCount: 1
+			playerCount: 1,
+			token: 'guess-the-number'
 		}
 	});
 
@@ -27,7 +30,8 @@ async function main() {
 		data: {
 			id: 2,
 			name: 'Pong',
-			playerCount: 2
+			playerCount: 2,
+			token: 'pong'
 		}
 	});
 
