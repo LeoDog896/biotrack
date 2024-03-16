@@ -38,6 +38,10 @@
 	</Modal>
 {/if}
 
+<h2>Actions</h2>
+
+<button>archive</button>
+
 <style lang="scss">
 	.accent {
 		color: var(--color);
