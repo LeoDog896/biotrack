@@ -1,7 +1,15 @@
-import { error } from '@sveltejs/kit';
+import { prisma } from '$lib/prismaConnection';
 
-export const load = async ({ cookies }) => {
-    const sessionString = cookies.get("session")!;
+export const load = async () => {
+    const officers = await prisma.officer.findMany({
+        select: {
+            name: true,
+            id: true,
+            admin: true
+        }
+    });
 
-    
+    return {
+        officers
+    }
 }

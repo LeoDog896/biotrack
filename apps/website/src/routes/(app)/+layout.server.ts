@@ -19,7 +19,8 @@ export const load: LayoutServerLoad = async ({ cookies }) => {
         },
         select: {
             name: true,
-            id: true
+            id: true,
+            admin: true
         }
     });
 

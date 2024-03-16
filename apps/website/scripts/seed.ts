@@ -44,7 +44,18 @@ async function main() {
 			id: createId(),
 			name: "primary",
 			salt,
-			password
+			password,
+			admin: true
+		}
+	})
+
+	await prisma.officer.create({
+		data: {
+			id: createId(),
+			name: "secondary",
+			salt,
+			password,
+			admin: false
 		}
 	})
 
