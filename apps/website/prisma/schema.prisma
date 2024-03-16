@@ -53,23 +53,15 @@ model JoinRequest {
   userId    String   @unique
   game      Game     @relation(fields: [gameId], references: [id])
   gameId    Int
-  // not null if the join request was
-  // cancelled before being acknowledged
-  cancelled CancelledJoinRequest?
+
   acknowledged Boolean @default(false)
 
-  supercededJoinRequest JoinRequest? @relation("adjacentJoinRequest")
+  // not null if the join request was
+  // cancelled before being acknowledged
+  supersededJoinRequest JoinRequest? @relation("adjacentJoinRequest")
 
   precedingJoinRequest JoinRequest? @relation("adjacentJoinRequest", fields: [precedingJoinRequestId], references: [id])
   precedingJoinRequestId Int? @unique
-}
-
-model CancelledJoinRequest {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  joinRequest JoinRequest @relation(fields: [joinRequestId], references: [id])
-  joinRequestId Int @unique
 }
 
 model Game {

@@ -19,6 +19,8 @@
 	}
 </script>
 
+<h2>General Information</h2>
+
 <form use:enhance action="/player/{data.user.id}?/name" method="POST">
 	<div class="name">
 		Name: <input
@@ -33,12 +35,13 @@
 
 <p>cuid: {data.user.id}</p>
 <p>score: {data.score}</p>
-<p>
-	sessions: {data.sessions}
-	{#if data.sessions > 0}
-		(<a href="/player/{data.user.id}/sessions">see all sessions</a>)
-	{/if}
-</p>
+<h2>Play Information</h2>
+<p>all sessions: {data.sessions}</p>
+<p>active join request: {data.joinRequests > 0}</p>
+{#if data.sessions > 0 || data.joinRequests > 0}
+	(<a href="/player/{data.user.id}/play">see play history</a>)
+{/if}
+<h2>Log</h2>
 <p>created at: {formatDate(data.user.createdAt)}</p>
 {#if data.user.updatedAt.toString() !== data.user.createdAt.toString()}
 	<p>

@@ -24,19 +24,14 @@ export const POST: RequestHandler = async ({ params, url }) => {
 		error(400, 'User not found');
 	}
 
-	const existingJoinRequest = await prisma.joinRequest.update({
+	const existingJoinRequest = await prisma.joinRequest.findFirst({
 		where: {
 			gameId: game.id,
 			userId: user.id,
 			acknowledged: false,
-			cancelled: {
+			supersededJoinRequest: {
 				is: null
 			}
-		},
-		data: {
-			cancelled: {
-				create: {},
-			},
 		}
 	});
 
@@ -44,7 +39,7 @@ export const POST: RequestHandler = async ({ params, url }) => {
 		data: {
 			gameId: game.id,
 			userId: user.id,
-			precedingJoinRequestId: existingJoinRequest?.id,
+			precedingJoinRequestId: existingJoinRequest?.id
 		}
 	});
 

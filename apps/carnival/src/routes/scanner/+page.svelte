@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+
+	export let form;
 </script>
 
 <main>
@@ -10,4 +12,8 @@
 		<input type="number" name="game" placeholder="Game ID" value="1" min="1" required />
 		<button type="submit">Submit</button>
 	</form>
+
+	{#if form}
+		<pre>{JSON.stringify(form.data, null, 2)}</pre>
+	{/if}
 </main>

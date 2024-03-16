@@ -31,6 +31,15 @@ export const load = async ({ params }) => {
 					}
 				}
 			}
+		}),
+		joinRequests: await prisma.joinRequest.count({
+			where: {
+				userId: user.id,
+				acknowledged: false,
+				supersededJoinRequest: {
+					is: null
+				}
+			}
 		})
 	};
 };

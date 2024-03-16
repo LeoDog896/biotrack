@@ -14,18 +14,19 @@ export const actions = {
 		if (typeof game !== 'string') error(400, 'Invalid game ID');
 		if (typeof cuid !== 'string') error(400, 'Invalid cuid');
 
-        const response = await apiFetch(`/game/${game}/join?user=${cuid}`, {
-            method: 'POST'
-        });
+		const response = await apiFetch(`/game/${game}/join?user=${cuid}`, {
+			method: 'POST'
+		});
 
-        if (!response.ok) {
-            const text = await response.text();
-            if (response.status > 599 || response.status < 400) error(500, `Unbound error: ${response.status}; ${text}`);
-            error(response.status as NumericRange<400, 599>, text);
-        }
+		if (!response.ok) {
+			const text = await response.text();
+			if (response.status > 599 || response.status < 400)
+				error(500, `Unbound error: ${response.status}; ${text}`);
+			error(response.status as NumericRange<400, 599>, text);
+		}
 
-        return {
-            joinRequest: await response.json()
-        }
+		return {
+			data: await response.json()
+		};
 	}
 };
