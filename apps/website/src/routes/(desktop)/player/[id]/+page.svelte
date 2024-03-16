@@ -34,12 +34,17 @@
 </form>
 
 <p>cuid: {data.user.id}</p>
-<p>score: {data.score}</p>
+<p>
+	score: {data.score}
+	{#if data.sessions > 0}
+		(<a href="/player/{data.user.id}/ledger">see ledger →</a>)
+	{/if}
+</p>
 <h2>Play Information</h2>
 <p>all sessions: {data.sessions}</p>
-<p>active join request: {data.joinRequests > 0}</p>
+<p>active join request: {data.activeJoinRequests > 0}</p>
 {#if data.sessions > 0 || data.joinRequests > 0}
-	(<a href="/player/{data.user.id}/play">see play info</a>)
+	(<a href="/player/{data.user.id}/play">see play info →</a>)
 {/if}
 <h2>Log</h2>
 <p>created at: {formatDate(data.user.createdAt)}</p>

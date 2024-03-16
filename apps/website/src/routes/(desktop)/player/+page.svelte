@@ -26,11 +26,15 @@
 	{#if filteredUsers.length === 0}
 		<p>No players found. Perhaps change your query?</p>
 	{:else}
-		{#each filteredUsers as user}
-			<a href={`/player/${user.id}`}>
-				<h2>{user.name}</h2>
-			</a>
-		{/each}
+		<ul>
+			{#each filteredUsers as user}
+				<li>
+					<a href={`/player/${user.id}`}>
+						{user.name}
+					</a>
+				</li>
+			{/each}
+		</ul>
 	{/if}
 {/if}
 
