@@ -16,7 +16,12 @@
 
 <h1>New Player</h1>
 
-<form method="POST" use:enhance>
+<form method="POST" use:enhance={() => {
+	return async ({ update }) => {
+		await update();
+		input = '';
+	}
+}}>
 	<input type="text" name="name" placeholder="Name" bind:value={input} required />
 
 	<button type="submit">Submit</button>

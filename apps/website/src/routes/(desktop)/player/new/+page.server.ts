@@ -15,7 +15,7 @@ export const actions = {
 			error(400, 'Name must be a string');
 		}
 
-		await prisma.user.create({
+		const user = await prisma.user.create({
 			data: {
 				name
 			}
@@ -23,7 +23,7 @@ export const actions = {
 
 		return {
 			success: true,
-			message: 'Player created'
+			message: `Player ${name} created (cuid=${user.id})`
 		};
 	}
 };
