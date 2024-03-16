@@ -67,8 +67,23 @@ CREATE TABLE "Officer" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "name" TEXT NOT NULL,
     "password" TEXT NOT NULL,
+    "salt" TEXT NOT NULL,
     "admin" BOOLEAN NOT NULL DEFAULT false,
     "archived" BOOLEAN NOT NULL DEFAULT false
+);
+
+-- CreateTable
+CREATE TABLE "OfficerSession" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    "officerId" TEXT NOT NULL,
+    "token" TEXT NOT NULL,
+    "expires" DATETIME NOT NULL,
+    "lastUsed" DATETIME NOT NULL,
+    "ip" TEXT NOT NULL,
+    "userAgent" TEXT NOT NULL,
+    CONSTRAINT "OfficerSession_officerId_fkey" FOREIGN KEY ("officerId") REFERENCES "Officer" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -81,6 +96,9 @@ CREATE TABLE "_SessionToUser" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "LinkedJoinRequest_nextJoinRequestId_key" ON "LinkedJoinRequest"("nextJoinRequestId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "OfficerSession_token_key" ON "OfficerSession"("token");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_SessionToUser_AB_unique" ON "_SessionToUser"("A", "B");

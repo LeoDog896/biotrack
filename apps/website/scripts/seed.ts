@@ -1,4 +1,6 @@
 import { PrismaClient } from '@prisma/client';
+import { makePassword } from '../src/lib/server/password';
+import { createId } from '@paralleldrive/cuid2';
 
 const prisma = new PrismaClient();
 
@@ -34,6 +36,17 @@ async function main() {
 			token: 'pong'
 		}
 	});
+
+	const { salt, hash: password } = await makePassword("password")
+
+	await prisma.officer.create({
+		data: {
+			id: createId(),
+			name: "primary",
+			salt,
+			password
+		}
+	})
 
 	console.log('Seeded the database with the test games');
 }

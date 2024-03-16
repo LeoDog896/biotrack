@@ -96,10 +96,27 @@ model Officer {
   // cuid2
   id        String   @id
   // officer's name
-  name      String
+  name      String   @unique
   // password; hashed
   password  String
+  // salt
+  salt      String
   // whether the officer is an admin; i.e. it can manage other officers
   admin     Boolean  @default(false)
   archived  Boolean  @default(false)
+
+  sessions  OfficerSession[]
+}
+
+model OfficerSession {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  officer   Officer  @relation(fields: [officerId], references: [id])
+  officerId String
+  token     String   @unique
+  expires   DateTime
+  lastUsed  DateTime
+  ip        String
+  userAgent String
 }
