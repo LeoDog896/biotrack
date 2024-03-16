@@ -51,10 +51,9 @@ export const POST: RequestHandler = async ({ params, url }) => {
 	if (existingJoinRequest) {
 		await prisma.linkedJoinRequest.create({
 			data: {
-				nextJoinRequestId: joinRequest.id,
-				
+				nextJoinRequestId: joinRequest.id
 			}
-		})
+		});
 	}
 
 	joinRequestEvent.emit(joinRequest);

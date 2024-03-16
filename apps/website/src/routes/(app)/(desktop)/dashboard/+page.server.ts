@@ -23,6 +23,6 @@ export const load = async () => {
 				},
 				terminated: false
 			}
-		}),
+		})
 	};
 };

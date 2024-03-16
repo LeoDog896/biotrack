@@ -15,6 +15,6 @@ export async function makePassword(password: string): Promise<PasswordData> {
 }
 
 export async function verifyPassword(password: string, hash: string, salt: string) {
-    const newHash = (await pbkdf2(password, salt, 1000, 100, 'sha512')).toString('hex');
-    return newHash === hash;
+	const newHash = (await pbkdf2(password, salt, 1000, 100, 'sha512')).toString('hex');
+	return newHash === hash;
 }

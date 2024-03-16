@@ -21,10 +21,10 @@ export const GET: RequestHandler = async ({ params }) => {
 			});
 
 			// send all existing join requests to the client
-			joinRequests.forEach(request => {
+			joinRequests.forEach((request) => {
 				ctr.enqueue(JSON.stringify(request) + '\n');
 			});
-			
+
 			listener = (event: JoinRequest) => {
 				if (event.gameId !== parseInt(params.id)) return;
 
@@ -41,7 +41,7 @@ export const GET: RequestHandler = async ({ params }) => {
 	return new Response(readable, {
 		headers: {
 			'Cache-Control': 'no-cache',
-			'Content-Type': 'application/x-ndjson',
+			'Content-Type': 'application/x-ndjson'
 		}
 	});
 };

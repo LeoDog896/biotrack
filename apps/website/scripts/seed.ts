@@ -37,27 +37,27 @@ async function main() {
 		}
 	});
 
-	const { salt, hash: password } = await makePassword("password")
+	const { salt, hash: password } = await makePassword('password');
 
 	await prisma.officer.create({
 		data: {
 			id: createId(),
-			name: "primary",
+			name: 'primary',
 			salt,
 			password,
 			admin: true
 		}
-	})
+	});
 
 	await prisma.officer.create({
 		data: {
 			id: createId(),
-			name: "secondary",
+			name: 'secondary',
 			salt,
 			password,
 			admin: false
 		}
-	})
+	});
 
 	console.log('Seeded the database with the test games');
 }

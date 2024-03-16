@@ -22,7 +22,7 @@
 	function showArchiveModal() {
 		pushState('', {
 			modalShowing: 'archive'
-		})
+		});
 	}
 
 	let archiveInput = '';
@@ -86,9 +86,9 @@
 		/>
 		<div class="buttons">
 			<form action="/player/{data.user.id}?/archive" method="POST">
-				<button class="red" type="submit" disabled={
-					archiveInput !== data.user.name
-				}>Yes, archive</button>
+				<button class="red" type="submit" disabled={archiveInput !== data.user.name}
+					>Yes, archive</button
+				>
 			</form>
 			<button on:click={() => history.back()}>No, cancel</button>
 		</div>

@@ -1,12 +1,13 @@
 <script lang="ts">
-	import { pushState } from "$app/navigation";
-	import Modal from "$lib/components/Modal.svelte";
-	import { page } from "$app/stores";
-	import { enhance } from "$app/forms";
+	import { pushState } from '$app/navigation';
+	import Modal from '$lib/components/Modal.svelte';
+	import { page } from '$app/stores';
+	import { enhance } from '$app/forms';
 
-	const showPingModal = () => pushState('', {
-		modalShowing: 'ping'
-	})
+	const showPingModal = () =>
+		pushState('', {
+			modalShowing: 'ping'
+		});
 </script>
 
 <nav>

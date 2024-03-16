@@ -41,9 +41,9 @@
 		}
 	}
 
-    div {
+	div {
 		box-sizing: border-box;
-        border: 2px solid black;
+		border: 2px solid black;
 		padding: 2rem;
 		background: white;
 		display: flex;
