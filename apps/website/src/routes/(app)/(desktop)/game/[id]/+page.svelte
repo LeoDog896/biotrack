@@ -8,7 +8,7 @@
 	dayjs.extend(relativeTime);
 
 	export let data;
-	let nameInput = data.game.name;
+	$: nameInput = data.game.name;
 	let nameSubmissionButton: HTMLButtonElement;
 </script>
 
