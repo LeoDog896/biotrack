@@ -1,15 +1,15 @@
-import { prisma } from "$lib/prismaConnection";
-import { redirect, type Cookies } from "@sveltejs/kit";
+import { prisma } from '$lib/prismaConnection';
+import { redirect, type Cookies } from '@sveltejs/kit';
 
 interface Officer {
-    name: string;
-    id: string;
-    admin: boolean;
-    archived: boolean;
+	name: string;
+	id: string;
+	admin: boolean;
+	archived: boolean;
 }
 
 export const validateSessionOptional = async (cookies: Cookies): Promise<Officer | null> => {
-    const sessionString = cookies.get('session');
+	const sessionString = cookies.get('session');
 
 	if (!sessionString) {
 		return null;
@@ -19,7 +19,7 @@ export const validateSessionOptional = async (cookies: Cookies): Promise<Officer
 		where: {
 			sessions: {
 				some: {
-					token: sessionString,
+					token: sessionString
 				}
 			},
 			archived: false
@@ -28,19 +28,19 @@ export const validateSessionOptional = async (cookies: Cookies): Promise<Officer
 			name: true,
 			id: true,
 			admin: true,
-            archived: true
+			archived: true
 		}
 	});
 
-    return officer;
-}
+	return officer;
+};
 
 export const validateSession = async (cookies: Cookies): Promise<Officer> => {
-    const officer = await validateSessionOptional(cookies);
+	const officer = await validateSessionOptional(cookies);
 
-    if (!officer) {
-        redirect(302, '/login');
-    }
+	if (!officer) {
+		redirect(302, '/login');
+	}
 
-    return officer;
-}
+	return officer;
+};

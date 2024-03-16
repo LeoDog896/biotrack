@@ -8,7 +8,7 @@
 	function openPromoteModal() {
 		pushState('', {
 			modalShowing: 'promote'
-		})
+		});
 	}
 
 	let officerNameInputConfirm = '';
@@ -32,7 +32,8 @@
 		<form method="POST" action="?/promote" use:enhance>
 			<AdminWarning officerNameInput={data.officer.name} bind:officerNameInputConfirm />
 
-			<button type="submit" disabled={officerNameInputConfirm !== data.officer.name}>Promote</button>
+			<button type="submit" disabled={officerNameInputConfirm !== data.officer.name}>Promote</button
+			>
 		</form>
 	</Modal>
 {/if}

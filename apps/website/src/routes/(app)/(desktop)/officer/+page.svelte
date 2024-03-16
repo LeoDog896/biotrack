@@ -1,5 +1,5 @@
 <script lang="ts">
-    import MdiShieldAdd from '~icons/mdi/shield-add';
+	import MdiShieldAdd from '~icons/mdi/shield-add';
 
 	export let data;
 
@@ -7,10 +7,10 @@
 </script>
 
 <div class="title">
-    <h1>Officers</h1>
-    {#if data.officer.admin}
-        <a href="/officer/add"><MdiShieldAdd width="2rem" height="2rem" /></a>
-    {/if}
+	<h1>Officers</h1>
+	{#if data.officer.admin}
+		<a href="/officer/add"><MdiShieldAdd width="2rem" height="2rem" /></a>
+	{/if}
 </div>
 <h2>My Account</h2>
 
@@ -39,11 +39,11 @@
 		color: var(--color);
 	}
 
-    .title {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
+	.title {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
 
 	.true {
 		color: var(--success);
