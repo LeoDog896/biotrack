@@ -1,7 +1,8 @@
 import { joinRequestEvent } from '$lib/server/joinRequests.js';
 import type { JoinRequest } from '@prisma/client';
+import type { RequestHandler } from './$types';
 
-export const GET = async ({ params }) => {
+export const GET: RequestHandler = async ({ params }) => {
 	let listener: (request: JoinRequest) => void;
 
 	const readable = new ReadableStream({

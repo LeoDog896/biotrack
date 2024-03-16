@@ -12,7 +12,8 @@ export const POST: RequestHandler = async ({ params, url }) => {
 		ids.map(async (id) => {
 			const joinRequest = await prisma.joinRequest.findUnique({
 				where: {
-					id: parseInt(id)
+					id: parseInt(id),
+					acknowledged: false
 				}
 			});
 
@@ -51,11 +52,14 @@ export const POST: RequestHandler = async ({ params, url }) => {
 		}
 	});
 
-	await prisma.joinRequest.deleteMany({
+	await prisma.joinRequest.updateMany({
 		where: {
 			id: {
 				in: ids.map((id) => parseInt(id))
 			}
+		},
+		data: {
+			acknowledged: true
 		}
 	});
 

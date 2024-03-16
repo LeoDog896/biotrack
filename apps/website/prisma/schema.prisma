@@ -53,7 +53,10 @@ model JoinRequest {
   userId    String   @unique
   game      Game     @relation(fields: [gameId], references: [id])
   gameId    Int
+  // not null if the join request was
+  // cancelled before being acknowledged
   cancelled CancelledJoinRequest?
+  acknowledged Boolean @default(false)
 }
 
 model CancelledJoinRequest {
