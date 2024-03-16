@@ -19,10 +19,6 @@
 
 	let nameSubmissionButton: HTMLButtonElement;
 
-	function formatDate(date: Date) {
-		return date.toLocaleString();
-	}
-
 	function showArchiveModal() {
 		pushState('', {
 			modalShowing: 'archive'
@@ -63,10 +59,10 @@
 {/if}
 
 <h2>Log</h2>
-<p>created at: {formatDate(data.user.createdAt)}</p>
+<p>created at: {data.user.createdAt.toLocaleString()}</p>
 {#if data.user.updatedAt.toString() !== data.user.createdAt.toString()}
 	<p>
-		last updated at: {formatDate(data.user.updatedAt)}, ~{dayjs
+		last updated at: {data.user.updatedAt.toLocaleString()}, ~{dayjs
 			.duration(dayjs(data.user.updatedAt).diff(dayjs(data.user.createdAt)))
 			.humanize()} after creation
 	</p>
