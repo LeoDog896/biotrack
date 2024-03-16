@@ -39,7 +39,7 @@
 <p>all sessions: {data.sessions}</p>
 <p>active join request: {data.joinRequests > 0}</p>
 {#if data.sessions > 0 || data.joinRequests > 0}
-	(<a href="/player/{data.user.id}/play">see play history</a>)
+	(<a href="/player/{data.user.id}/play">see play info</a>)
 {/if}
 <h2>Log</h2>
 <p>created at: {formatDate(data.user.createdAt)}</p>

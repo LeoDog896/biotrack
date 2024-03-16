@@ -23,17 +23,6 @@
 		height: 100%;
 	}
 
-	// fixes footer position in desktop layout
-	:global(h1) {
-		padding-top: 0.67em;
-		margin-top: 0;
-	}
-
-	:global(p) {
-		padding-top: 1em;
-		margin-top: 0;
-	}
-
 	:global(body, button, input, select, textarea) {
 		font-family: 'IBM Plex Mono', sans-serif;
 	}
