@@ -24,16 +24,34 @@ export const POST: RequestHandler = async ({ params, url }) => {
 		error(400, 'User not found');
 	}
 
+	const existingJoinRequest = await prisma.joinRequest.update({
+		where: {
+			gameId: game.id,
+			userId: user.id,
+			acknowledged: false,
+			cancelled: {
+				is: null
+			}
+		},
+		data: {
+			cancelled: {
+				create: {},
+			},
+		}
+	});
+
 	const joinRequest = await prisma.joinRequest.create({
 		data: {
 			gameId: game.id,
-			userId: user.id
+			userId: user.id,
+			precedingJoinRequestId: existingJoinRequest?.id,
 		}
 	});
 
 	joinRequestEvent.emit(joinRequest);
 
 	return json({
-		joinRequest
+		joinRequest,
+		cancelsExisting: !!existingJoinRequest
 	});
 };

@@ -9,7 +9,10 @@ export const GET: RequestHandler = async ({ params }) => {
 	const joinRequests = await prisma.joinRequest.findMany({
 		where: {
 			gameId: parseInt(params.id),
-			acknowledged: false
+			acknowledged: false,
+			cancelled: {
+				is: null
+			}
 		}
 	});
 

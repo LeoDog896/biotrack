@@ -13,7 +13,10 @@ export const POST: RequestHandler = async ({ params, url }) => {
 			const joinRequest = await prisma.joinRequest.findUnique({
 				where: {
 					id: parseInt(id),
-					acknowledged: false
+					acknowledged: false,
+					cancelled: {
+						is: null
+					}
 				}
 			});
 
