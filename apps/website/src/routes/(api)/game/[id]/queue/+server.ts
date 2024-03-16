@@ -22,13 +22,13 @@ export const GET: RequestHandler = async ({ params }) => {
 
 			// send all existing join requests to the client
 			joinRequests.forEach(request => {
-				ctr.enqueue('data: ' + JSON.stringify(request) + '\n');
+				ctr.enqueue(JSON.stringify(request) + '\n');
 			});
 			
 			listener = (event: JoinRequest) => {
 				if (event.gameId !== parseInt(params.id)) return;
 
-				ctr.enqueue('data: ' + JSON.stringify(event) + '\n');
+				ctr.enqueue(JSON.stringify(event) + '\n');
 			};
 
 			joinRequestEvent.on(listener);
@@ -41,7 +41,7 @@ export const GET: RequestHandler = async ({ params }) => {
 	return new Response(readable, {
 		headers: {
 			'Cache-Control': 'no-cache',
-			'Content-Type': 'text/event-stream'
+			'Content-Type': 'application/x-ndjson',
 		}
 	});
 };
