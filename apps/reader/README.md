@@ -43,7 +43,8 @@ to make this run on startup, use pm2's startup command:
 
 ```sh
 pnpm run pm2
-pm2 startup
+pnpm exec pm2 startup
+pnpm exec pm2 save
 ```
 
 This will automatically start the program on boot.
