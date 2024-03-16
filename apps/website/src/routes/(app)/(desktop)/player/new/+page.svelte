@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { invalidateAll } from '$app/navigation';
 	import Fuse from 'fuse.js';
 
 	export let data;
 	export let form;
 
-	const fuse = new Fuse(data.users, {
+	$: fuse = new Fuse(data.users, {
 		keys: ['name']
 	});
 
@@ -19,6 +20,7 @@
 <form method="POST" use:enhance={() => {
 	return async ({ update }) => {
 		await update();
+		await invalidateAll()
 		input = '';
 	}
 }}>
@@ -33,11 +35,13 @@
 	{:else}
 		<h2>Similar Players</h2>
 
-		{#each filteredUsers as user}
-			<a href={`/player/${user.id}`}>
-				<h3>{user.name}</h3>
-			</a>
-		{/each}
+		<ul>
+			{#each filteredUsers as user}
+				<li>
+					<a href={`/player/${user.id}`}>{user.name}</a>
+				</li>
+			{/each}
+		</ul>
 	{/if}
 {:else if form && form.success && form.message}
 	<p class="success">{form.message}</p>
