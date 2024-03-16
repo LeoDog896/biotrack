@@ -15,6 +15,7 @@
 		<a href="/dashboard">dashboard</a>
 		<a href="/player">players</a>
 		<a href="/game">games</a>
+		<a href="/officer">officers</a>
 		<a href="/scanner">check-in</a>
 	</div>
 </nav>
