@@ -53,6 +53,15 @@ model JoinRequest {
   userId    String   @unique
   game      Game     @relation(fields: [gameId], references: [id])
   gameId    Int
+  cancelled CancelledJoinRequest?
+}
+
+model CancelledJoinRequest {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  joinRequest JoinRequest @relation(fields: [joinRequestId], references: [id])
+  joinRequestId Int @unique
 }
 
 model Game {
