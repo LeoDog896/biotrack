@@ -78,5 +78,10 @@
 			background-color: var(--color);
 			color: white;
 		}
+
+		&:disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
+		}
 	}
 </style>

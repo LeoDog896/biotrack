@@ -14,6 +14,7 @@ declare global {
 	namespace App {
 		interface PageState {
 			state?: State;
+			modalShowing?: string;
 		}
 	}
 }
