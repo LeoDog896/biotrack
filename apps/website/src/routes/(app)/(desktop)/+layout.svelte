@@ -2,13 +2,26 @@
 	import { pushState } from '$app/navigation';
 	import Modal from '$lib/components/Modal.svelte';
 	import { page } from '$app/stores';
-	import { enhance } from '$app/forms';
+	import { trpc } from '$lib/trpc/client';
+	import Toaster from './Toaster.svelte';
+
 
 	const showPingModal = () =>
 		pushState('', {
 			modalShowing: 'ping'
 		});
+
+	export let data;
+
+	let message = '';
+
+	async function sendMessage() {
+		await trpc().ping.mutate({ message });
+		history.back();
+	}
 </script>
+
+<Toaster officerName={data.officer.name} />
 
 <nav>
 	<a href="/" class="title"><img src="/logo.svg" alt="biotrack" /> biotrack</a>
@@ -28,8 +41,8 @@
 		<Modal on:close={() => history.back()}>
 			<h2>ping everyone</h2>
 			<p>send a message to everyone</p>
-			<textarea name="message" rows="5" cols="30" placeholder="Message" required></textarea>
-			<button>send</button>
+			<textarea bind:value={message} name="message" rows="5" cols="30" placeholder="Message" required></textarea>
+			<button on:click={sendMessage}>send</button>
 		</Modal>
 	{/if}
 </main>

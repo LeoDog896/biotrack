@@ -2,6 +2,7 @@ import type { Context } from '$lib/trpc/context';
 import { initTRPC } from '@trpc/server';
 import { z } from 'zod';
 import { Event } from 'ts-typed-events';
+import { observable } from '@trpc/server/observable';
 
 const pingEvent = new Event<string>();
 
@@ -14,7 +15,23 @@ export const router = t.router({
 				message: z.string()
 			})
 		)
-		.mutation(async (message) => {})
+		.mutation(async ({ input }) => {
+			pingEvent.emit(input.message);
+		}),
+	pingSubscription: t.procedure.subscription(() => {
+		return observable<string>((observer) => {
+			const callback = (message: string) => {
+				observer.next(message);
+			}
+
+			pingEvent.on(callback);
+			
+			return () => {
+				pingEvent.off(callback);
+			};
+		});
+	})
+
 });
 
 export type Router = typeof router;
