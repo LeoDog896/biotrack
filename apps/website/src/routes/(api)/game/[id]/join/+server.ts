@@ -72,3 +72,13 @@ export const POST: RequestHandler = async ({ params, url }) => {
 		}
 	);
 };
+
+export const OPTIONS = async () => {
+	return new Response(null, {
+		headers: {
+			'Access-Control-Allow-Origin': '*',
+			'Access-Control-Allow-Headers': 'Content-Type',
+			'Access-Control-Allow-Methods': 'POST'
+		}
+	});
+};
