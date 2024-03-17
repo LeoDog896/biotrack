@@ -48,7 +48,8 @@
 
 <footer>
 	<div>
-		having issues? <button on:click={showPingModal}>ping everyone</button> or
+		having issues? <button on:click={showPingModal}>ping everyone</button>,
+		<a href="https://leodog896.github.io/biotrack">check the docs</a>, or
 		<a href="https://github.com/LeoDog896/biotrack/issues/new">report it on the bug tracker</a>
 	</div>
 </footer>

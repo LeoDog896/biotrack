@@ -19,6 +19,8 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-20.04
+    env:
+      MERMAID_URL: https://github.com/badboy/mdbook-mermaid/releases/download/v0.13.0/mdbook-mermaid-v0.13.0-x86_64-unknown-linux-gnu.tar.gz
     steps:
       - uses: actions/checkout@v4
 
@@ -28,6 +30,12 @@ jobs:
           mdbook-version: 'latest'
       - name: Setup Pages
         uses: actions/configure-pages@v2
+      - name: Get mdBook mermaid
+        run: wget -O mdbook-mermaid.tar.gz $MERMAID_URL
+      - name: Extract mdBook mermaid
+        run: tar -xvf mdbook-mermaid.tar.gz
+      - name: Install mdBook mermaid
+        run: sudo mv mdbook-mermaid /usr/local/bin
       - name: Build
         working-directory: ./book
         run: mdbook build
