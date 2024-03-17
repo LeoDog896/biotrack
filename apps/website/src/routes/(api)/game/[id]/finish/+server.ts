@@ -52,5 +52,11 @@ export const POST: RequestHandler = async ({ params, url }) => {
 		}
 	});
 
-	return json(params);
+	return json(params, {
+		headers: {
+			'Access-Control-Allow-Origin': '*',
+			'Access-Control-Allow-Headers': 'Content-Type',
+			'Access-Control-Allow-Methods': 'POST'
+		}
+	});
 };

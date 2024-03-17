@@ -7,7 +7,7 @@ decisions that were made in the design of the system.
 
 Officers are users that are allowed to non-destructively interact with the biotrack dashboard.
 They can manage relatively any aspect of the database, as long as it doesn't
-*delete* any information, as the project is aimed in data analysis - it would
+_delete_ any information, as the project is aimed in data analysis - it would
 be a shame to lose any data.
 
 Officers have two tiers:

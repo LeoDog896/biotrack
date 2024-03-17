@@ -38,9 +38,7 @@
 			<p>
 				created at: {request.createdAt.toLocaleString()}
 				<span class="gray">
-					({dayjs
-						.duration(dayjs(request.createdAt).diff(dayjs()))
-						.humanize()} ago)
+					({dayjs.duration(dayjs(request.createdAt).diff(dayjs())).humanize()} ago)
 				</span>
 			</p>
 			{#if request.forceSent}

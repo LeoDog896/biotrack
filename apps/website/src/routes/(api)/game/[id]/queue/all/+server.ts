@@ -41,7 +41,7 @@ export const GET: RequestHandler = async ({ params }) => {
 							user: {
 								select: {
 									name: true,
-									id:	true
+									id: true
 								}
 							}
 						}
@@ -51,22 +51,20 @@ export const GET: RequestHandler = async ({ params }) => {
 		}
 	});
 
-	const joinRequests = rawJoinRequests.map((joinRequest) => (
-		{
-			...joinRequest,
-			user: {
-				...joinRequest.user,
-				score: joinRequest.user.sessions.reduce((acc, session) => {
-					acc += session.scoreBlock.reduce((acc, scoreBlock) => {
-						acc += scoreBlock.score;
-						return acc;
-					}, 0);
-
+	const joinRequests = rawJoinRequests.map((joinRequest) => ({
+		...joinRequest,
+		user: {
+			...joinRequest.user,
+			score: joinRequest.user.sessions.reduce((acc, session) => {
+				acc += session.scoreBlock.reduce((acc, scoreBlock) => {
+					acc += scoreBlock.score;
 					return acc;
-				}, 0)
-			}
+				}, 0);
+
+				return acc;
+			}, 0)
 		}
-	));
+	}));
 
 	return json({
 		joinRequests

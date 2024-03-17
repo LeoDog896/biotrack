@@ -8,12 +8,12 @@ import selfsigned from 'selfsigned';
 import fs from 'node:fs';
 
 const pems = selfsigned.generate(undefined, {
-	days: 365,
+	days: 365
 });
 
 const server = createServer({
 	cert: pems.cert,
-	key: pems.private,
+	key: pems.private
 });
 
 const wss = new ws.Server({
@@ -53,7 +53,7 @@ wss.on('connection', (ws) => {
 server.on('upgrade', function upgrade(request, socket, head) {
 	wss.handleUpgrade(request, socket, head, function done(ws) {
 		wss.emit('connection', ws, request);
-	})
+	});
 });
 
 // get 'ferret.jpg' relative to this file
@@ -63,12 +63,12 @@ const ferretServer = createHttpServer((req, res) => {
 	/**
 	 * the reason why we serve an image is
 	 * because of [Mixed Block](https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content#mixed_active_content).
-	 * 
+	 *
 	 * Mixed block means we can't try to scan for these APIs
 	 * unless they're:
 	 * - in the same protocol (http / http, https / https)
 	 * - OR an image
-	 * 
+	 *
 	 * So, we request this image to be able to scan for the WebSocket API.
 	 */
 	if (req.url === '/ferret.jpg') {
@@ -88,9 +88,11 @@ server.on('request', (req, res) => {
 		res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
 		res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 		res.writeHead(200, { 'Content-Type': 'application/json' });
-		res.end(JSON.stringify({
-			size: wss.clients.size
-		}));
+		res.end(
+			JSON.stringify({
+				size: wss.clients.size
+			})
+		);
 	}
 });
 

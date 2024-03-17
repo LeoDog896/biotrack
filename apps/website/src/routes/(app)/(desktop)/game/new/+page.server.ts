@@ -4,10 +4,10 @@ import { createId } from '@paralleldrive/cuid2';
 import { validateSession } from '$lib/server/validateSession';
 
 export const load = async ({ parent }) => {
-	const officer = (await parent()).officer
+	const officer = (await parent()).officer;
 
 	if (!officer.admin) error(403, 'You are not an admin');
-}
+};
 
 export const actions = {
 	default: async ({ request, cookies }) => {

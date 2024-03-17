@@ -49,7 +49,7 @@ export const load = async ({ params }) => {
 				}
 			}
 		}),
-		games: await prisma.game.findMany(),
+		games: await prisma.game.findMany()
 	};
 };
 

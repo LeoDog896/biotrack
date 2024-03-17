@@ -58,8 +58,17 @@ export const POST: RequestHandler = async ({ params, url }) => {
 
 	joinRequestEvent.emit(joinRequest);
 
-	return json({
-		joinRequest,
-		cancelsExisting: !!existingJoinRequest
-	});
+	return json(
+		{
+			joinRequest,
+			cancelsExisting: !!existingJoinRequest
+		},
+		{
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Headers': 'Content-Type',
+				'Access-Control-Allow-Methods': 'POST'
+			}
+		}
+	);
 };

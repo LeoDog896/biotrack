@@ -40,7 +40,15 @@
 		<Modal on:close={() => history.back()}>
 			<h2>ping everyone</h2>
 			<p>send a message to everyone</p>
-			<textarea maxlength="280" bind:value={message} name="message" rows="5" cols="30" placeholder="Message" required></textarea>
+			<textarea
+				maxlength="280"
+				bind:value={message}
+				name="message"
+				rows="5"
+				cols="30"
+				placeholder="Message"
+				required
+			></textarea>
 			<button on:click={sendMessage}>send</button>
 		</Modal>
 	{/if}

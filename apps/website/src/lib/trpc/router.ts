@@ -22,16 +22,15 @@ export const router = t.router({
 		return observable<string>((observer) => {
 			const callback = (message: string) => {
 				observer.next(message);
-			}
+			};
 
 			pingEvent.on(callback);
-			
+
 			return () => {
 				pingEvent.off(callback);
 			};
 		});
 	})
-
 });
 
 export type Router = typeof router;

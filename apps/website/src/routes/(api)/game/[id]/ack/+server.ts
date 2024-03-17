@@ -8,6 +8,10 @@ export const POST: RequestHandler = async ({ params, url }) => {
 
 	const ids = url.searchParams.getAll('id');
 
+	if (ids.length === 0) {
+		error(400, 'No join requests provided');
+	}
+
 	const joinRequests = await Promise.all(
 		ids.map(async (id) => {
 			const joinRequest = await prisma.joinRequest.findUnique({
@@ -67,7 +71,16 @@ export const POST: RequestHandler = async ({ params, url }) => {
 		}
 	});
 
-	return json({
-		session
-	});
+	return json(
+		{
+			session
+		},
+		{
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Headers': 'Content-Type',
+				'Access-Control-Allow-Methods': 'POST'
+			}
+		}
+	);
 };
