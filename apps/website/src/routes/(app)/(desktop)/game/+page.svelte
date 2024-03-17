@@ -15,7 +15,9 @@
 
 <div class="title">
 	<h1>Games</h1>
-	<a href="/game/new"><MdiViewGridAdd width="2rem" height="2rem" /></a>
+	{#if data.officer.admin}
+		<a href="/game/new"><MdiViewGridAdd width="2rem" height="2rem" /></a>
+	{/if}
 </div>
 
 <input type="text" name="name" placeholder="Search for Game" required bind:value={input} />

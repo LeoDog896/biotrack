@@ -3,9 +3,17 @@ import { error } from '@sveltejs/kit';
 import { createId } from '@paralleldrive/cuid2';
 import { validateSession } from '$lib/server/validateSession';
 
+export const load = async ({ parent }) => {
+	const officer = (await parent()).officer
+
+	if (!officer.admin) error(403, 'You are not an admin');
+}
+
 export const actions = {
 	default: async ({ request, cookies }) => {
-		await validateSession(cookies);
+		const officer = await validateSession(cookies);
+
+		if (!officer.admin) error(403, 'You are not an admin');
 
 		const data = await request.formData();
 
