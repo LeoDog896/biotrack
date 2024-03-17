@@ -1,4 +1,5 @@
 import { prisma } from '$lib/prismaConnection';
+import { validateSession } from '$lib/server/validateSession.js';
 import { error } from '@sveltejs/kit';
 
 export const load = async ({ params }) => {
@@ -55,7 +56,9 @@ export const load = async ({ params }) => {
 
 export const actions = {
 	// cancels the active join request
-	cancel: async ({ params }) => {
+	cancel: async ({ params, cookies }) => {
+		await validateSession(cookies);
+
 		const joinRequest = await prisma.joinRequest.findFirst({
 			where: {
 				userId: params.id,

@@ -1,4 +1,5 @@
 import { prisma } from '$lib/prismaConnection.js';
+import { validateSession } from '$lib/server/validateSession.js';
 import { error } from '@sveltejs/kit';
 
 export const load = async ({ params }) => {
@@ -31,7 +32,9 @@ export const load = async ({ params }) => {
 };
 
 export const actions = {
-	name: async ({ params, request }) => {
+	name: async ({ params, request, cookies }) => {
+		await validateSession(cookies);
+
 		const data = await request.formData();
 
 		const name = data.get('name');

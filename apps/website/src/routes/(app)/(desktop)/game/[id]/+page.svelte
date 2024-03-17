@@ -35,14 +35,21 @@
 	{#each data.game.joinRequests as request}
 		<div class="joinRequest">
 			<p>Player: <a href="/player/{request.user.id}">{request.user.name}</a></p>
-			<p>created at: {request.createdAt.toLocaleString()}</p>
+			<p>
+				created at: {request.createdAt.toLocaleString()}
+				<span class="gray">
+					({dayjs
+						.duration(dayjs(request.createdAt).diff(dayjs()))
+						.humanize()} ago)
+				</span>
+			</p>
 			{#if request.forceSent}
 				<p>force sent by: <a href="/officer/{request.forceSent.id}">{request.forceSent.name}</a></p>
 			{/if}
 			{#if request.createdAt.toString() !== request.updatedAt.toString()}
 				<p>(updated at: {request.updatedAt.toLocaleString()})</p>
 			{/if}
-			<form method="POST" action="?/acknowledge">
+			<form method="POST" action="?/acknowledge" use:enhance>
 				<button type="submit">acknowledge</button>
 			</form>
 		</div>
@@ -84,5 +91,9 @@
 		form {
 			margin-top: 1rem;
 		}
+	}
+
+	.gray {
+		color: gray;
 	}
 </style>

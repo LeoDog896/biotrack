@@ -18,7 +18,8 @@
                         author: officerName,
 						id: officerId,
                         message: value
-                    }
+                    },
+					duration: 6000
 				});
 			}
 		});
