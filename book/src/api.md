@@ -32,7 +32,7 @@ Returns a game's active session, if any.
 
 ## POST `/game/<id>/ack`
 
-Acknowledge a join event. Requires a list of `player` uuids to acknowledge.
+Acknowledge a join event. Requires a list of `joinRequest` uuids to acknowledge.
 Returns a session id.
 
 ## POST `/game/<id>/finish`
