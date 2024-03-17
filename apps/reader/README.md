@@ -56,3 +56,19 @@ To restart the program, use:
 ```sh
 pnpm exec pm2 restart "carnival reader"
 ```
+
+## view logs
+
+to view the logs, use:
+
+```sh
+pnpm exec pm2 logs "carnival reader"
+```
+
+## faq
+
+### why isn't this a device that could communicate over serial?
+
+we already printed out the 3D casings for the raspberry pis.
+if you see this and want to use a different device (arduino, redboard),
+feel free to!
