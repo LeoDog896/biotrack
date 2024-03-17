@@ -35,7 +35,10 @@ jobs:
       - name: Extract mdBook mermaid
         run: tar -xvf mdbook-mermaid.tar.gz
       - name: Install mdBook mermaid
-        run: sudo mv mdbook-mermaid /usr/local/bin
+        run: |
+          mkdir -p $HOME/.local/bin
+          mv mdbook-mermaid $HOME/.local/bin
+          echo "::add-path::$HOME/.local/bin"
       - name: Build
         working-directory: ./book
         run: mdbook build
