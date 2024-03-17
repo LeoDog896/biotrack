@@ -38,7 +38,7 @@ jobs:
         run: |
           mkdir -p $HOME/.local/bin
           mv mdbook-mermaid $HOME/.local/bin
-          echo "::add-path::$HOME/.local/bin"
+          echo $HOME/.local/bin >> $GITHUB_PATH
       - name: Build
         working-directory: ./book
         run: mdbook build
