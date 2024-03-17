@@ -25,6 +25,12 @@
 		});
 	}
 
+	function showSendModal() {
+		pushState('', {
+			modalShowing: 'send'
+		});
+	}
+
 	let archiveInput = '';
 </script>
 
@@ -57,6 +63,7 @@
 {#if data.sessions > 0 || data.joinRequests > 0}
 	(<a href="/player/{data.user.id}/play">see play info →</a>)
 {/if}
+<button on:click={showSendModal}>send join request</button>
 
 <h2>Log</h2>
 <p>created at: {data.user.createdAt.toLocaleString()}</p>
@@ -71,6 +78,21 @@
 <h2>Actions</h2>
 
 <button on:click={showArchiveModal}>archive</button>
+
+{#if $page.state.modalShowing === 'send'}
+	<Modal on:close={() => history.back()}>
+		<h2>Send Join Request</h2>
+		<p>To which game should the join request be sent to?</p>
+		<form action="/player/{data.user.id}?/join" method="POST">
+			<select name="gameId">
+				{#each data.games as game}
+					<option value={game.id}>{game.name}</option>
+				{/each}
+			</select><br />
+			<button class="submissionButton" type="submit">Send</button>
+		</form>
+	</Modal>
+{/if}
 
 {#if $page.state.modalShowing === 'archive'}
 	<Modal on:close={() => history.back()}>
@@ -112,6 +134,10 @@
 
 	input.bottom-margin {
 		margin-bottom: 1rem;
+	}
+
+	.submissionButton {
+		margin-top: 1rem;
 	}
 
 	.buttons {

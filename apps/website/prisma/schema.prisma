@@ -65,6 +65,11 @@ model JoinRequest {
   // a fancier state that indicates that this was terminated
   // with no new join request; via admin action or otherwise
   terminated Boolean @default(false)
+
+  // whether it was an officer, rather than the game, that
+  // sent the join request
+  forceSent Officer? @relation(fields: [forceSentId], references: [id])
+  forceSentId String?
 }
 
 model LinkedJoinRequest {
@@ -106,6 +111,7 @@ model Officer {
   archived  Boolean  @default(false)
 
   sessions  OfficerSession[]
+  forceSent JoinRequest[]
 }
 
 model OfficerSession {

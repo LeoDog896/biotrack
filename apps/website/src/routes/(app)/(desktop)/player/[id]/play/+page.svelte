@@ -7,21 +7,17 @@
 {#if data.activeJoinRequest || data.activeSession}
 	{#if data.activeJoinRequest}
 		<p>active join request:</p>
-		<ul>
-			<li>
-				made to
-				<a href="/game/{data.activeJoinRequest.game.id}">
-					{data.activeJoinRequest.game.name}
-				</a>
-				at
-				{data.activeJoinRequest.createdAt.toLocaleString()}
-			</li>
-			<li>
-				<form method="POST" action="?/cancel">
-					<button type="submit">cancel join request</button>
-				</form>
-			</li>
-		</ul>
+		<div class="info">
+			made to
+			<a href="/game/{data.activeJoinRequest.game.id}">
+				{data.activeJoinRequest.game.name}
+			</a>
+			at
+			{data.activeJoinRequest.createdAt.toLocaleString()}
+			<form method="POST" action="?/cancel">
+				<button type="submit">cancel join request</button>
+			</form>
+		</div>
 	{/if}
 	{#if data.activeSession}
 		<p>active session: {data.activeSession}</p>
@@ -47,3 +43,14 @@
 		</div>
 	{/each}
 </div>
+
+<style lang="scss">
+	.info {
+		border-left: 5px solid var(--color);
+		padding: 1rem;
+
+		form {
+			margin-top: 1rem;
+		}
+	}
+</style>
