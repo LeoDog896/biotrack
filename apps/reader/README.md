@@ -39,6 +39,8 @@ pnpm install
 
 ## startup
 
+make sure you are in the `apps/reader` directory of the repository.
+
 to make this run on startup, use pm2's startup command:
 
 ```sh
@@ -48,3 +50,9 @@ pnpm exec pm2 save
 ```
 
 This will automatically start the program on boot.
+
+To restart the program, use:
+
+```sh
+pnpm exec pm2 restart "carnival reader"
+```
