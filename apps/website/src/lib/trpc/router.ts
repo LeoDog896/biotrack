@@ -16,7 +16,7 @@ export const router = t.router({
 			})
 		)
 		.mutation(async ({ input }) => {
-			pingEvent.emit(input.message);
+			pingEvent.emit(input.message.substring(0, 280));
 		}),
 	pingSubscription: t.procedure.subscription(() => {
 		return observable<string>((observer) => {

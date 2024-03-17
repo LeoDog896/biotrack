@@ -6,5 +6,5 @@
 
 <div class="content">
     <p>from: <a href="/officer/{id}">{author}</a></p>
-    <p>{message}</p>
+    <p>{message.substring(0, 280)}</p>
 </div>

@@ -5,6 +5,19 @@ export const load = async ({ params }) => {
 	const game = await prisma.game.findUnique({
 		where: {
 			id: parseInt(params.id)
+		},
+		include: {
+			joinRequests: {
+				include: {
+					user: true,
+					forceSent: {
+						select: {
+							name: true,
+							id: true
+						}
+					}
+				}
+			}
 		}
 	});
 

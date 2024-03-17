@@ -27,6 +27,30 @@
 <p>id: {data.game.id}</p>
 <p>max players: {data.game.playerCount ?? 'Arbitrary'}</p>
 
+<h2>Play Information</h2>
+
+<h3>Join Requests</h3>
+
+{#if data.game.joinRequests.length > 0}
+	{#each data.game.joinRequests as request}
+		<div class="joinRequest">
+			<p>Player: <a href="/player/{request.user.id}">{request.user.name}</a></p>
+			<p>created at: {request.createdAt.toLocaleString()}</p>
+			{#if request.forceSent}
+				<p>force sent by: <a href="/officer/{request.forceSent.id}">{request.forceSent.name}</a></p>
+			{/if}
+			{#if request.createdAt.toString() !== request.updatedAt.toString()}
+				<p>(updated at: {request.updatedAt.toLocaleString()})</p>
+			{/if}
+			<form method="POST" action="?/acknowledge">
+				<button type="submit">acknowledge</button>
+			</form>
+		</div>
+	{/each}
+{:else}
+	<p>no join requests</p>
+{/if}
+
 <h2>Log</h2>
 
 <p>created at: {data.game.createdAt.toLocaleString()}</p>
@@ -51,5 +75,14 @@
 		justify-content: center;
 		gap: 1rem;
 		align-items: center;
+	}
+
+	.joinRequest {
+		border-left: 5px solid var(--color);
+		padding: 1rem;
+
+		form {
+			margin-top: 1rem;
+		}
 	}
 </style>
