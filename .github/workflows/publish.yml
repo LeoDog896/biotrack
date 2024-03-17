@@ -1,27 +1,40 @@
-name: CI
-on: [push]
+name: Deploy to Github Pages
+
+on:
+  push:
+    branches:
+      - main
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
 jobs:
-  build:
-    name: Build, lint, and test on Node ${{ matrix.node }} and ${{ matrix.os }}
-
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        node: ['16.x', '18.x', '20.x']
-        os: [ubuntu-latest, windows-latest, macOS-latest]
-
+  deploy:
+    runs-on: ubuntu-20.04
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - name: Use Node ${{ matrix.node }}
-        uses: actions/setup-node@v1
+      - name: Setup mdBook
+        uses: peaceiris/actions-mdbook@v1
         with:
-          node-version: ${{ matrix.node }}
-
-      - uses: pnpm/action-setup@v2
+          mdbook-version: 'latest'
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
+      - name: Build
+        working-directory: ./book
+        run: mdbook build
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          version: 8
-
-      - name: Install dependencies
-        run: pnpm install
+          path: './book/book'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1

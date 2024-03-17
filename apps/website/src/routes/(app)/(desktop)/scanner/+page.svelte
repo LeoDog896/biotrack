@@ -54,7 +54,7 @@
 {#if detectedIndex}
     {#if healthRequest}
         {#await healthRequest}
-            <p>checking...</p>
+            <p>checking health... (<a href={detectedIP}>{detectedIP}</a>)</p>
         {:then response}
             {#if response.ok}
                 <p>device: <a href={detectedIP}>{detectedIP}</a></p>
