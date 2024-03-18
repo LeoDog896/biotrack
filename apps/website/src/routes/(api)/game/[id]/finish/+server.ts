@@ -28,21 +28,13 @@ export const POST: RequestHandler = async ({ params, url }) => {
 		error(400, 'No active session found');
 	}
 
-	const scoreBlocks = await prisma.scoreBlock.findMany({
-		where: {
-			sessionId: session.id
-		}
-	});
-
-	const scoreBlocksArray = [
-		...session.user.map(user => ({
-			id: createId(),
-			score: parseInt(score),
-			data,
-			sessionId: session.id,
-			userId: user.id
-		}))
-	]
+	const scoreBlocks = session.user.map(user => ({
+		id: createId(),
+		score: parseInt(score),
+		data,
+		sessionId: session.id,
+		userId: user.id
+	}));
 
 	await prisma.session.update({
 		where: {
@@ -54,7 +46,7 @@ export const POST: RequestHandler = async ({ params, url }) => {
 		}
 	});
 
-	for (const item of scoreBlocksArray) {
+	for (const item of scoreBlocks) {
 		await prisma.scoreBlock.create({
 			data: item
 		});

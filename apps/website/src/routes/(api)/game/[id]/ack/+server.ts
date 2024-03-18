@@ -41,6 +41,17 @@ export const POST: RequestHandler = async ({ params, url }) => {
 		}
 	}
 
+	const existingSession = await prisma.session.findFirst({
+		where: {
+			gameId: game.id,
+			active: true
+		}
+	});
+
+	if (existingSession) {
+		error(400, `Game already has an active session with id ${existingSession.id}`);
+	}
+
 	const session = await prisma.session.create({
 		data: {
 			game: {

@@ -14,7 +14,10 @@
 	$: nameInput = data.game.name;
 	let nameSubmissionButton: HTMLButtonElement;
 
-	function showAcknowledgeModal() {
+	let joinId: number | undefined = undefined;
+
+	const showAcknowledgeModal = (joinRequestId: number) => () => {
+		joinId = joinRequestId;
 		pushState('', {
 			modalShowing: 'acknowledgeJoinRequest',
 		})
@@ -56,7 +59,10 @@
 			{#if request.createdAt.toString() !== request.updatedAt.toString()}
 				<p>(updated at: {request.updatedAt.toLocaleString()})</p>
 			{/if}
-			<button on:click={showAcknowledgeModal} type="submit">acknowledge</button>
+			<button
+				on:click={showAcknowledgeModal(request.id)}
+				type="submit"
+			>acknowledge</button>
 		</div>
 	{/each}
 {:else}
@@ -68,7 +74,11 @@
 	<ul>
 		{#each data.game.sessions as session}
 			<li>
-				<a href="/game/{data.game.id}/session/{session.id}">{session.id}</a>
+				<a
+					href="/game/{data.game.id}/session/{session.id}"
+				>
+					{session.id}
+				</a>
 			</li>
 		{/each}
 	</ul>
@@ -94,6 +104,7 @@
 		<p>If this game is manual (i.e. no sensors or automatic components), this action is fine</p>
 		<div class="buttons">
 			<form method="POST" action="?/acknowledge">
+				<input type="hidden" name="joinRequestId" value={data.game.joinRequests[0].id} />
 				<button>Confirm</button>
 			</form>
 			<button on:click={() => history.back()}>Cancel</button>
@@ -114,6 +125,12 @@
 		justify-content: center;
 		gap: 1rem;
 		align-items: center;
+	}
+
+	.buttons {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
 	}
 
 	.joinRequest {
