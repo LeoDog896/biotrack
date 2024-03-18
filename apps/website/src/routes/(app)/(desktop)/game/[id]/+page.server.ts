@@ -78,6 +78,6 @@ export const actions = {
 		};
 	},
 	acknowledge: async ({ params, request, cookies }) => {
-		await validateSession(coookies);
+		await validateSession(cookies);
 	}
 };

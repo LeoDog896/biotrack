@@ -31,6 +31,14 @@ export const POST: RequestHandler = async ({ params, url }) => {
 		}
 	});
 
+	if (!await prisma.session.findFirst({
+		where: {
+			id: session.id
+		}
+	})) {
+		error(400, 'Session not found');
+	}
+
 	await prisma.session.update({
 		where: {
 			id: session.id
