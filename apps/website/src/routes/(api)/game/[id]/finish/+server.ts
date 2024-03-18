@@ -18,6 +18,9 @@ export const POST: RequestHandler = async ({ params, url }) => {
 		where: {
 			gameId: game.id,
 			active: true
+		},
+		include: {
+			user: true
 		}
 	});
 
@@ -31,14 +34,6 @@ export const POST: RequestHandler = async ({ params, url }) => {
 		}
 	});
 
-	if (!await prisma.session.findFirst({
-		where: {
-			id: session.id
-		}
-	})) {
-		error(400, 'Session not found');
-	}
-
 	await prisma.session.update({
 		where: {
 			id: session.id
@@ -49,12 +44,13 @@ export const POST: RequestHandler = async ({ params, url }) => {
 			scoreBlock: {
 				set: [
 					...scoreBlocks,
-					{
+					...session.user.map(user => ({
 						id: createId(),
 						score: parseInt(score),
 						data,
-						sessionId: session.id
-					}
+						sessionId: session.id,
+						userId: user.id
+					}))
 				]
 			}
 		}
