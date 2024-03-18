@@ -15,8 +15,6 @@ const csrf =
         allowFilter: (path: string) => boolean
     ): Handle =>
 	async ({ event, resolve }) => {
-        console.log(event.url.pathname)
-
 		const forbidden =
 			event.request.method === 'POST' &&
 			event.request.headers.get('origin') !== event.url.origin &&
