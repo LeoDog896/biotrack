@@ -34,6 +34,16 @@ export const POST: RequestHandler = async ({ params, url }) => {
 		}
 	});
 
+	const scoreBlocksArray = [
+		...session.user.map(user => ({
+			id: createId(),
+			score: parseInt(score),
+			data,
+			sessionId: session.id,
+			userId: user.id
+		}))
+	]
+
 	await prisma.session.update({
 		where: {
 			id: session.id
@@ -41,20 +51,14 @@ export const POST: RequestHandler = async ({ params, url }) => {
 		data: {
 			active: !finished,
 			data,
-			scoreBlock: {
-				set: [
-					...scoreBlocks,
-					...session.user.map(user => ({
-						id: createId(),
-						score: parseInt(score),
-						data,
-						sessionId: session.id,
-						userId: user.id
-					}))
-				]
-			}
 		}
 	});
+
+	for (const item of scoreBlocksArray) {
+		await prisma.scoreBlock.create({
+			data: item
+		});
+	}
 
 	return json({
 		finished,
