@@ -17,12 +17,18 @@ export const load = async ({ params }) => {
 							id: true
 						}
 					}
+				},
+				orderBy: {
+					createdAt: 'desc'
 				}
 			},
 			sessions: {
 				include: {
 					user: true,
 					scoreBlock: true
+				},
+				orderBy: {
+					createdAt: 'desc'
 				}
 			}
 		}
@@ -79,5 +85,69 @@ export const actions = {
 	},
 	acknowledge: async ({ params, request, cookies }) => {
 		await validateSession(cookies);
+
+		const game = await prisma.game.findUnique({
+			where: {
+				id: parseInt(params.id)
+			}
+		});
+
+		if (!game) {
+			error(404, 'Game not found');
+		}
+
+		const data = await request.formData();
+
+		const joinRequestId = data.get('joinRequestId');
+
+		if (!joinRequestId) error(400, 'joinRequestId is required');
+		if (typeof joinRequestId !== 'string') error(400, 'joinRequestId must be a string');
+
+		const joinRequest = await prisma.joinRequest.findUnique({
+			where: {
+				id: parseInt(joinRequestId)
+			},
+			include: {
+				game: true
+			}
+		});
+
+		if (!joinRequest) error(404, 'Join request not found');
+
+		await prisma.joinRequest.update({
+			where: {
+				id: joinRequest.id
+			},
+			data: {
+				acknowledged: true
+			}
+		});
+
+		const joinRequests = [joinRequest];
+
+		const session = await prisma.session.create({
+			data: {
+				game: {
+					connect: {
+						id: game.id
+					}
+				},
+				active: true,
+				data: '',
+				user: {
+					connect: joinRequests.map((jr) => {
+						return {
+							id: jr.userId
+						};
+					})
+				}
+			}
+		});
+
+		return {
+			success: true,
+			message: 'Session created',
+			session
+		};
 	}
 };

@@ -19,9 +19,9 @@
 	const showAcknowledgeModal = (joinRequestId: number) => () => {
 		joinId = joinRequestId;
 		pushState('', {
-			modalShowing: 'acknowledgeJoinRequest',
-		})
-	}
+			modalShowing: 'acknowledgeJoinRequest'
+		});
+	};
 </script>
 
 <form use:enhance action="/game/{data.game.id}?/name" method="POST">
@@ -45,45 +45,59 @@
 
 {#if data.game.joinRequests.length > 0}
 	{#each data.game.joinRequests as request}
-		<div class="joinRequest">
-			<p>Player: <a href="/player/{request.user.id}">{request.user.name}</a></p>
-			<p>
-				created at: {request.createdAt.toLocaleString()}
-				<span class="gray">
-					({dayjs.duration(dayjs(request.createdAt).diff(dayjs())).humanize()} ago)
-				</span>
-			</p>
-			{#if request.forceSent}
-				<p>force sent by: <a href="/officer/{request.forceSent.id}">{request.forceSent.name}</a></p>
-			{/if}
-			{#if request.createdAt.toString() !== request.updatedAt.toString()}
-				<p>(updated at: {request.updatedAt.toLocaleString()})</p>
-			{/if}
-			<button
-				on:click={showAcknowledgeModal(request.id)}
-				type="submit"
-			>acknowledge</button>
-		</div>
+		{#if request.acknowledged}
+			<p>- by <a href="/player/{request.user.id}">{request.user.name}</a> (acknowledged)</p>
+		{:else}
+			<div class="joinRequest">
+				<p>Player: <a href="/player/{request.user.id}">{request.user.name}</a></p>
+				<p>
+					created at: {request.createdAt.toLocaleString()}
+					<span class="gray">
+						({dayjs.duration(dayjs(request.createdAt).diff(dayjs())).humanize()} ago)
+					</span>
+				</p>
+				{#if request.forceSent}
+					<p>
+						force sent by: <a href="/officer/{request.forceSent.id}">{request.forceSent.name}</a>
+					</p>
+				{/if}
+				{#if request.createdAt.toString() !== request.updatedAt.toString()}
+					<p>(updated at: {request.updatedAt.toLocaleString()})</p>
+				{/if}
+				<button on:click={showAcknowledgeModal(request.id)} type="submit">acknowledge</button>
+			</div>
+		{/if}
 	{/each}
 {:else}
 	<p>no join requests</p>
 {/if}
 
-<h3>Sessions</h3>
+<h3>Sessions ({data.game.sessions.length})</h3>
 {#if data.game.sessions.length > 0}
 	<ul>
 		{#each data.game.sessions as session}
+			{@const score = session.scoreBlock.reduce((acc, block) => acc + block.score, 0)}
 			<li>
-				<a
-					href="/game/{data.game.id}/session/{session.id}"
-				>
-					{session.id}
+				<a href="/game/{data.game.id}/session/{session.id}">
+					{#if score > 0}
+						<span class="positive">+{session.id}</span>
+					{:else if score == 0}
+						0
+					{:else}
+						<span class="negative">-{session.id}</span>
+					{/if}
+					(with {session.scoreBlock.length} score blocks, {session.createdAt.toLocaleString()}) -
+					{#if session.active}
+						<span class="positive"> active </span>
+					{:else}
+						inactive
+					{/if}
 				</a>
 			</li>
 		{/each}
 	</ul>
 {:else}
-	<p>no sessions</p>
+	<p><i>no sessions found.</i></p>
 {/if}
 
 <h2>Log</h2>
@@ -100,11 +114,15 @@
 {#if $page.state.modalShowing === 'acknowledgeJoinRequest'}
 	<Modal on:close={() => history.back()}>
 		<h1>Acknowledgement Warning</h1>
-		<p>If this game is automatic, this will not push it through to the game;</p>
+		<p>
+			If this game is automatic, this will not push it through to the game,<br />
+			and <b>may cause desync.</b>
+		</p>
+		If this
 		<p>If this game is manual (i.e. no sensors or automatic components), this action is fine</p>
 		<div class="buttons">
 			<form method="POST" action="?/acknowledge">
-				<input type="hidden" name="joinRequestId" value={data.game.joinRequests[0].id} />
+				<input type="hidden" name="joinRequestId" value={joinId} />
 				<button>Confirm</button>
 			</form>
 			<button on:click={() => history.back()}>Cancel</button>
@@ -140,5 +158,13 @@
 
 	.gray {
 		color: gray;
+	}
+
+	.positive {
+		color: var(--success);
+	}
+
+	.negative {
+		color: var(--error);
 	}
 </style>

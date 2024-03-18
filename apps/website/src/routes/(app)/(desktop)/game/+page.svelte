@@ -29,7 +29,24 @@
 {:else}
 	<ul>
 		{#each filteredGames as game}
-			<li><a href={`game/${game.id}`}>{game.name}</a></li>
+			{@const activeJoinRequests = game.joinRequests.filter(request => 
+				!request.acknowledged && !request.terminated
+			)}
+			<li>
+				<a href={`game/${game.id}`}>
+					{game.name}
+					{#if game.sessions.some((session) => session.active)}
+						(<span class="positive">active</span>)
+					{/if}
+					{#if activeJoinRequests.length !== 0}
+						(<span class="positive">
+							{activeJoinRequests.length} active join request{activeJoinRequests.length > 1
+								? 's'
+								: ''}</span
+						>)
+					{/if}
+				</a>
+			</li>
 		{/each}
 	</ul>
 {/if}
@@ -39,5 +56,9 @@
 		display: flex;
 		align-items: center;
 		gap: 1rem;
+	}
+
+	.positive {
+		color: var(--success);
 	}
 </style>

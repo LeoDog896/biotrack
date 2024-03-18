@@ -28,7 +28,7 @@ export const POST: RequestHandler = async ({ params, url }) => {
 		error(400, 'No active session found');
 	}
 
-	const scoreBlocks = session.user.map(user => ({
+	const scoreBlocks = session.user.map((user) => ({
 		id: createId(),
 		score: parseInt(score),
 		data,
@@ -42,7 +42,7 @@ export const POST: RequestHandler = async ({ params, url }) => {
 		},
 		data: {
 			active: !finished,
-			data,
+			data
 		}
 	});
 
@@ -52,16 +52,19 @@ export const POST: RequestHandler = async ({ params, url }) => {
 		});
 	}
 
-	return json({
-		finished,
-		score
-	}, {
-		headers: {
-			'Access-Control-Allow-Origin': '*',
-			'Access-Control-Allow-Headers': 'Content-Type',
-			'Access-Control-Allow-Methods': 'POST'
+	return json(
+		{
+			finished,
+			score
+		},
+		{
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Headers': 'Content-Type',
+				'Access-Control-Allow-Methods': 'POST'
+			}
 		}
-	});
+	);
 };
 
 export const OPTIONS = async () => {
