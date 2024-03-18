@@ -48,7 +48,7 @@ export const POST: RequestHandler = async ({ params, url }) => {
 					id: game.id
 				}
 			},
-			active: false,
+			active: true,
 			data: '',
 			user: {
 				connect: joinRequests.map((jr) => {
