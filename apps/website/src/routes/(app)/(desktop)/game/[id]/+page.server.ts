@@ -76,5 +76,8 @@ export const actions = {
 			success: true,
 			message: 'Name updated'
 		};
+	},
+	acknowledge: async ({ params, request, cookies }) => {
+		await validateSession(coookies);
 	}
 };

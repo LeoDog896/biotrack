@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { pushState } from '$app/navigation';
+	import { page } from '$app/stores';
+	import Modal from '$lib/components/Modal.svelte';
 	import dayjs from 'dayjs';
 	import duration from 'dayjs/plugin/duration';
 	import relativeTime from 'dayjs/plugin/relativeTime';
@@ -10,6 +13,12 @@
 	export let data;
 	$: nameInput = data.game.name;
 	let nameSubmissionButton: HTMLButtonElement;
+
+	function showAcknowledgeModal() {
+		pushState('', {
+			modalShowing: 'acknowledgeJoinRequest',
+		})
+	}
 </script>
 
 <form use:enhance action="/game/{data.game.id}?/name" method="POST">
@@ -47,9 +56,7 @@
 			{#if request.createdAt.toString() !== request.updatedAt.toString()}
 				<p>(updated at: {request.updatedAt.toLocaleString()})</p>
 			{/if}
-			<form method="POST" action="?/acknowledge" use:enhance>
-				<button type="submit">acknowledge</button>
-			</form>
+			<button on:click={showAcknowledgeModal} type="submit">acknowledge</button>
 		</div>
 	{/each}
 {:else}
@@ -80,6 +87,20 @@
 	</p>
 {/if}
 
+{#if $page.state.modalShowing === 'acknowledgeJoinRequest'}
+	<Modal on:close={() => history.back()}>
+		<h1>Acknowledgement Warning</h1>
+		<p>If this game is automatic, this will not push it through to the game;</p>
+		<p>If this game is manual (i.e. no sensors or automatic components), this action is fine</p>
+		<div class="buttons">
+			<form method="POST" action="?/acknowledge">
+				<button>Confirm</button>
+			</form>
+			<button on:click={() => history.back()}>Cancel</button>
+		</div>
+	</Modal>
+{/if}
+
 <style lang="scss">
 	input {
 		padding: 0.5rem;
@@ -98,10 +119,6 @@
 	.joinRequest {
 		border-left: 5px solid var(--color);
 		padding: 1rem;
-
-		form {
-			margin-top: 1rem;
-		}
 	}
 
 	.gray {
