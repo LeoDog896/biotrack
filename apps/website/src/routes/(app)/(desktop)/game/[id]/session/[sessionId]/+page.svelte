@@ -6,7 +6,7 @@
 
 <p>Game: <a href="/game/{data.session.game.id}">{data.session.game.name}</a></p>
 
-<p>Players:</p>
+<h2>Players</h2>
 
 <ul>
     {#each data.session.user as player}
@@ -14,7 +14,7 @@
     {/each}
 </ul>
 
-<p>Score Blocks:</p>
+<h2>Score Blocks</h2>
 
 <ul>
     {#each data.session.scoreBlock as scoreBlock}
