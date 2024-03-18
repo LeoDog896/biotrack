@@ -53,7 +53,8 @@ export const POST: RequestHandler = async ({ params, url }) => {
 	});
 
 	return json({
-		finished
+		finished,
+		score
 	}, {
 		headers: {
 			'Access-Control-Allow-Origin': '*',
