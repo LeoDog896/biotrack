@@ -11,3 +11,5 @@ vite.config.ts.timestamp-*
 
 dev.db
 dev.db-journal
+
+target
