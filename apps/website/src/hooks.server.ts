@@ -39,5 +39,11 @@ function isFormContentType(request: Request) {
 }
 
 export const handle = csrf(
-    (path) => /^\/game\/\d+\/\w+/.test(path)
+    (path) => {
+		if (/^\/game\/\d+\/session\/\d+/.test(path)) {
+			return false;
+		}
+
+		return /^\/game\/\d+\/\w+/.test(path)
+	}
 );

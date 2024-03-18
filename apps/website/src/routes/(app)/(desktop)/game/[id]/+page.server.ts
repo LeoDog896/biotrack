@@ -18,6 +18,12 @@ export const load = async ({ params }) => {
 						}
 					}
 				}
+			},
+			sessions: {
+				include: {
+					user: true,
+					scoreBlock: true
+				}
 			}
 		}
 	});

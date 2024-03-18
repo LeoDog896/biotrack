@@ -56,6 +56,19 @@
 	<p>no join requests</p>
 {/if}
 
+<h3>Sessions</h3>
+{#if data.game.sessions.length > 0}
+	<ul>
+		{#each data.game.sessions as session}
+			<li>
+				<a href="/game/{data.game.id}/session/{session.id}">{session.id}</a>
+			</li>
+		{/each}
+	</ul>
+{:else}
+	<p>no sessions</p>
+{/if}
+
 <h2>Log</h2>
 
 <p>created at: {data.game.createdAt.toLocaleString()}</p>
