@@ -33,8 +33,8 @@
             justify-content: space-around;
             min-width: 100%;
             gap: $gap;
-            animation: scroll 40s linear infinite;
-            font-size: 1rem;
+            animation: scroll 70s linear infinite;
+            font-size: 1.5rem;
 
             &.reverse {
                 animation-direction: reverse;

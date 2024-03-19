@@ -25,9 +25,15 @@
 <nav>
 	<a href="/" class="title"><img src="/logo.svg" alt="biotrack" /> biotrack</a>
 	<div class="links">
-		<a href="/dashboard">dashboard</a>
-		<a href="/player">players</a>
-		<a href="/game">games</a>
+		<div class="dropdown">
+			<a href="/dashboard">dashboard</a>
+			<div class="dropdown-container">
+				<div class="links">
+					<a href="/player">players</a>
+					<a href="/game">games</a>
+				</div>
+			</div>
+		</div>
 		<a href="/officer">officers</a>
 		<a href="/scanner">check-in</a>
 		{#if data.local}
@@ -73,6 +79,35 @@
 		padding: 1rem;
 		border-bottom: 2px solid black;
 		height: 4rem;
+	}
+
+	.dropdown {
+		position: relative;
+		display: inline-block;
+
+		&:hover .dropdown-container {
+			display: block;
+		}
+
+		.dropdown-container {
+			display: none;
+			position: absolute;
+			background-color: white;
+			min-width: 160px;
+			box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+			padding: 12px 16px;
+			z-index: 1;
+			border: 1px solid black;
+			border-radius: 0;
+			top: 100%;
+			left: 0;
+			text-align: left;
+
+			.links {
+				display: flex;
+				flex-direction: column;
+			}
+		}
 	}
 
 	textarea {

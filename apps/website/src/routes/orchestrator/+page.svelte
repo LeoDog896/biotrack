@@ -11,7 +11,7 @@
     function addOfficerModal() {
         pushState('', {
             modalShowing: 'addOfficer'
-        })
+        });
     }
 </script>
 
