@@ -1,4 +1,12 @@
-# Configure the build for minimal size - AVRs have very little program memory
+[build]
+target = "./.cargo/avr-specs/avr-atmega328p.json"
+
+[target.'cfg(target_arch = "avr")']
+runner = "ravedude uno -cb 57600"
+
+[unstable]
+build-std = ["core"]
+
 [profile.dev]
 panic = "abort"
 lto = true
