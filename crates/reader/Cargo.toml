@@ -19,5 +19,5 @@ mfrc522 = "0.7.0"
 
 [dependencies.arduino-hal]
 git = "https://github.com/rahix/avr-hal"
-rev = "45a37eb746d264166c3ea382fed323a204104998"
+rev = "d827cdd"
 features = ["arduino-uno"]

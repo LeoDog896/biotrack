@@ -8,19 +8,22 @@ fn main() -> ! {
     let dp = arduino_hal::Peripherals::take().unwrap();
     let pins = arduino_hal::pins!(dp);
 
-    /*
-     * For examples (and inspiration), head to
-     *
-     *     https://github.com/Rahix/avr-hal/tree/main/examples
-     *
-     * NOTE: Not all examples were ported to all boards!  There is a good chance though, that code
-     * for a different board can be adapted for yours.  The Arduino Uno currently has the most
-     * examples available.
-     */
+    // ss goes to 10
+    // sck goes to 13
+    // mosi goes to 11
+    // miso goes to 12
+    // rst goes to 9
 
+    let (mut spi, _) = arduino_hal::spi::Spi::new(
+        dp.SPI,
+        pins.d13.into_output(),
+        pins.d11.into_output(),
+        pins.d12.into_pull_up_input(),
+        pins.d10.into_output(),
 
-    let mut led = pins.d13.into_output();
-
+        arduino_hal::spi::Settings::default()
+    );
+    
     loop {
         led.toggle();
         arduino_hal::delay_ms(1000);
