@@ -47,6 +47,16 @@ model Session {
   active     Boolean
 }
 
+model Message {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  content   String
+  // Whether the message was sent by an officer
+  officer   Officer @relation(fields: [officerId], references: [id])
+  officerId String
+}
+
 model JoinRequest {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
@@ -112,6 +122,7 @@ model Officer {
 
   sessions  OfficerSession[]
   forceSent JoinRequest[]
+  messages  Message[]
 }
 
 model OfficerSession {

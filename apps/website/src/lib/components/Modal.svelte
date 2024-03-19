@@ -10,6 +10,12 @@
 	let modalClickHelper = () => dispatch('close');
 </script>
 
+<svelte:window 
+	on:keydown={e => {
+		e.key === 'Escape' && dispatch('close')
+	}}
+/>
+
 <button
 	on:mousedown|self={modalClickHelper}
 	transition:fade={{ easing: cubicInOut, duration: 150 }}

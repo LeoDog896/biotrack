@@ -33,14 +33,14 @@
 
         <div class="officers">
             {#each data.officers as officer}
-                <div class="officer">
+                <button class="officer">
                     <h3>
                         {officer.name}
                     </h3>
                     {#if officer.admin}
                         <span class="admin">Admin</span>
                     {/if}
-                </div>
+                </button>
             {/each}
         </div>
     </main>
@@ -102,6 +102,7 @@
         gap: 1rem;
 
         .officer {
+            color: black;
             border: 1px solid var(--border);
             padding: 1rem;
             border-radius: 0.5rem;
@@ -113,6 +114,12 @@
             min-width: 200px;
             max-width: 300px;
             border: 4px solid var(--error);
+            background-color: white;
+
+            &:hover {
+                cursor: pointer;
+                background-color: oklch(79.41% 0.094 18.69);
+            }
 
             h3 {
                 display: flex;
