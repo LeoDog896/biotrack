@@ -30,7 +30,8 @@ export const actions = {
 		await prisma.game.create({
 			data: {
 				name,
-				token: createId()
+				token: createId(),
+				createdByOfficerId: officer.id
 			}
 		});
 

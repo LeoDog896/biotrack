@@ -17,29 +17,9 @@ async function main() {
 		return;
 	}
 
-	// usually, these tokens would be some kind of UID
-
-	await prisma.game.create({
-		data: {
-			id: 1,
-			name: 'Guess the Number',
-			playerCount: 1,
-			token: 'guess-the-number'
-		}
-	});
-
-	await prisma.game.create({
-		data: {
-			id: 2,
-			name: 'Pong',
-			playerCount: 2,
-			token: 'pong'
-		}
-	});
-
 	const { salt, hash: password } = await makePassword('password');
 
-	await prisma.officer.create({
+	const primary = await prisma.officer.create({
 		data: {
 			id: createId(),
 			name: 'primary',
@@ -55,7 +35,28 @@ async function main() {
 			name: 'secondary',
 			salt,
 			password,
-			admin: false
+			admin: false,
+			createdByOfficerId: primary.id
+		}
+	});
+
+	await prisma.game.create({
+		data: {
+			id: 1,
+			name: 'Guess the Number',
+			playerCount: 1,
+			token: 'guess-the-number',
+			createdByOfficerId: primary.id
+		}
+	});
+
+	await prisma.game.create({
+		data: {
+			id: 2,
+			name: 'Pong',
+			playerCount: 2,
+			token: 'pong',
+			createdByOfficerId: primary.id
 		}
 	});
 

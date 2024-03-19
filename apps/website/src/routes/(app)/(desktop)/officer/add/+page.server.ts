@@ -42,7 +42,8 @@ export const actions = {
 				admin,
 				password: hashedPassword,
 				salt,
-				id: createId()
+				id: createId(),
+				createdByOfficerId: officer.id
 			},
 			select: {
 				id: true,

@@ -6,7 +6,7 @@ import { validateSession } from '$lib/server/validateSession';
 
 export const actions = {
 	create: async ({ request, cookies }) => {
-		await validateSession(cookies);
+		const officer = await validateSession(cookies);
 
 		const data = await request.formData();
 		const name = data.get('name');
@@ -22,7 +22,8 @@ export const actions = {
 		const player = await prisma.user.create({
 			data: {
 				id: createId(),
-				name
+				name,
+				createdByOfficerId: officer.id
 			}
 		});
 

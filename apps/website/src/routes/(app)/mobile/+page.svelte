@@ -6,7 +6,6 @@
 	import { pushState } from '$app/navigation';
 	import { page } from '$app/stores';
 	import type { ActionData } from '../(desktop)/player/$types.js';
-	import Error from '../+error.svelte';
 
 	$: state = $page.state.state;
 

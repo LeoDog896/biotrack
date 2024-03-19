@@ -9,17 +9,17 @@ datasource db {
 
 model User {
   // cuid2
-  id          String   @id
+  id          String        @id
   name        String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
   sessions    Session[]
   scoreLedger ScoreBlock[]
   joinRequest JoinRequest[]
-  archived    Boolean  @default(false)
+  archived    Boolean       @default(false)
 
   // which officer created this user
-  createdByOfficer Officer @relation("createdBy", fields: [createdByOfficerId], references: [id])
+  createdByOfficer   Officer @relation("createdBy", fields: [createdByOfficerId], references: [id])
   createdByOfficerId String
 }
 
@@ -37,10 +37,10 @@ model ScoreBlock {
 }
 
 model Session {
-  id         Int      @id @default(autoincrement())
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  game       Game     @relation(fields: [gameId], references: [id])
+  id         Int          @id @default(autoincrement())
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  game       Game         @relation(fields: [gameId], references: [id])
   gameId     Int
   user       User[]
   // Any extra data that was sent with the session
@@ -51,7 +51,7 @@ model Session {
   active     Boolean
 
   // Which officer created this session, if any. if null, a game created it.
-  createdByOfficer Officer? @relation("createdBy", fields: [createdByOfficerId], references: [id])
+  createdByOfficer   Officer? @relation("createdBy", fields: [createdByOfficerId], references: [id])
   createdByOfficerId String?
 }
 
@@ -60,7 +60,7 @@ model Message {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   content   String
-  
+
   // Whether the message was sent by an officer
   officer   Officer @relation(fields: [officerId], references: [id])
   officerId String
@@ -71,7 +71,7 @@ model JoinRequest {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   user      User     @relation(fields: [userId], references: [id])
-  userId    String   
+  userId    String
   game      Game     @relation(fields: [gameId], references: [id])
   gameId    Int
 
@@ -87,7 +87,7 @@ model JoinRequest {
 
   // whether it was an officer, rather than the game, that
   // sent the join request
-  forceSent Officer? @relation(fields: [forceSentId], references: [id])
+  forceSent   Officer? @relation(fields: [forceSentId], references: [id])
   forceSentId String?
 }
 
@@ -95,17 +95,17 @@ model LinkedJoinRequest {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  nextJoinRequest JoinRequest @relation(fields: [nextJoinRequestId], references: [id])
-  nextJoinRequestId Int @unique
+  nextJoinRequest   JoinRequest @relation(fields: [nextJoinRequestId], references: [id])
+  nextJoinRequestId Int         @unique
 
   @@id([nextJoinRequestId])
 }
 
 model Game {
-  id           Int      @id @default(autoincrement())
+  id           Int           @id @default(autoincrement())
   name         String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
   // Sessions; only one can be "active" at a time.
   sessions     Session[]
   joinRequests JoinRequest[]
@@ -115,33 +115,33 @@ model Game {
   token        String
 
   // The officer that created this game
-  createdByOfficer Officer @relation("createdBy", fields: [createdByOfficerId], references: [id])
+  createdByOfficer   Officer @relation("createdBy", fields: [createdByOfficerId], references: [id])
   createdByOfficerId String
 }
 
 // An "officer" is one who can use the biotrack panel.
 model Officer {
   // cuid2
-  id        String   @id
+  id       String  @id
   // officer's name
-  name      String   @unique
+  name     String  @unique
   // password; hashed
-  password  String
+  password String
   // salt
-  salt      String
+  salt     String
   // whether the officer is an admin; i.e. it can manage other officers
-  admin     Boolean  @default(false)
-  archived  Boolean  @default(false)
+  admin    Boolean @default(false)
+  archived Boolean @default(false)
 
   sessions  OfficerSession[]
   forceSent JoinRequest[]
   messages  Message[]
 
   // creation information - officer to officer
-  officersCreated Officer[] @relation("createdBy")
-  createdByOfficer Officer? @relation("createdBy", fields: [createdByOfficerId], references: [id])
-  createdByOfficerId String?
-  createdByOrchestrator Boolean @default(false)
+  officersCreated       Officer[] @relation("createdBy")
+  createdByOfficer      Officer?  @relation("createdBy", fields: [createdByOfficerId], references: [id])
+  createdByOfficerId    String?
+  createdByOrchestrator Boolean   @default(false)
 
   // creation information - game to officer
   gamesCreated Game[] @relation("createdBy")
