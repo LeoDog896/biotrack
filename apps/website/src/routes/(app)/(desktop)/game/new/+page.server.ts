@@ -27,7 +27,7 @@ export const actions = {
 			error(400, 'Name must be a string');
 		}
 
-		await prisma.game.create({
+		const game = await prisma.game.create({
 			data: {
 				name,
 				token: createId(),
@@ -37,7 +37,8 @@ export const actions = {
 
 		return {
 			success: true,
-			message: 'Game created'
+			message: `Game '${name}' created! (id: ${game.id})`,
+			id: game.id
 		};
 	}
 };
