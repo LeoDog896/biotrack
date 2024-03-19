@@ -1,0 +1,37 @@
+[package]
+name = "mfrc522"
+version = "0.7.0"
+authors = ["Jonas Spanoghe <jonas@spanoghe.net>", "Jorge Aparicio <jorge@japaric.io>"]
+edition = "2021"
+description = "A platform agnostic driver to interface the MFRC522 (RFID reader/writer)"
+documentation = "https://docs.rs/mfrc522"
+license = "MIT OR Apache-2.0"
+repository = "https://gitlab.com/jspngh/rfid-rs"
+homepage = "https://gitlab.com/jspngh/rfid-rs"
+keywords = ["rfid", "mfrc522", "embedded-hal", "mifare"]
+categories = ["embedded", "hardware-support", "no-std"]
+
+[features]
+std = []
+eh02 = ["dep:embedded-hal-02"]
+
+[dependencies]
+embedded-hal-02 = { package = "embedded-hal", version = "0.2", optional = true }
+embedded-hal-1 = { package = "embedded-hal", version = "1.0" }
+heapless = "0.7"
+
+[dev-dependencies]
+embedded-hal-mock = { version = "0.10", features = ["eh1"] }
+anyhow = "1.0"
+
+[target.'cfg(target_os = "linux")'.dev-dependencies]
+linux-embedded-hal = "0.4.0"
+embedded-hal-bus = "0.1.0"
+
+[[example]]
+name = "rpi"
+required-features = ["std"]
+
+[[example]]
+name = "beagle"
+required-features = ["std"]
