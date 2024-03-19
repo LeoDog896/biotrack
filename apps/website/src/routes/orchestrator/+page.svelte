@@ -110,6 +110,10 @@
 		gap: 1rem;
 	}
 
+    form {
+        text-align: left;
+    }
+
 	.title h1 {
 		margin-bottom: 0;
 	}
