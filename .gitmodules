@@ -1,3 +1,0 @@
-[submodule "crates/rfid-rs"]
-	path = crates/rfid-rs
-	url = https://gitlab.com/jspngh/rfid-rs.git
