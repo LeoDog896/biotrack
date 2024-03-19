@@ -1,15 +1,24 @@
 <script lang="ts">
     import Marquee from "./Marquee.svelte";
     import MdiViolin from '~icons/mdi/violin';
+
+    export let data;
 </script>
 
 <div class="container">
     <Marquee />
     <main>
         <h1><MdiViolin color="var(--error)" />Orchestrator</h1>
-        <p>Management software for creating and editing all officers, <i>only</i> on the host computer.</p>
+        <p>
+            Management software for creating and editing all officers,
+            <i>only</i> on the host computer.
+        </p>
 
         <h2>Officers</h2>
+
+        <div class="officers">
+            
+        </div>
     </main>
     <Marquee reverse />
 </div>
