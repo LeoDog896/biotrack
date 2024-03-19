@@ -11,8 +11,8 @@ export const load = async ({ parent }) => {
 
 	return {
 		shouldIndicateNoOfficers: officerCount === 0 && data.local
-	}
-}
+	};
+};
 
 export const actions = {
 	login: async ({ request, cookies, getClientAddress }) => {

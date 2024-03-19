@@ -1,59 +1,59 @@
 <script lang="ts">
-    export let reverse = false;
+	export let reverse = false;
 </script>
 
 <div aria-hidden class="marquee">
-    <span class:reverse>
-        {"orchestrator ".repeat(50)}
-    </span>
-    <span class:reverse>
-        {"orchestrator ".repeat(50)}
-    </span>
+	<span class:reverse>
+		{'orchestrator '.repeat(50)}
+	</span>
+	<span class:reverse>
+		{'orchestrator '.repeat(50)}
+	</span>
 </div>
 
 <style lang="scss">
-    // marquee style from https://ryanmulligan.dev/blog/css-marquee/
-    $gap: 1rem;
+	// marquee style from https://ryanmulligan.dev/blog/css-marquee/
+	$gap: 1rem;
 
-    .marquee {
-        --gap: 1rem;
-        display: flex;
-        overflow: hidden;
-        user-select: none;
-        gap: $gap;
-        border-top: 4px solid var(--error);
-        border-bottom: 4px solid var(--error);
-        text-transform: uppercase;
-        font-weight: bold;
-        color: gray;
+	.marquee {
+		--gap: 1rem;
+		display: flex;
+		overflow: hidden;
+		user-select: none;
+		gap: $gap;
+		border-top: 4px solid var(--error);
+		border-bottom: 4px solid var(--error);
+		text-transform: uppercase;
+		font-weight: bold;
+		color: gray;
 
-        span {
-            flex-shrink: 0;
-            display: flex;
-            justify-content: space-around;
-            min-width: 100%;
-            gap: $gap;
-            animation: scroll 70s linear infinite;
-            font-size: 1.5rem;
+		span {
+			flex-shrink: 0;
+			display: flex;
+			justify-content: space-around;
+			min-width: 100%;
+			gap: $gap;
+			animation: scroll 70s linear infinite;
+			font-size: 1.5rem;
 
-            &.reverse {
-                animation-direction: reverse;
-            }
-        }
-    }
+			&.reverse {
+				animation-direction: reverse;
+			}
+		}
+	}
 
-    @media (prefers-reduced-motion: reduce) {
-    .marquee span {
-            animation-play-state: paused !important;
-        }
-    }
+	@media (prefers-reduced-motion: reduce) {
+		.marquee span {
+			animation-play-state: paused !important;
+		}
+	}
 
-    @keyframes scroll {
-        from {
-            transform: translateX(0);
-        }
-        to {
-            transform: translateX(calc(-100% - $gap));
-        }
-    }
+	@keyframes scroll {
+		from {
+			transform: translateX(0);
+		}
+		to {
+			transform: translateX(calc(-100% - $gap));
+		}
+	}
 </style>

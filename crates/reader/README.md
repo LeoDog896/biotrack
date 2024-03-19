@@ -9,7 +9,7 @@ runs on the _Arduino Uno_.
 
 2. Run `cargo build` to build the firmware.
 
-3. Run `cargo run` to flash the firmware to a connected board.  If `ravedude`
+3. Run `cargo run` to flash the firmware to a connected board. If `ravedude`
    fails to detect your board, check its documentation at
    <https://crates.io/crates/ravedude>.
 

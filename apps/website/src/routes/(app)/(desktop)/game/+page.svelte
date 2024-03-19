@@ -29,8 +29,8 @@
 {:else}
 	<ul>
 		{#each filteredGames as game}
-			{@const activeJoinRequests = game.joinRequests.filter(request => 
-				!request.acknowledged && !request.terminated
+			{@const activeJoinRequests = game.joinRequests.filter(
+				(request) => !request.acknowledged && !request.terminated
 			)}
 			<li>
 				<a href={`game/${game.id}`}>
