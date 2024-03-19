@@ -2,16 +2,12 @@
 #![no_main]
 
 use embedded_hal::blocking::spi::Operation;
-use mfrc522::{comm::{blocking::spi::{SpiInterface, WrapTransfer}, Interface}, Mfrc522};
+use mfrc522::{comm::{blocking::spi::{SpiInterface, WrapTransfer}, Interface}, register::Register, Mfrc522};
 use panic_halt as _;
 use arduino_hal::spi::Spi;
 
 
-impl<E, SPI, D> Interface for Spi
-where
-    SPI: SpiDevice<Error = E>,
-    SpiInterface<SPI, D>: WrapTransfer<E>,
-{
+impl<E, D> Interface for Spi {
     type Error = E;
     fn read(&mut self, reg: Register) -> Result<u8, Self::Error> {
         let mut buffer = [((reg as u8) << 1) | 0x80, 0];
