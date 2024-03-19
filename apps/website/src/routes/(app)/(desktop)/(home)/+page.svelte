@@ -38,7 +38,7 @@
 </ul>
 <p>
 	Your browser may report this URL as unsafe. Despite this, continue anyway; the page is safe. <a
-		href="/unsafe">More Information</a
+		href="https://leodog896.github.io/biotrack/security/https.html">More Information</a
 	>.
 </p>
 <p>
