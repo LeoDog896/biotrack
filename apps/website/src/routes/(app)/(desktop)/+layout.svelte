@@ -30,6 +30,9 @@
 		<a href="/game">games</a>
 		<a href="/officer">officers</a>
 		<a href="/scanner">check-in</a>
+		{#if data.local}
+			<a href="/orchestrator" class="red">orchestrator</a>
+		{/if}
 	</div>
 </nav>
 
@@ -131,5 +134,9 @@
 			opacity: 0.5;
 			cursor: not-allowed;
 		}
+	}
+
+	.red {
+		color: var(--error);
 	}
 </style>
