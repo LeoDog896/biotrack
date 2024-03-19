@@ -4,14 +4,18 @@
 
 <main>
 	<form action="?/login" method="POST">
-		<h1><img src="/logo.svg" alt="biotrack" /> Log In</h1>
-		<input type="text" name="username" placeholder="Username" required />
-		<input type="password" name="password" placeholder="Password" required />
-		<button type="submit">Log In</button>
-		<p>having trouble logging in? contact an admin.</p>
-		<p class="grey">biotrack</p>
-		{#if data.local}
-			<p>You are on the <u>local computer</u>. Perhaps, you would like to <a href="/orchestrator">manage officers</a>?</p>
+		{#if data.shouldIndicateNoOfficers}
+			<p>No log in available.. perhaps, you would like to <a href="/orchestrator">manage officers</a>?</p>
+		{:else}
+			<h1><img src="/logo.svg" alt="biotrack" /> Log In</h1>
+			<input type="text" name="username" placeholder="Username" required />
+			<input type="password" name="password" placeholder="Password" required />
+			<button type="submit">Log In</button>
+			<p>having trouble logging in? contact an admin.</p>
+			<p class="grey">biotrack</p>
+			{#if data.local}
+				<p>You are on the <u>local computer</u>. Perhaps, you would like to <a href="/orchestrator">manage officers</a>?</p>
+			{/if}
 		{/if}
 	</form>
 </main>

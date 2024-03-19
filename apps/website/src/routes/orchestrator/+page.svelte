@@ -42,7 +42,7 @@
 
         <h2>
             Officers 
-            <button on:click={addOfficerModal}>
+            <button class="addOfficer" on:click={addOfficerModal}>
                 <MdiShieldPlus width="2rem" height="2rem" color="var(--error)" />
             </button>
         </h2>
@@ -69,6 +69,8 @@
         <form method="POST" action="?/add">
             <input type="text" name="name" placeholder="Name" required />
             <input type="newPassword" name="password" placeholder="Password" required />
+            <input type="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required />
+            <input type="checkbox" name="admin" id="admin" />
             <button type="submit">Add</button>
         </form>
     </Modal>
@@ -142,6 +144,10 @@
                 scale: 1.1;
             }
         }
+    }
+
+    .addOfficer:hover {
+        background-color: white;
     }
 
     main {
