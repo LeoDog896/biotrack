@@ -22,7 +22,12 @@
 
 {#if officers.length === 0}
 	<p>
-		<i>No other officers exist.</i>
+		<i>
+			No other officers exist.
+			{#if data.officer.admin}
+				<a href="/officer/add">Create one?</a>
+			{/if}
+		</i>
 	</p>
 {:else}
 	<ul>

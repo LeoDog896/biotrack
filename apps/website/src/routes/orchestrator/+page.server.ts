@@ -27,7 +27,7 @@ export const actions = {
 
 		const name = data.get('name');
 		const password = data.get('password');
-		const confirmPassword = data.get('passwordConfirm');
+		const confirmPassword = data.get('confirmPassword');
 		const admin = data.get('admin') === 'on';
 
 		if (!name) error(400, 'Name is required');

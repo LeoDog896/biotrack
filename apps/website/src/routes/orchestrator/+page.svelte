@@ -23,12 +23,16 @@
 			modalShowing: 'editOfficer'
 		});
 	};
+
+	let password = '';
+	let passwordConfirm = '';
 </script>
 
 <div class="container">
 	<Marquee />
 	<main>
 		<h1><MdiViolin color="var(--error)" />Orchestrator</h1>
+		<p><a href="/">back to main site</a></p>
 		<p>
 			Management software for creating and editing all officers,
 			<i>only</i> on the host computer.
@@ -62,26 +66,34 @@
 </div>
 
 {#if $page.state.modalShowing === 'addOfficer'}
-	<Modal on:close={() => history.back()}>
+	<Modal on:close={() => {
+		history.back();
+		password = '';
+		passwordConfirm = '';
+	}}>
 		<h1>Add Officer</h1>
 		<form method="POST" action="?/add">
 			<div class="input">
-				<label for="name">Name</label>
+				<label for="name">Name:</label>
 				<input type="text" name="name" id="name" required />
 			</div>
 			<div class="input">
-				<label for="password">Password</label>
-				<input type="newPassword" name="password" id="password" required />
+				<label for="password">Password:</label>
+				<input bind:value={password} type="password" autocomplete="new-password" name="password" id="password" required />
 			</div>
 			<div class="input">
-				<label for="confirmPassword">Confirm Password</label>
-				<input type="confirmPassword" name="confirmPassword" id="confirmPassword" required />
+				<label for="confirmPassword">Confirm Password:</label>
+				<input bind:value={passwordConfirm} type="password" name="confirmPassword" id="confirmPassword" required />
 			</div>
 			<div class="input">
-				<label for="admin">Admin</label>
+				<label for="admin">Admin:</label>
 				<input type="checkbox" name="admin" id="admin" />
 			</div>
-			<button type="submit">Add</button>
+			<button 
+				type="submit"
+				class="marginY full"
+				disabled={!password || password !== passwordConfirm}
+			>Add</button>
 		</form>
 	</Modal>
 {/if}
@@ -97,7 +109,7 @@
 		{#if selectedOfficer.admin}
 			<p class="accent">(admin) <button>demote</button></p>
 		{:else}
-			<button class="promoteButton">promote</button>
+			<button class="marginY">promote</button>
 		{/if}
 	</Modal>
 {/if}
@@ -118,8 +130,12 @@
 		margin-bottom: 0;
 	}
 
-	.promoteButton {
+	.marginY {
 		margin: 1rem 0;
+	}
+
+	.full {
+		width: 100%;
 	}
 
 	button {
@@ -131,6 +147,16 @@
 			cursor: pointer;
 			background-color: var(--error);
 			color: white;
+		}
+
+		&:disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
+
+			&:hover {
+				background-color: white;
+				color: black;
+			}
 		}
 	}
 
@@ -168,12 +194,22 @@
 		text-align: center;
 		flex: 1;
 		overflow-y: scroll;
+		max-width: 800px;
 	}
 
 	div.container {
 		height: 100vh;
 		display: flex;
 		flex-direction: column;
+		align-items: center;
+	}
+
+	div.input {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		gap: 0.5rem;
+		margin-top: 0.5rem;
 	}
 
 	.officers {
