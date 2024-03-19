@@ -1,5 +1,8 @@
 # API
 
+If you're looking for a more convenient way to access the API,
+see the [bindings](./bindings.md).
+
 ```mermaid
 sequenceDiagram
     Card Scanner->>Server: Join <id>

@@ -34,6 +34,13 @@ Whenever you make changes to `prisma/schema.prisma`, run
 npx prisma migrate dev
 ```
 
+To reset the database, run
+
+```sh
+npx prisma migrate reset
+npx prisma migrate dev
+```
+
 ## Development
 
 To start the server, run
