@@ -1,3 +1,7 @@
+<script lang="ts">
+	export let data;
+</script>
+
 <main>
 	<form action="?/login" method="POST">
 		<h1><img src="/logo.svg" alt="biotrack" /> Log In</h1>
@@ -6,6 +10,9 @@
 		<button type="submit">Log In</button>
 		<p>having trouble logging in? contact an admin.</p>
 		<p class="grey">biotrack</p>
+		{#if data.local}
+			<p>You are on the <u>local computer</u>. Perhaps, you would like to <a href="/orchestrator">manage officers</a>?</p>
+		{/if}
 	</form>
 </main>
 

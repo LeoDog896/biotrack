@@ -5,6 +5,12 @@ import { createId } from '@paralleldrive/cuid2';
 
 const ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
 
+export const load = ({ url }) => {
+	return {
+		local: url.host === 'localhost:5000'
+	}
+}
+
 export const actions = {
 	login: async ({ request, cookies, getClientAddress }) => {
 		const data = await request.formData();
