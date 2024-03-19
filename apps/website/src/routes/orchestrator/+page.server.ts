@@ -4,7 +4,8 @@ export const load = async () => {
     const officers = await prisma.officer.findMany({
         select: {
             name: true,
-            admin: true
+            admin: true,
+            id: true
         }
     });
 

@@ -17,6 +17,10 @@ model User {
   scoreLedger ScoreBlock[]
   joinRequest JoinRequest[]
   archived    Boolean  @default(false)
+
+  // which officer created this user
+  createdByOfficer Officer @relation("createdBy", fields: [createdByOfficerId], references: [id])
+  createdByOfficerId String
 }
 
 model ScoreBlock {
@@ -45,6 +49,10 @@ model Session {
   scoreBlock ScoreBlock[]
   // Whether the current session is active.
   active     Boolean
+
+  // Which officer created this session, if any. if null, a game created it.
+  createdByOfficer Officer? @relation("createdBy", fields: [createdByOfficerId], references: [id])
+  createdByOfficerId String?
 }
 
 model Message {
@@ -52,6 +60,7 @@ model Message {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   content   String
+  
   // Whether the message was sent by an officer
   officer   Officer @relation(fields: [officerId], references: [id])
   officerId String
@@ -104,6 +113,10 @@ model Game {
   playerCount  Int?
   // The token to use to authenticate the game.
   token        String
+
+  // The officer that created this game
+  createdByOfficer Officer @relation("createdBy", fields: [createdByOfficerId], references: [id])
+  createdByOfficerId String
 }
 
 // An "officer" is one who can use the biotrack panel.
@@ -123,6 +136,21 @@ model Officer {
   sessions  OfficerSession[]
   forceSent JoinRequest[]
   messages  Message[]
+
+  // creation information - officer to officer
+  officersCreated Officer[] @relation("createdBy")
+  createdByOfficer Officer? @relation("createdBy", fields: [createdByOfficerId], references: [id])
+  createdByOfficerId String?
+  createdByOrchestrator Boolean @default(false)
+
+  // creation information - game to officer
+  gamesCreated Game[] @relation("createdBy")
+
+  // creation information - session to officer
+  sessionsCreated Session[] @relation("createdBy")
+
+  // creation information - user to officer
+  usersCreated User[] @relation("createdBy")
 }
 
 model OfficerSession {
@@ -131,6 +159,7 @@ model OfficerSession {
   updatedAt DateTime @updatedAt
   officer   Officer  @relation(fields: [officerId], references: [id])
   officerId String
+
   token     String   @unique
   expires   DateTime
   lastUsed  DateTime

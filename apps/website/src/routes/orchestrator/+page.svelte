@@ -13,6 +13,17 @@
             modalShowing: 'addOfficer'
         });
     }
+
+    let officerId: string | undefined;
+    $: selectedOfficer = data.officers.find(officer => officer.id === officerId);
+
+    const editOfficerModal = (id: string) => () => {
+        officerId = id;
+        pushState('', {
+            modalShowing: 'editOfficer'
+        });
+    
+    }
 </script>
 
 <div class="container">
@@ -22,6 +33,11 @@
         <p>
             Management software for creating and editing all officers,
             <i>only</i> on the host computer.
+        </p>
+        <p>
+            While this allows for officer management, this has its own
+            systemic limitations, and to continue with actions,
+            creating a new officer is required.
         </p>
 
         <h2>
@@ -33,7 +49,7 @@
 
         <div class="officers">
             {#each data.officers as officer}
-                <button class="officer">
+                <button class="officer" on:click={editOfficerModal(officer.id)}>
                     <h3>
                         {officer.name}
                     </h3>
@@ -50,6 +66,27 @@
 {#if $page.state.modalShowing === 'addOfficer'}
     <Modal on:close={() => history.back()}>
         <h1>Add Officer</h1>
+        <form method="POST" action="?/add">
+            <input type="text" name="name" placeholder="Name" required />
+            <input type="newPassword" name="password" placeholder="Password" required />
+            <button type="submit">Add</button>
+        </form>
+    </Modal>
+{/if}
+
+{#if $page.state.modalShowing === 'editOfficer' && selectedOfficer}
+    <Modal on:close={() => history.back()}>
+        <div class="title">
+            <h1>
+                Officer
+                <span class="accent">{selectedOfficer.name}</span>
+            </h1>
+        </div>
+        {#if selectedOfficer.admin}
+            <p class="accent">(admin) <button>demote</button></p>
+        {:else}
+            <button class="promoteButton">promote</button>
+        {/if}
     </Modal>
 {/if}
 
@@ -59,6 +96,30 @@
         align-items: center;
         justify-content: center;
         gap: 1rem;
+    }
+
+    .title h1 {
+        margin-bottom: 0;
+    }
+
+    .promoteButton {
+        margin: 1rem 0;
+    }
+
+    button {
+        background-color: white;
+        border: 2px solid black;
+        border-radius: 0;
+
+        &:hover {
+            cursor: pointer;
+            background-color: var(--error);
+            color: white;
+        }
+    }
+
+    .accent {
+        color: var(--error);
     }
 
     h2 {
