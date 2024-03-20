@@ -5,6 +5,9 @@ export const load = async () => {
 		users: await prisma.user.findMany({
 			where: {
 				archived: false
+			},
+			include: {
+				sessions: true
 			}
 		})
 	};

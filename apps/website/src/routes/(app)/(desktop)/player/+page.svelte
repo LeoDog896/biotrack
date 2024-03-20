@@ -31,6 +31,9 @@
 				<li>
 					<a href={`/player/${user.id}`}>
 						{user.name}
+						{#if user.sessions.find(session => session.active)}
+							(<span class="positive">active</span>)
+						{/if}
 					</a>
 				</li>
 			{/each}
@@ -43,5 +46,9 @@
 		display: flex;
 		align-items: center;
 		gap: 1rem;
+	}
+
+	.positive {
+		color: var(--success);
 	}
 </style>
