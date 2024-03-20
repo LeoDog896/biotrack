@@ -1,5 +1,15 @@
 <script lang="ts">
+	import { pushState } from '$app/navigation';
+	import { page } from '$app/stores';
+	import Modal from '$lib/components/Modal.svelte';
+
 	export let data;
+
+	function showFinishModal() {
+		pushState('', {
+			modalShowing: 'finish'
+		});
+	}
 </script>
 
 <h1>Session {data.session.id}</h1>
@@ -7,8 +17,9 @@
 {#if data.session.active}
 	<p>
 		<span class="positive">active</span>
-		<button>finish</button>
-		<button>cancel</button>
+		<button on:click={showFinishModal}>
+			finish
+		</button>
 	</p>
 {:else if data.session.active === false}
 	<p><span class="negative">inactive</span></p>
@@ -46,6 +57,19 @@
 	<p><i>no data yet.</i></p>
 {/if}
 
+{#if $page.state.modalShowing === 'finish'}
+	<Modal on:click={() => history.back()}>
+		<h2>Finish Session</h2>
+		<p>Are you sure you want to finish this session?</p>
+		<div class="buttons">
+			<form method="POST" action="?/finish">
+				<button type="submit">finish</button>
+			</form>
+			<button on:click={() => history.back()}>cancel</button>
+		</div>
+	</Modal>
+{/if}
+
 <style lang="scss">
 	.positive {
 		color: var(--success);
@@ -53,5 +77,11 @@
 
 	.negative {
 		color: var(--error);
+	}
+
+	.buttons {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
 	}
 </style>
