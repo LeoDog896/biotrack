@@ -22,6 +22,12 @@
 			modalShowing: 'acknowledgeJoinRequest'
 		});
 	};
+
+	function newJoinRequestModal() {
+		pushState('', {
+			modalShowing: 'newJoinRequest'
+		});
+	}
 </script>
 
 <form use:enhance action="/game/{data.game.id}?/name" method="POST">
@@ -36,8 +42,8 @@
 	<button type="submit" hidden bind:this={nameSubmissionButton}></button>
 </form>
 
-<p>id: {data.game.id}</p>
-<p>max players: {data.game.playerCount ?? 'Arbitrary'}</p>
+<p>id: <span class="accent">{data.game.id}</span></p>
+<p>max players: <span class="accent">{data.game.playerCount ?? 'Arbitrary'}</span></p>
 
 <h2>Play Information</h2>
 
@@ -68,8 +74,10 @@
 			</div>
 		{/if}
 	{/each}
+	<button class="marginTop" on:click={newJoinRequestModal}>make new join request</button>
 {:else}
-	<p>no join requests</p>
+	<p>no join requests.</p>
+	<button on:click={newJoinRequestModal}>make new join request</button>
 {/if}
 
 <h3>Sessions ({data.game.sessions.length})</h3>
@@ -111,6 +119,21 @@
 	</p>
 {/if}
 
+{#if $page.state.modalShowing === 'newJoinRequest'}
+	<Modal on:close={() => history.back()}>
+		<h1>New Join Request</h1>
+		<p>Select a player to send a join request from.</p>
+		<form method="POST" action="?/joinRequest">
+			<select class="playerSelect" name="userId">
+				{#each data.users as player}
+					<option value={player.id}>{player.name}</option>
+				{/each}
+			</select>
+			<button type="submit">Submit</button>
+		</form>
+	</Modal>
+{/if}
+
 {#if $page.state.modalShowing === 'acknowledgeJoinRequest'}
 	<Modal on:close={() => history.back()}>
 		<h1>Acknowledgement Warning</h1>
@@ -118,11 +141,10 @@
 			If this game is automatic, this will not push it through to the game,<br />
 			and <b>may cause desync.</b>
 		</p>
-		If this
-		<p>If this game is manual (i.e. no sensors or automatic components), this action is fine</p>
+		<p>If this game is manual<br/>(i.e. no sensors or automatic components), this action is fine</p>
 		<div class="buttons">
 			<form method="POST" action="?/acknowledge">
-				<input type="hidden" name="joinRequestId" value={joinId} />
+				<input type="number" hidden name="joinRequestId" value={joinId} />
 				<button>Confirm</button>
 			</form>
 			<button on:click={() => history.back()}>Cancel</button>
@@ -135,6 +157,10 @@
 		padding: 0.5rem;
 		font-size: 1rem;
 		width: 100%;
+	}
+
+	.playerSelect {
+		margin-bottom: 1rem;
 	}
 
 	.name {
@@ -156,8 +182,16 @@
 		padding: 1rem;
 	}
 
+	.marginTop {
+		margin-top: 1rem;
+	}
+
 	.gray {
 		color: gray;
+	}
+
+	.accent {
+		color: var(--color);
 	}
 
 	.positive {

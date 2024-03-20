@@ -27,18 +27,24 @@
 <h2>Statistics</h2>
 
 <ul>
-	<li>Players: {data.players}</li>
-	<li>Games: {data.games}</li>
+	<li>Players: <span class="accent">{data.players}</span></li>
+	<li>Games: <span class="accent">{data.games}</span></li>
 	<li>
-		Sessions: {data.sessions}
+		Sessions: <span class="accent">{data.games}</span>
 		{#if data.sessions > 0}
-			(active: {data.activeSessions})
+			(active: <span class="accent">{data.activeSessions}</span>)
 		{/if}
 	</li>
 	<li>
-		Join Requests: {data.joinRequests}
+		Join Requests: <span class="accent">{data.joinRequests}</span>
 		{#if data.joinRequests > 0}
-			(active: {data.activeJoinRequests})
+			(active: <span class="accent">{data.activeJoinRequests}</span>)
 		{/if}
 	</li>
 </ul>
+
+<style>
+	.accent {
+		color: var(--color);
+	}
+</style>

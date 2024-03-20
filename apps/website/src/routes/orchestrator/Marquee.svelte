@@ -21,13 +21,16 @@
 		overflow: hidden;
 		user-select: none;
 		gap: $gap;
-		border-top: 4px solid var(--error);
-		border-bottom: 4px solid var(--error);
+		border-top: 4px solid red;
+		border-bottom: 4px solid red;
 		text-transform: uppercase;
 		font-weight: bold;
 		color: gray;
+        background-color: var(--error);
 
 		span {
+            background-color: var(--eror);
+            color: yellow;
 			flex-shrink: 0;
 			display: flex;
 			justify-content: space-around;

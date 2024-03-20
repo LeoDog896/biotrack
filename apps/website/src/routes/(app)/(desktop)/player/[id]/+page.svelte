@@ -49,17 +49,17 @@
 	<button type="submit" hidden bind:this={nameSubmissionButton}></button>
 </form>
 
-<p>cuid: {data.user.id}</p>
+<p>cuid: <span class="accent">{data.user.id}</span></p>
 <p>
-	score: {data.score}
+	score: <span class="accent">{data.score}</span>
 	{#if data.sessions > 0}
 		(<a href="/player/{data.user.id}/ledger">see ledger →</a>)
 	{/if}
 </p>
 
 <h2>Play Information</h2>
-<p>all sessions: {data.sessions}</p>
-<p>active join request: {data.activeJoinRequest > 0}</p>
+<p>all sessions: <span class="accent">{data.sessions}</span></p>
+<p>active join request: <span class="accent">{data.activeJoinRequest > 0}</span></p>
 {#if data.sessions > 0 || data.joinRequests > 0}
 	(<a href="/player/{data.user.id}/play">see play info →</a>)
 {/if}
@@ -77,7 +77,7 @@
 
 <h2>Actions</h2>
 
-<button on:click={showArchiveModal}>archive</button>
+<button class="archiveButton" on:click={showArchiveModal}>archive</button>
 
 {#if $page.state.modalShowing === 'send'}
 	<Modal on:close={() => history.back()}>
@@ -124,6 +124,10 @@
 		width: 100%;
 	}
 
+	.archiveButton {
+		margin-bottom: 1rem;
+	}
+
 	.name {
 		margin-top: 1rem;
 		display: flex;
@@ -149,5 +153,9 @@
 			background-color: var(--error);
 			color: white;
 		}
+	}
+
+	.accent {
+		color: var(--color);
 	}
 </style>

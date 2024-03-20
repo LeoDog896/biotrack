@@ -5,7 +5,7 @@ import { validateSession } from '$lib/server/validateSession.js';
 
 export const actions = {
 	default: async ({ request, cookies }) => {
-		await validateSession(cookies);
+		const officer = await validateSession(cookies);
 
 		const data = await request.formData();
 
@@ -23,13 +23,15 @@ export const actions = {
 			data: {
 				id: createId(),
 				name,
-				archived: false
+				archived: false,
+				createdByOfficerId: officer.id
 			}
 		});
 
 		return {
 			success: true,
-			message: `Player ${name} created (cuid=${user.id})`
+			message: `Player ${name} created (cuid=${user.id})`,
+			id: user.id
 		};
 	}
 };

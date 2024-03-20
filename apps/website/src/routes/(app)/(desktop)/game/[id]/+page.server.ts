@@ -39,7 +39,8 @@ export const load = async ({ params }) => {
 	}
 
 	return {
-		game
+		game,
+		users: await prisma.user.findMany()
 	};
 };
 
@@ -148,6 +149,59 @@ export const actions = {
 			success: true,
 			message: 'Session created',
 			session
+		};
+	},
+	joinRequest: async ({ params, request, cookies }) => {
+		const officer = await validateSession(cookies);
+
+		const data = await request.formData();
+
+		const userId = data.get('userId');
+
+		if (!userId) error(400, 'userId is required');
+		if (typeof userId !== 'string') error(400, 'userId must be a string');
+
+		const user = await prisma.user.findUnique({
+			where: {
+				id: userId
+			}
+		});
+
+		if (!user) error(404, 'User not found');
+
+		const game = await prisma.game.findUnique({
+			where: {
+				id: parseInt(params.id)
+			}
+		});
+
+		if (!game) error(404, 'Game not found');
+
+		const joinRequest = await prisma.joinRequest.create({
+			data: {
+				user: {
+					connect: {
+						id: user.id
+					}
+				},
+				game: {
+					connect: {
+						id: game.id
+					}
+				},
+				acknowledged: false,
+				forceSent: {
+					connect: {
+						id: officer.id
+					}
+				}
+			}
+		});
+
+		return {
+			success: true,
+			message: 'Join request created',
+			joinRequest
 		};
 	}
 };

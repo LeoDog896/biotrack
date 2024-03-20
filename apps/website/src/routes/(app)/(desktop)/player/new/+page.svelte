@@ -48,6 +48,7 @@
 	{/if}
 {:else if form && form.success && form.message}
 	<p class="success">{form.message}</p>
+	<p><a href="/player/{form.id}">see player</a></p>
 {/if}
 
 <style>
