@@ -86,7 +86,7 @@
 		{#each data.game.sessions as session}
 			{@const score = session.scoreBlock.reduce((acc, block) => acc + block.score, 0)}
 			<li>
-				<a href="/game/{data.game.id}/session/{session.id}">
+				<a href="/session/{session.id}">
 					{#if score > 0}
 						<span class="positive">+{session.id}</span>
 					{:else if score == 0}

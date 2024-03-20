@@ -4,8 +4,7 @@ import { error } from '@sveltejs/kit';
 export const load = async ({ params }) => {
 	const session = await prisma.session.findFirst({
 		where: {
-			gameId: parseInt(params.id),
-			id: parseInt(params.sessionId)
+			id: parseInt(params.id)
 		},
 		include: {
 			user: true,
