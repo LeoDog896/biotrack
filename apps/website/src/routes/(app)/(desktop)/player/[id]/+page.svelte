@@ -31,6 +31,8 @@
 		});
 	}
 
+	$: activeSession = data.sessions.find((session) => session.active)
+
 	let archiveInput = '';
 </script>
 
@@ -52,15 +54,20 @@
 <p>cuid: <span class="accent">{data.user.id}</span></p>
 <p>
 	score: <span class="accent">{data.score}</span>
-	{#if data.sessions > 0}
+	{#if data.sessions.length > 0}
 		(<a href="/player/{data.user.id}/ledger">see ledger →</a>)
 	{/if}
 </p>
 
 <h2>Play Information</h2>
-<p>all sessions: <span class="accent">{data.sessions}</span></p>
+<p>all sessions:
+	<span class="accent">{data.sessions.length}</span>
+	{#if activeSession}
+		(<a href="/session/{activeSession.id}">see active session →</a>)
+	{/if}
+</p>
 <p>active join request: <span class="accent">{data.activeJoinRequest > 0}</span></p>
-{#if data.sessions > 0 || data.joinRequests > 0}
+{#if data.sessions.length > 0 || data.joinRequests > 0}
 	(<a href="/player/{data.user.id}/play">see play info →</a>)
 {/if}
 <button on:click={showSendModal}>send join request</button>

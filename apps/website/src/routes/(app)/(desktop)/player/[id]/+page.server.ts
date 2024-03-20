@@ -25,7 +25,7 @@ export const load = async ({ params }) => {
 	return {
 		user,
 		score,
-		sessions: await prisma.session.count({
+		sessions: await prisma.session.findMany({
 			where: {
 				user: {
 					some: {
