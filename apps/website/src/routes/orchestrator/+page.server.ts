@@ -52,5 +52,55 @@ export const actions = {
 		return {
 			officer
 		};
+	},
+	promote: async ({ request, url }) => {
+		const isLocal = url.host === 'localhost:5000';
+
+		if (!isLocal) error(403, 'You are not authorized to perform this action');
+
+		const data = await request.formData();
+
+		const id = data.get('id');
+
+		if (!id) error(400, 'ID is required');
+		if (typeof id !== 'string') error(400, 'ID must be a string');
+
+		const officer = await prisma.officer.update({
+			where: {
+				id
+			},
+			data: {
+				admin: true
+			}
+		});
+
+		return {
+			officer
+		};
+	},
+	demote: async ({ request, url }) => {
+		const isLocal = url.host === 'localhost:5000';
+
+		if (!isLocal) error(403, 'You are not authorized to perform this action');
+
+		const data = await request.formData();
+
+		const id = data.get('id');
+
+		if (!id) error(400, 'ID is required');
+		if (typeof id !== 'string') error(400, 'ID must be a string');
+
+		const officer = await prisma.officer.update({
+			where: {
+				id
+			},
+			data: {
+				admin: false
+			}
+		});
+
+		return {
+			officer
+		};
 	}
 };

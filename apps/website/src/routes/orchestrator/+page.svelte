@@ -107,9 +107,18 @@
 			</h1>
 		</div>
 		{#if selectedOfficer.admin}
-			<p class="accent">(admin) <button>demote</button></p>
+			<div class="adminHeader">
+				<p class="accent">(admin)</p>
+				<form method="POST" action="?/demote">
+					<input type="hidden" name="id" value={selectedOfficer.id} />
+					<button type="submit" class="marginY">demote</button>
+				</form>
+			</div>
 		{:else}
-			<button class="marginY">promote</button>
+			<form method="POST" action="?/promote">
+				<input type="hidden" name="id" value={selectedOfficer.id} />
+				<button type="submit" class="marginY">promote</button>
+			</form>
 		{/if}
 	</Modal>
 {/if}
@@ -136,6 +145,13 @@
 
 	.full {
 		width: 100%;
+	}
+
+	.adminHeader {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
 	}
 
 	button {
