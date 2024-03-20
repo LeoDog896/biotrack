@@ -80,7 +80,13 @@
 	<button on:click={newJoinRequestModal}>make new join request</button>
 {/if}
 
-<h3>Sessions ({data.game.sessions.length})</h3>
+<h3>
+	Sessions
+	({data.game.sessions.length})
+	{#if data.game.sessions.filter(session => session.active).length > 0}
+		<span class="positive">(currently active)</span>
+	{/if}
+</h3>
 {#if data.game.sessions.length > 0}
 	<ul>
 		{#each data.game.sessions as session}
