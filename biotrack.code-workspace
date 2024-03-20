@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "nfc-peripheral",
+			"path": "embedded/nfc-peripheral"
+		}
+	],
+	"settings": {}
+}
