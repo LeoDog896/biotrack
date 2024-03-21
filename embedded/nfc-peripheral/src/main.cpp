@@ -1,80 +1,126 @@
-/*
- * Derived from https://github.com/miguelbalboa/rfid/blob/master/examples/ReadNUID/ReadNUID.ino.
- * Pin layout used:
- * -----------------------------------------------------------------------------------------
- *             MFRC522      Arduino       Arduino   Arduino    Arduino          Arduino
- *             Reader/PCD   Uno/101       Mega      Nano v3    Leonardo/Micro   Pro Micro
- * Signal      Pin          Pin           Pin       Pin        Pin              Pin
- * -----------------------------------------------------------------------------------------
- * RST/Reset   RST          9             5         D9         RESET/ICSP-5     RST
- * SPI SS      SDA(SS)      10            53        D10        10               10
- * SPI MOSI    MOSI         11 / ICSP-4   51        D11        ICSP-4           16
- * SPI MISO    MISO         12 / ICSP-1   50        D12        ICSP-1           14
- * SPI SCK     SCK          13 / ICSP-3   52        D13        ICSP-3           15
- */
+// Shows the content of a Mifare Classic tag formatted as an NDEF tag
+// This example requires #define NDEF_USE_SERIAL to be uncommented in Ndef.h
 
 #include <SPI.h>
 #include <MFRC522.h>
+#include "NfcAdapter.h"
 
-#define SS_PIN 10
-#define RST_PIN 9
+#define CS_PIN 10
 
-// Global rfid object
-MFRC522 rfid(SS_PIN, RST_PIN);
+MFRC522 mfrc522(CS_PIN, UINT8_MAX); // Create MFRC522 instance
 
-/**
- * Helper routine to dump a byte array as decimal values to Serial.
- */
-void printDecimal(byte *buffer, byte bufferSize)
-{
-  for (byte i = 0; i < bufferSize; i++) {
-    Serial.print(' ');
-    Serial.print(buffer[i], DEC);
-  }
-}
+NfcAdapter nfc = NfcAdapter(&mfrc522);
 
-void setup()
+void setup(void)
 {
   Serial.begin(9600);
+  Serial.println("log: init");
   // Init SPI bus
   SPI.begin();
-  // Setup MFRC522
-  rfid.PCD_Init();
-
-  Serial.println(F("log: init"));
+  // Init MFRC522
+  mfrc522.PCD_Init();
+  nfc.begin();
 }
 
-void loop()
+enum command
 {
+  read,
+  write,
+  none
+};
 
-  // Reset the loop if no new card present on the sensor/reader. This saves the entire process when idle.
-  if (!rfid.PICC_IsNewCardPresent())
-    return;
+command cmd = none;
+char amount[3];
+bool writing = false;
+bool writeToNFC = false;
+char bytes[999];
 
-  // Verify if the NUID has been readed
-  if (!rfid.PICC_ReadCardSerial())
-    return;
+// length of language code ("en")
+const int langLength = 2;
 
-  MFRC522::PICC_Type piccType = rfid.PICC_GetType(rfid.uid.sak);
-
-  // Check is the PICC of Classic MIFARE type
-  if (piccType != MFRC522::PICC_TYPE_MIFARE_MINI &&
-      piccType != MFRC522::PICC_TYPE_MIFARE_1K &&
-      piccType != MFRC522::PICC_TYPE_MIFARE_4K)
+void loop(void)
+{
+  if (nfc.tagPresent())
   {
-    Serial.print(F("error: tag not of type MIFARE Classic, it is "));
-    Serial.println(rfid.PICC_GetTypeName(piccType));
-    return;
+    if (cmd == read)
+    {
+      NfcTag tag = nfc.read();
+      NdefMessage message = tag.getNdefMessage();
+      NdefRecord record = message.getRecord(0);
+      Serial.print("tag: ");
+      int payloadLength = record.getPayloadLength();
+      int typeLength = record.getTypeLength();
+      Serial.print(payloadLength - typeLength - langLength);
+      Serial.print(" ");
+      for (int i = typeLength + langLength; i < payloadLength; i++)
+      {
+        Serial.print((char)record.getPayload()[i]);
+      }
+      Serial.println();
+      cmd = none;
+    }
+    else if (cmd == write && writeToNFC)
+    {
+      NdefMessage message = NdefMessage();
+      message.addTextRecord(bytes);
+      nfc.write(message);
+      writing = false;
+      writeToNFC = false;
+      cmd = none;
+      bytes[0] = '\0';
+      amount[0] = '\0';
+      Serial.println("log: done writing");
+      return;
+    }
   }
 
-  Serial.print(F("tag:"));
-  rfid.PICC_DumpToSerial(&(rfid.uid));
-  printDecimal(rfid.uid.uidByte, rfid.uid.size);
-  Serial.println();
+  if (Serial.available() > 0)
+  {
+    if (writeToNFC)
+      return;
 
-  // Halt PICC
-  rfid.PICC_HaltA();
+    char inChar = Serial.read();
 
-  // Stop encryption on PCD
-  rfid.PCD_StopCrypto1();
+    if (writing)
+    {
+      bytes[strlen(bytes)] = inChar;
+      if (strlen(bytes) == atoi(amount))
+      {
+        Serial.println("log: begin writing; put in card");
+        writeToNFC = true;
+        return;
+      }
+      return;
+    }
+
+    // if inChar is a digit, append
+    if (inChar >= '0' && inChar <= '9')
+    {
+      amount[strlen(amount)] = inChar;
+
+      if (strlen(amount) == 3)
+      {
+        int amountInt = atoi(amount);
+        Serial.print("log: now, write ");
+        Serial.print(amountInt);
+        Serial.println(" bytes:");
+        writing = true;
+      }
+      return;
+    }
+
+    if (inChar == 'r')
+    {
+      cmd = read;
+      Serial.println("log: read");
+      return;
+    }
+    else if (inChar == 'w')
+    {
+      cmd = write;
+      amount[strlen(amount)] = '\0';
+      Serial.println("log: write; how much?");
+      return;
+    }
+  }
 }
