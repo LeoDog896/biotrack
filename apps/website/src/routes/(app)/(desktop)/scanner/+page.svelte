@@ -1,88 +1,100 @@
 <script lang="ts">
-	const portRange = 255;
+	import { onMount } from 'svelte';
+	import MdiRaspberryPi from '~icons/mdi/raspberry-pi';
 
-	const arr = Array.from({ length: portRange }, (_, i) => i);
+	let hasSerial = false;
+	let mounted = false;
+	let port: SerialPort | null = null;
 
-	let detectedIndex: number | null = null;
-	$: detectedIP = detectedIndex ? `https://192.168.0.${detectedIndex}:2022/` : null;
+	onMount(() => {
+		// Check for serial support
+		if ("serial" in navigator) {
+			hasSerial = true;
+		}
 
-	function onLoad(index: number) {
-		return () => {
-			detectedIndex = index;
-		};
+		mounted = true;
+	});
+
+	const productToName: Record<number, string> = {
+		0x2341: "Arduino",
+		0x0403: "RedBoard"
+	};
+
+	function getProductName(id: number | undefined) {
+		if (id === undefined) return;
+		return id in productToName ? productToName[id] : undefined;
 	}
 
-	let errorCount = 0;
-	function onError() {
-		errorCount += 1;
-	}
+	async function scanSerial() {
+		port = await navigator.serial.requestPort({
+			filters: Object.keys(productToName).map((id) => ({
+				usbVendorId: parseInt(id)
+			}))
+		});
 
-	// holds all side effects in a function
-	// as to not trigger the function when any
-	// variables in here change
-	function resetSearch() {
-		errorCount = 0;
-	}
-
-	let searchSymbol = Symbol('search');
-	$: searchSymbol && resetSearch();
-
-	let healthRequest: Promise<Response> | null = null;
-	$: if (detectedIndex) {
-		healthRequest = fetch(`https://192.168.0.${detectedIndex}:2022/health`);
+		while (port.readable) {
+			const reader = port.readable.getReader();
+			try {
+				while (true) {
+					const { value, done } = await reader.read();
+					if (done) {
+						break;
+					}
+					console.log(value);
+				}
+			} catch (error) {
+				console.error(error);	
+			} finally {
+				reader.releaseLock();
+			}
+		}
 	}
 </script>
 
-{#if !detectedIndex}
-	{#key searchSymbol}
-		<div hidden>
-			{#each arr as index}
-				<img
-					on:load={onLoad(index)}
-					on:error={onError}
-					src="http://192.168.0.{index}:2023/ferret.jpg"
-					aria-hidden
-					alt="ferret"
-				/>
-			{/each}
-		</div>
-	{/key}
-{/if}
+<h1>
+	<MdiRaspberryPi />
+	Scanner
+</h1>
 
-<h1>Check-in</h1>
-
-{#if detectedIndex}
-	{#if healthRequest}
-		{#await healthRequest}
-			<p>checking health... (<a href={detectedIP}>{detectedIP}</a>)</p>
-		{:then response}
-			{#if response.ok}
-				<p>device: <a href={detectedIP}>{detectedIP}</a></p>
-			{:else}
-				<p>device: <a href={detectedIP}>{detectedIP}</a>, but it is not responding.</p>
-				<p>check the <a href={`${detectedIP}/health`}>health</a> of the device, and its logs.</p>
-			{/if}
-		{:catch error}
-			<p>error: {error.message}</p>
-			<p>
-				open the site at <a href={detectedIP}>{detectedIP}</a>, pass regardless of security, and
-				refresh this page.
-			</p>
-			<button on:click={() => (detectedIndex = detectedIndex)}>try again?</button>
-		{/await}
-	{:else}
-		<p>making request to {detectedIP}/health</p>
-	{/if}
-{:else if errorCount >= portRange}
-	<p>no devices found.</p>
-	<button on:click={() => (searchSymbol = Symbol('search'))}>try again?</button>
+{#if !mounted}
+	<p>Loading...</p>
+{:else if mounted && !hasSerial}
+	<p class="error">
+		Your browser does <b>not</b> support
+		the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API">
+			Web Serial API</a>.
+		Please use a different browser. (i,e. chromium-derived browsers;
+			chrome;
+			edge; 
+			opera)
+	</p>
+{:else if port}
+	<p>
+		Product ID: {port.getInfo().usbVendorId}
+		{#if getProductName(port.getInfo().usbVendorId)}
+			(<span class="accent">{getProductName(port.getInfo().usbVendorId)}</span>)
+		{/if}
+	</p>
+	<p>Vendor ID: {port.getInfo().usbVendorId}</p>
+	
 {:else}
-	<p>scanning... ({errorCount}/{portRange})</p>
+	<button on:click={scanSerial}>
+		initialize serial scan
+	</button>
 {/if}
 
-<style>
-	button {
-		margin-top: 1rem;
-		display: block;
+<style lang="scss">
+	h1 {
+		display: flex;
+		align-items: center;
+		gap: 0.5em;
+	}
+
+	.error {
+		color: var(--error);
+	}
+
+	.accent {
+		color: var(--accent);
 	}
 </style>

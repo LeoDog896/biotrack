@@ -146,6 +146,9 @@ importers:
       '@types/w3c-web-nfc':
         specifier: ^1.0.4
         version: 1.0.4
+      '@types/w3c-web-serial':
+        specifier: ^1.0.6
+        version: 1.0.6
       '@vitejs/plugin-basic-ssl':
         specifier: ^1.0.2
         version: 1.0.2(vite@5.0.11)
@@ -1094,6 +1097,10 @@ packages:
 
   /@types/w3c-web-nfc@1.0.4:
     resolution: {integrity: sha512-AxTfPROOzdBhpBhrmwNn19gk36nK9SwRppSVe2C2y0TFuz/nzJ1m9oYC5DNoMeajEhHL44M+zxcH8GTkhgYteQ==}
+    dev: true
+
+  /@types/w3c-web-serial@1.0.6:
+    resolution: {integrity: sha512-5IlDdQ2C56sCVwc7CUlqT9Axxw+0V/FbWRbErklYIzZ5mKL9s4l7epXHygn+4X7L2nmAPnVvRl55XUVo0760Rg==}
     dev: true
 
   /@typescript-eslint/eslint-plugin@7.2.0(@typescript-eslint/parser@7.2.0)(eslint@8.56.0)(typescript@5.3.3):

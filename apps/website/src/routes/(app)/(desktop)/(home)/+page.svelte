@@ -2,7 +2,7 @@
 	import AndroidLogo from './android.svg?url';
 	import ChromiumLogo from './chromium.svg?url';
 	import MdiGithub from '~icons/mdi/github';
-	import FaBrandsRaspberryPi from '~icons/fa-brands/raspberry-pi';
+	import MdiRaspberryPi from '~icons/mdi/raspberry-pi';
 	import MdiComputer from '~icons/mdi/computer';
 	import MdiShareVariant from '~icons/mdi/share-variant';
 
@@ -25,8 +25,8 @@
 	</li>
 	<li>
 		<a href="/scanner" class="noUnderscore">
-			<FaBrandsRaspberryPi />
-			<span class="underscore">use the Raspberry-PI powered check-in</span>
+			<MdiRaspberryPi />
+			<span class="underscore">use the <b>hardware-powered</b> check-in</span>
 		</a>
 	</li>
 	<li>
