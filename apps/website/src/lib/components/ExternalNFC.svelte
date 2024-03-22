@@ -43,6 +43,10 @@
     const encoder = new TextEncoder();
     const decoder = new TextDecoder();
 
+    /** Queued reader data to process in [waitForInput] */
+    let eventQueue: Uint8Array[] = []
+    let data = new Uint8Array();
+
     /**
      * Write data to the serial port.
      * 
@@ -60,7 +64,7 @@
     export async function waitForInput(
         lookFor: Uint8Array
     ): Promise<void> {
-        
+        // TODO: use await iterators   
     }
 
     /**
@@ -82,6 +86,7 @@
 						break;
 					}
                     dispatch("output", value);
+                    eventQueue.push(value);
 				}
 			} catch (error) {
                 dispatch("error", error);
