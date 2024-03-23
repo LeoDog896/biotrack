@@ -19,10 +19,20 @@
         }
         return result;
     }
+
+    function indexOf(haystack: Uint8Array, needle: Uint8Array): number {
+        for (let i = 0; i < haystack.length - needle.length; i++) {
+            if (haystack.slice(i, i + needle.length).every((value, index) => value === needle[index])) {
+                return i;
+            }
+        }
+        return -1;
+    }
 </script>
 
 <script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
+    import { event } from 'signal-async/dist';
 
 	export let port: SerialPort | null = null;
 
@@ -44,7 +54,7 @@
     const decoder = new TextDecoder();
 
     /** Queued reader data to process in [waitForInput] */
-    let eventQueue: Uint8Array[] = []
+    const eventQueue = event<Uint8Array>();
     let data = new Uint8Array();
 
     /**
@@ -64,7 +74,16 @@
     export async function waitForInput(
         lookFor: Uint8Array
     ): Promise<void> {
-        // TODO: use await iterators   
+        for await (const value of eventQueue.iterator) {
+            data = concatenateUint8Arrays(data, value);
+            if (data.length >= lookFor.length) {
+                const index = indexOf(data, lookFor);
+                if (index !== -1) {
+                    data = data.slice(index + lookFor.length);
+                    return;
+                }
+            }
+        }
     }
 
     /**
@@ -86,7 +105,7 @@
 						break;
 					}
                     dispatch("output", value);
-                    eventQueue.push(value);
+                    eventQueue.enqueue(value);
 				}
 			} catch (error) {
                 dispatch("error", error);

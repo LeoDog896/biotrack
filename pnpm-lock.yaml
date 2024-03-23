@@ -164,6 +164,9 @@ importers:
       sass:
         specifier: ^1.71.1
         version: 1.71.1
+      signal-async:
+        specifier: ^0.1.1
+        version: 0.1.1
       svelte:
         specifier: ^4.2.7
         version: 4.2.8
@@ -2804,6 +2807,10 @@ packages:
 
   /siginfo@2.0.0:
     resolution: {integrity: sha512-ybx0WO1/8bSBLEWXZvEd7gMW3Sn3JFlW3TvX1nREbDLRNQNaeNN8WK0meBwPdAaOI7TtRRRJn/Es1zhrrCHu7g==}
+    dev: true
+
+  /signal-async@0.1.1:
+    resolution: {integrity: sha512-cmFKj50f9Y0e0VvgqB6Ge0w57An36OniQh0BksvLtEvbTHtkDp3uAi9/eqIH/o+VNlUvO1Y86iN4fyK0MfM+ww==}
     dev: true
 
   /signal-exit@3.0.7:
