@@ -26,11 +26,11 @@
 		text-transform: uppercase;
 		font-weight: bold;
 		color: gray;
-        background-color: var(--error);
+		background-color: var(--error);
 
 		span {
-            background-color: var(--eror);
-            color: yellow;
+			background-color: var(--eror);
+			color: yellow;
 			flex-shrink: 0;
 			display: flex;
 			justify-content: space-around;

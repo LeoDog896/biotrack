@@ -6,13 +6,13 @@ import cookieParser from 'cookie';
 
 export async function createContext(event: CreateHTTPContextOptions | CreateWSSContextFnOptions) {
 	if (!event.req.headers.cookie) throw new Error('Missing cookie header');
-	
+
 	const cookie = cookieParser.parse(event.req.headers.cookie);
 	if (!cookie.session) throw new Error('Missing session cookie');
 	const officer = await validateSessionString(cookie.session);
 
 	return {
-		officer,
+		officer
 	};
 }
 

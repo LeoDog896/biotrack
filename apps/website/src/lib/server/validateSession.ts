@@ -15,7 +15,9 @@ interface Officer {
 	}[];
 }
 
-export const validateSessionOptionalString = async (sessionString: string | undefined): Promise<Officer | null> => {
+export const validateSessionOptionalString = async (
+	sessionString: string | undefined
+): Promise<Officer | null> => {
 	if (!sessionString) {
 		return null;
 	}
@@ -66,7 +68,7 @@ export const validateSessionString = async (sessionString: string): Promise<Offi
 	}
 
 	return officer;
-}
+};
 
 export const validateSession = async (cookies: Cookies): Promise<Officer> => {
 	const officer = await validateSessionOptional(cookies);

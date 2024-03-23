@@ -8,7 +8,7 @@
 
 	onMount(() => {
 		// Check for serial support
-		if ("serial" in navigator) {
+		if ('serial' in navigator) {
 			hasSerial = true;
 		}
 
@@ -16,8 +16,8 @@
 	});
 
 	const productToName: Record<number, string> = {
-		0x2341: "Arduino",
-		0x0403: "RedBoard"
+		0x2341: 'Arduino',
+		0x0403: 'RedBoard'
 	};
 
 	function getProductName(id: number | undefined) {
@@ -43,7 +43,7 @@
 					console.log(value);
 				}
 			} catch (error) {
-				console.error(error);	
+				console.error(error);
 			} finally {
 				reader.releaseLock();
 			}
@@ -60,13 +60,9 @@
 	<p>Loading...</p>
 {:else if mounted && !hasSerial}
 	<p class="error">
-		Your browser does <b>not</b> support
-		the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API">
-			Web Serial API</a>.
-		Please use a different browser. (i,e. chromium-derived browsers;
-			chrome;
-			edge; 
-			opera)
+		Your browser does <b>not</b> support the
+		<a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API"> Web Serial API</a>.
+		Please use a different browser. (i,e. chromium-derived browsers; chrome; edge; opera)
 	</p>
 {:else if port}
 	<p>
@@ -76,11 +72,8 @@
 		{/if}
 	</p>
 	<p>Vendor ID: {port.getInfo().usbVendorId}</p>
-	
 {:else}
-	<button on:click={scanSerial}>
-		initialize serial scan
-	</button>
+	<button on:click={scanSerial}> initialize serial scan </button>
 {/if}
 
 <style lang="scss">

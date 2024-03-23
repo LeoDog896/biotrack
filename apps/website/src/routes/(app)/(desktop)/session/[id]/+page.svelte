@@ -27,9 +27,7 @@
 {#if data.session.active}
 	<p>
 		<span class="positive">active</span>
-		<button on:click={showFinishModal}>
-			finish
-		</button>
+		<button on:click={showFinishModal}> finish </button>
 	</p>
 {:else if data.session.active === false}
 	<p><span class="negative">inactive</span></p>

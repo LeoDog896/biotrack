@@ -8,12 +8,15 @@
 
 <h1>Create Game</h1>
 
-<form method="POST" use:enhance={() => {
-	return async ({ update }) => {
-		await update();
-		name = '';
-	}
-}}>
+<form
+	method="POST"
+	use:enhance={() => {
+		return async ({ update }) => {
+			await update();
+			name = '';
+		};
+	}}
+>
 	<input bind:value={name} type="text" name="name" placeholder="Name" required />
 
 	<button type="submit">Submit</button>

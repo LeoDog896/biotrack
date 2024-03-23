@@ -51,4 +51,4 @@ export const actions = {
 			session: data
 		};
 	}
-}
+};

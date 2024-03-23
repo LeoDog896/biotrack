@@ -31,7 +31,7 @@
 		});
 	}
 
-	$: activeSession = data.sessions.find((session) => session.active)
+	$: activeSession = data.sessions.find((session) => session.active);
 
 	let archiveInput = '';
 </script>
@@ -60,7 +60,8 @@
 </p>
 
 <h2>Play Information</h2>
-<p>all sessions:
+<p>
+	all sessions:
 	<span class="accent">{data.sessions.length}</span>
 	{#if activeSession}
 		(<a href="/session/{activeSession.id}">see active session →</a>)

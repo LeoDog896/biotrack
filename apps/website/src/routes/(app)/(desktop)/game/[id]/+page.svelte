@@ -81,9 +81,8 @@
 {/if}
 
 <h3>
-	Sessions
-	({data.game.sessions.length})
-	{#if data.game.sessions.filter(session => session.active).length > 0}
+	Sessions ({data.game.sessions.length})
+	{#if data.game.sessions.filter((session) => session.active).length > 0}
 		<span class="positive">(currently active)</span>
 	{/if}
 </h3>
@@ -147,7 +146,9 @@
 			If this game is automatic, this will not push it through to the game,<br />
 			and <b>may cause desync.</b>
 		</p>
-		<p>If this game is manual<br/>(i.e. no sensors or automatic components), this action is fine</p>
+		<p>
+			If this game is manual<br />(i.e. no sensors or automatic components), this action is fine
+		</p>
 		<div class="buttons">
 			<form method="POST" action="?/acknowledge">
 				<input type="number" hidden name="joinRequestId" value={joinId} />

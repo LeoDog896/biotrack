@@ -66,11 +66,13 @@
 </div>
 
 {#if $page.state.modalShowing === 'addOfficer'}
-	<Modal on:close={() => {
-		history.back();
-		password = '';
-		passwordConfirm = '';
-	}}>
+	<Modal
+		on:close={() => {
+			history.back();
+			password = '';
+			passwordConfirm = '';
+		}}
+	>
 		<h1>Add Officer</h1>
 		<form method="POST" action="?/add">
 			<div class="input">
@@ -79,21 +81,34 @@
 			</div>
 			<div class="input">
 				<label for="password">Password:</label>
-				<input bind:value={password} type="password" autocomplete="new-password" name="password" id="password" required />
+				<input
+					bind:value={password}
+					type="password"
+					autocomplete="new-password"
+					name="password"
+					id="password"
+					required
+				/>
 			</div>
 			<div class="input">
 				<label for="confirmPassword">Confirm Password:</label>
-				<input bind:value={passwordConfirm} type="password" name="confirmPassword" id="confirmPassword" required />
+				<input
+					bind:value={passwordConfirm}
+					type="password"
+					name="confirmPassword"
+					id="confirmPassword"
+					required
+				/>
 			</div>
 			<div class="input">
 				<label for="admin">Admin:</label>
 				<input type="checkbox" name="admin" id="admin" />
 			</div>
-			<button 
+			<button
 				type="submit"
 				class="marginY full"
-				disabled={!password || password !== passwordConfirm}
-			>Add</button>
+				disabled={!password || password !== passwordConfirm}>Add</button
+			>
 		</form>
 	</Modal>
 {/if}
@@ -131,9 +146,9 @@
 		gap: 1rem;
 	}
 
-    form {
-        text-align: left;
-    }
+	form {
+		text-align: left;
+	}
 
 	.title h1 {
 		margin-bottom: 0;

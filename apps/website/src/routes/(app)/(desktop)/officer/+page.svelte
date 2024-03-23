@@ -27,10 +27,14 @@
 			<p>last used: <span class="accent">{session.lastUsed.toLocaleString()}</span></p>
 			<p>by: <span class="accent">{session.ip}</span></p>
 			{#if parsedUA}
-				<p>on: <span class="accent">
-					{parsedUA.browser.name} {parsedUA.browser.version};
-					{parsedUA.os.name} {parsedUA.os.version}
-				</span></p>
+				<p>
+					on: <span class="accent">
+						{parsedUA.browser.name}
+						{parsedUA.browser.version};
+						{parsedUA.os.name}
+						{parsedUA.os.version}
+					</span>
+				</p>
 			{:else}
 				<p>on: <span class="false">unknown user agent</span></p>
 			{/if}

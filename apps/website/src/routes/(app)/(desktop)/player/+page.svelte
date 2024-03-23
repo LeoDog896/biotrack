@@ -31,7 +31,7 @@
 				<li>
 					<a href={`/player/${user.id}`}>
 						{user.name}
-						{#if user.sessions.find(session => session.active)}
+						{#if user.sessions.find((session) => session.active)}
 							(<span class="positive">active</span>)
 						{/if}
 					</a>
