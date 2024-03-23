@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { pushState } from '$app/navigation';
 	import { page } from '$app/stores';
-	import Math from '$lib/components/Math.svelte';
+	import MathBlock from '$lib/components/Math.svelte';
 	import Modal from '$lib/components/Modal.svelte';
 
 	export let data;
@@ -18,6 +18,7 @@
 		});
 	}
 
+	let error: string | null = null;
 	let result: number | null = null;
 </script>
 
@@ -86,15 +87,22 @@
 	<Modal on:click={() => history.back()}>
 		<h2>Create Score Block</h2>
 		<form method="POST" action="?/scoreBlock">
-			<label>
-				score:
-				<input type="number" name="score" required hidden />
-				{result}
-				<Math bind:result />
+			<input type="number" name="score" required hidden />
+			<label for="score">
+				score: {#if error}
+					<span class="negative">{error}</span>
+				{:else if result === null}
+					<span class="negative">none</span>
+				{:else}
+					<span class="accent">{Math.round(result)}</span>
+				{/if}
 			</label>
+			<br />
+			<p><i class="accent">hint: </i> mathematical expressions work!</p>
+			<MathBlock bind:error bind:result />
 			<div class="buttons margin-top">
 				<button type="submit">create</button>
-				<button on:click={() => history.back()}>cancel</button>
+				<button type="button" on:click={() => history.back()}>cancel</button>
 			</div>
 		</form>
 	</Modal>
@@ -111,6 +119,10 @@
 
 	.margin-top {
 		margin-top: 1rem;
+	}
+
+	.accent {
+		color: var(--color);
 	}
 
 	.buttons {

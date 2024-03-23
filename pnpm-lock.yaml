@@ -189,8 +189,8 @@ importers:
         specifier: ^3.6.0
         version: 3.6.2(postcss@8.4.32)(sass@1.71.1)(svelte@4.2.8)
       svelte-mathquill:
-        specifier: ^0.8.1
-        version: 0.8.1(jquery@1.11.0)(mathquill@0.10.1-a)(svelte@4.2.8)
+        specifier: ^0.8.2
+        version: 0.8.2(svelte@4.2.8)
       trpc-sveltekit:
         specifier: ^3.6.1
         version: 3.6.1(@sveltejs/adapter-node@5.0.1)(@trpc/client@10.45.2)(@trpc/server@10.45.2)(ws@8.16.0)
@@ -2865,6 +2865,10 @@ packages:
     resolution: {integrity: sha512-cmFKj50f9Y0e0VvgqB6Ge0w57An36OniQh0BksvLtEvbTHtkDp3uAi9/eqIH/o+VNlUvO1Y86iN4fyK0MfM+ww==}
     dev: true
 
+  /signal-async@0.2.0:
+    resolution: {integrity: sha512-oSL9LySol9vlMWSxjYkye0grMUano7qjDzN7QAkbYzosQ9fw3H8+ExgTNSMvX3Hlh7RVSG2TMr86DYGU1cG9Kg==}
+    dev: true
+
   /signal-exit@3.0.7:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
     dev: true
@@ -3019,15 +3023,13 @@ packages:
       svelte: 4.2.8
     dev: true
 
-  /svelte-mathquill@0.8.1(jquery@1.11.0)(mathquill@0.10.1-a)(svelte@4.2.8):
-    resolution: {integrity: sha512-7FxPP40Dro+p1gJhx7mQbdLO6qQ4DeumeefYd1mtC8lKIS6BFrWKiq4/P+TNEnCbyo0vxv+fJMxx9Epph4rR9Q==}
+  /svelte-mathquill@0.8.2(svelte@4.2.8):
+    resolution: {integrity: sha512-OyJUkZyCs33EGw99MdSnRrfJVBs5+DEmGvy/9I9eqTLkoGUt4/+x7yTbLhyO7wIyn/gM2rKIqBBIfiP8RWS6RQ==}
     peerDependencies:
-      jquery: ^1.11.0
-      mathquill: ^0.10.1-a
       svelte: '>=4.0.0'
     dependencies:
       jquery: 1.11.0
-      mathquill: 0.10.1-a
+      signal-async: 0.2.0
       svelte: 4.2.8
     dev: true
 

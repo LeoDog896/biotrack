@@ -4,12 +4,15 @@
 
     const engine = new ComputeEngine();
 
+    export let error: string | null = null;
+
     let latex = '';
 
-    function safeParse(latex: string) {
+    function safeParse(latex: string): BoxedExpression | null {
         try {
             return engine.parse(latex);
         } catch (e) {
+            error = "invalid expression";
             return null;
         }
     }
@@ -18,6 +21,7 @@
         try {
             return json.evaluate();
         } catch (e) {
+            error = "could not evaluate";
             return null;
         }
     }
@@ -30,6 +34,10 @@
         const expr = boxedResult.valueOf();
         if (typeof expr === 'number') {
             result = expr;
+            error = null;
+        } else {
+            error = "could not evaluate";
+            result = null;
         }
     }
 </script>
