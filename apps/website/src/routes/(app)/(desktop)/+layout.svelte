@@ -22,7 +22,7 @@
 </script>
 
 <MathQuillSetup />
-<Toaster officerName={data.officer.name} officerId={data.officer.id} />
+<Toaster />
 
 <nav>
 	<a href="/" class="title"><img src="/logo.svg" alt="biotrack" /> biotrack</a>
@@ -37,8 +37,9 @@
 				</div>
 			</div>
 		</div>
+		<a href="/pager">pager</a>
 		<a href="/officer">officers</a>
-		<a href="/scanner">check-in</a>
+		<a href="/scanner">hardware</a>
 		{#if data.local}
 			<a href="/orchestrator" class="red">orchestrator</a>
 		{/if}
@@ -139,6 +140,7 @@
 		margin: 0 auto;
 		padding: 0 1rem;
 		padding-bottom: 4rem;
+		height: calc(100vh - 12rem);
 	}
 
 	footer {

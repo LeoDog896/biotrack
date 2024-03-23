@@ -3,8 +3,15 @@ import { initTRPC } from '@trpc/server';
 import { z } from 'zod';
 import { Event } from 'ts-typed-events';
 import { observable } from '@trpc/server/observable';
+import { prisma } from '$lib/prismaConnection';
 
-const pingEvent = new Event<string>();
+const pingEvent = new Event<Message>();
+
+interface Message {
+	message: string;
+	officerID: string;
+	officerName: string;
+}
 
 export const t = initTRPC.context<Context>().create();
 
@@ -15,12 +22,26 @@ export const router = t.router({
 				message: z.string()
 			})
 		)
-		.mutation(async ({ input }) => {
-			pingEvent.emit(input.message.substring(0, 280));
+		.mutation(async ({ input, ctx }) => {
+			pingEvent.emit({
+				message: input.message.substring(0, 280),
+				officerID: ctx.officer.id,
+				officerName: ctx.officer.name
+			});
+			await prisma.message.create({
+				data: {
+					content: input.message.substring(0, 280),
+					officer: {
+						connect: {
+							id: ctx.officer.id
+						}
+					}
+				}
+			})
 		}),
 	pingSubscription: t.procedure.subscription(() => {
-		return observable<string>((observer) => {
-			const callback = (message: string) => {
+		return observable<Message>((observer) => {
+			const callback = (message: Message) => {
 				observer.next(message);
 			};
 
