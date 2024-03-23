@@ -2,6 +2,7 @@
 	import { pushState } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Modal from '$lib/components/Modal.svelte';
+	import { MathQuillSetup, MathQuill } from 'svelte-mathquill';
 
 	export let data;
 
@@ -17,6 +18,8 @@
 		});
 	}
 </script>
+
+<MathQuillSetup />
 
 <h1>Session {data.session.id}</h1>
 
@@ -85,7 +88,8 @@
 		<form method="POST" action="?/scoreBlock">
 			<label>
 				score:
-				<input type="number" name="score" required />
+				<input type="number" name="score" required hidden />
+				<MathQuill />
 			</label>
 			<div class="buttons margin-top">
 				<button type="submit">create</button>
