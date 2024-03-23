@@ -15,9 +15,7 @@ interface Officer {
 	}[];
 }
 
-export const validateSessionOptional = async (cookies: Cookies): Promise<Officer | null> => {
-	const sessionString = cookies.get('session');
-
+export const validateSessionOptionalString = async (sessionString: string | undefined): Promise<Officer | null> => {
 	if (!sessionString) {
 		return null;
 	}
@@ -53,6 +51,22 @@ export const validateSessionOptional = async (cookies: Cookies): Promise<Officer
 
 	return officer;
 };
+
+export const validateSessionOptional = async (cookies: Cookies): Promise<Officer | null> => {
+	const sessionString = cookies.get('session');
+
+	return validateSessionOptionalString(sessionString);
+};
+
+export const validateSessionString = async (sessionString: string): Promise<Officer> => {
+	const officer = await validateSessionOptionalString(sessionString);
+
+	if (!officer) {
+		redirect(302, '/login');
+	}
+
+	return officer;
+}
 
 export const validateSession = async (cookies: Cookies): Promise<Officer> => {
 	const officer = await validateSessionOptional(cookies);

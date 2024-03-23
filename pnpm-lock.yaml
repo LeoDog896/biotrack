@@ -143,6 +143,9 @@ importers:
       '@trpc/server':
         specifier: 10.45.2
         version: 10.45.2
+      '@types/cookie':
+        specifier: ^0.6.0
+        version: 0.6.0
       '@types/node':
         specifier: ^20.11.6
         version: 20.11.6
@@ -158,6 +161,9 @@ importers:
       '@vitejs/plugin-basic-ssl':
         specifier: ^1.0.2
         version: 1.0.2(vite@5.0.11)
+      cookie:
+        specifier: ^0.6.0
+        version: 0.6.0
       dayjs:
         specifier: ^1.11.10
         version: 1.11.10

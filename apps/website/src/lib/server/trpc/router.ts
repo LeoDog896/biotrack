@@ -1,4 +1,4 @@
-import type { Context } from '$lib/trpc/context';
+import type { Context } from '$lib/server/trpc/context';
 import { initTRPC } from '@trpc/server';
 import { z } from 'zod';
 import { Event } from 'ts-typed-events';

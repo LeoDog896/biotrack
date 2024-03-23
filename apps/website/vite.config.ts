@@ -7,11 +7,11 @@ import { vitePluginTrpcWebSocket } from 'trpc-sveltekit/websocket';
 export default defineConfig({
 	plugins: [
 		sveltekit(),
+		vitePluginTrpcWebSocket,
 		basicSsl(),
 		Icons({
 			compiler: 'svelte'
-		}),
-		vitePluginTrpcWebSocket
+		})
 	],
 	server: {
 		proxy: {},

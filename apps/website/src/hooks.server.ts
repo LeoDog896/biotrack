@@ -1,5 +1,5 @@
-import { createContext } from '$lib/trpc/context';
-import { router } from '$lib/trpc/router';
+import { createContext } from '$lib/server/trpc/context';
+import { router } from '$lib/server/trpc/router';
 import { createTRPCWebSocketServer } from 'trpc-sveltekit/websocket';
 import { error, type Handle } from '@sveltejs/kit';
 import { building } from '$app/environment';
