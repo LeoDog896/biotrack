@@ -10,6 +10,12 @@
 			modalShowing: 'finish'
 		});
 	}
+
+	function createScoreBlock() {
+		pushState('', {
+			modalShowing: 'createScoreBlock'
+		});
+	}
 </script>
 
 <h1>Session {data.session.id}</h1>
@@ -38,7 +44,10 @@
 <h2>Score Blocks</h2>
 
 {#if data.session.scoreBlock.length === 0}
-	<p><i>no score blocks yet.</i></p>
+	<p>
+		<i>no score blocks yet.</i>
+		<button on:click={createScoreBlock}>create a score block</button>
+	</p>
 {:else}
 	<ul>
 		{#each data.session.scoreBlock as scoreBlock}
@@ -70,6 +79,22 @@
 	</Modal>
 {/if}
 
+{#if $page.state.modalShowing === 'createScoreBlock'}
+	<Modal on:click={() => history.back()}>
+		<h2>Create Score Block</h2>
+		<form method="POST" action="?/scoreBlock">
+			<label>
+				score:
+				<input type="number" name="score" required />
+			</label>
+			<div class="buttons margin-top">
+				<button type="submit">create</button>
+				<button on:click={() => history.back()}>cancel</button>
+			</div>
+		</form>
+	</Modal>
+{/if}
+
 <style lang="scss">
 	.positive {
 		color: var(--success);
@@ -79,9 +104,13 @@
 		color: var(--error);
 	}
 
+	.margin-top {
+		margin-top: 1rem;
+	}
+
 	.buttons {
 		display: flex;
-		justify-content: space-between;
+		justify-content: center;
 		gap: 1rem;
 	}
 </style>
