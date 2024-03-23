@@ -98,6 +98,9 @@ importers:
 
   apps/website:
     devDependencies:
+      '@cortex-js/compute-engine':
+        specifier: ^0.24.1
+        version: 0.24.1
       '@fontsource/ibm-plex-mono':
         specifier: ^5.0.8
         version: 5.0.8
@@ -161,6 +164,12 @@ importers:
       fuse.js:
         specifier: ^7.0.0
         version: 7.0.0
+      jquery:
+        specifier: 1.11.0
+        version: 1.11.0
+      mathquill:
+        specifier: 0.10.1-a
+        version: 0.10.1-a
       prisma:
         specifier: ^5.11.0
         version: 5.11.0
@@ -180,8 +189,8 @@ importers:
         specifier: ^3.6.0
         version: 3.6.2(postcss@8.4.32)(sass@1.71.1)(svelte@4.2.8)
       svelte-mathquill:
-        specifier: ^0.7.0
-        version: 0.7.0(svelte@4.2.8)
+        specifier: ^0.8.1
+        version: 0.8.1(jquery@1.11.0)(mathquill@0.10.1-a)(svelte@4.2.8)
       trpc-sveltekit:
         specifier: ^3.6.1
         version: 3.6.1(@sveltejs/adapter-node@5.0.1)(@trpc/client@10.45.2)(@trpc/server@10.45.2)(ws@8.16.0)
@@ -246,6 +255,14 @@ packages:
 
   /@antfu/utils@0.7.7:
     resolution: {integrity: sha512-gFPqTG7otEJ8uP6wrhDv6mqwGWYZKNvAcCq6u9hOj0c+IKCEsY4L1oC9trPq2SaWIzAfHvqfBDxF591JkMf+kg==}
+    dev: true
+
+  /@cortex-js/compute-engine@0.24.1:
+    resolution: {integrity: sha512-B9pLaZFC1vBrL64yR2LQWy2sj1E/+wtwIVokPuPqX8YWXwj9W2AMVyS9pSMN8gEdjpAC50nSmtL6110Rgi7dKA==}
+    engines: {node: '>=16.14.2', npm: '>=8.5.0'}
+    dependencies:
+      complex.js: 2.1.1
+      decimal.js: 10.4.3
     dev: true
 
   /@esbuild/aix-ppc64@0.19.11:
@@ -1511,6 +1528,10 @@ packages:
     resolution: {integrity: sha512-W9pAhw0ja1Edb5GVdIF1mjZw/ASI0AlShXM83UUGe2DVr5TdAPEA1OA8m/g8zWp9x6On7gqufY+FatDbC3MDQg==}
     dev: true
 
+  /complex.js@2.1.1:
+    resolution: {integrity: sha512-8njCHOTtFFLtegk6zQo0kkVX1rngygb/KQI6z1qZxlFI3scluC+LVTCFbrkWjBv4vvLlbQ9t88IPMC6k95VTTg==}
+    dev: true
+
   /concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
     dev: true
@@ -1562,6 +1583,10 @@ packages:
         optional: true
     dependencies:
       ms: 2.1.2
+    dev: true
+
+  /decimal.js@10.4.3:
+    resolution: {integrity: sha512-VBBaLc1MgL5XpzgIP7ny5Z6Nx3UrRkIViUkPUdtl9aya5amy3De1gsUUSB1g3+3sExYNjCAsAznmukyxCb1GRA==}
     dev: true
 
   /deep-eql@4.1.3:
@@ -2076,13 +2101,6 @@ packages:
     engines: {node: '>=16.17.0'}
     dev: true
 
-  /ignore-walk@5.0.1:
-    resolution: {integrity: sha512-yemi4pMf51WKT7khInJqAvsIGzoqYXblnsz0ql8tM+yi1EKYTY1evX4NAbJrLL/Aanr2HyZeluqU+Oi7MGHokw==}
-    engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
-    dependencies:
-      minimatch: 5.1.6
-    dev: true
-
   /ignore@5.3.0:
     resolution: {integrity: sha512-g7dmpshy+gD7mh88OC9NwSGTKoc3kyLAZQRU1mt53Aw/vnvfXnbC+F/7F7QoYVKbV+KNvJx8wArewKy1vXMtlg==}
     engines: {node: '>= 4'}
@@ -2192,6 +2210,14 @@ packages:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
     dev: true
 
+  /jquery@1.11.0:
+    resolution: {integrity: sha512-hfN15gXeUqsx3HxHrHYzVzfWayuGwrCMONhvexiaIV/aUlLqC8Im+G7KrKTPkHzD7HCgeAaQ7VeHRn3Dlve8Hg==}
+    dev: true
+
+  /jquery@1.12.4:
+    resolution: {integrity: sha512-UEVp7PPK9xXYSk8xqXCJrkXnKZtlgWkd2GsAQbMRFK6S/ePU2JN5G2Zum8hIVjzR3CpdfSqdqAzId/xd4TJHeg==}
+    dev: true
+
   /js-yaml@4.1.0:
     resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
     hasBin: true
@@ -2288,6 +2314,12 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       '@jridgewell/sourcemap-codec': 1.4.15
+    dev: true
+
+  /mathquill@0.10.1-a:
+    resolution: {integrity: sha512-snSAEwAtwdwBFSor+nVBnWWQtTw67kgAgKMyAIxuz4ZPboy0qkWZmd7BL3lfOXp/INihhRlU1PcfaAtDaRhmzA==}
+    dependencies:
+      jquery: 1.12.4
     dev: true
 
   /mdn-data@2.0.30:
@@ -2419,29 +2451,6 @@ packages:
   /normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
     engines: {node: '>=0.10.0'}
-    dev: true
-
-  /npm-bundled@2.0.1:
-    resolution: {integrity: sha512-gZLxXdjEzE/+mOstGDqR6b0EkhJ+kM6fxM6vUuckuctuVPh80Q6pw/rSZj9s4Gex9GxWtIicO1pc8DB9KZWudw==}
-    engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
-    dependencies:
-      npm-normalize-package-bin: 2.0.0
-    dev: true
-
-  /npm-normalize-package-bin@2.0.0:
-    resolution: {integrity: sha512-awzfKUO7v0FscrSpRoogyNm0sajikhBWpU0QMrW09AMi9n1PoKU6WaIqUzuJSQnpciZZmJ/jMZ2Egfmb/9LiWQ==}
-    engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
-    dev: true
-
-  /npm-packlist@5.1.3:
-    resolution: {integrity: sha512-263/0NGrn32YFYi4J533qzrQ/krmmrWwhKkzwTuM4f/07ug51odoaNjUexxO4vxlzURHcmYMH1QjvHjsNDKLVg==}
-    engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
-    hasBin: true
-    dependencies:
-      glob: 8.1.0
-      ignore-walk: 5.0.1
-      npm-bundled: 2.0.1
-      npm-normalize-package-bin: 2.0.0
     dev: true
 
   /npm-run-path@4.0.1:
@@ -2685,16 +2694,6 @@ packages:
     requiresBuild: true
     dependencies:
       '@prisma/engines': 5.11.0
-    dev: true
-
-  /publint@0.1.16:
-    resolution: {integrity: sha512-wJgk7HnXDT5Ap0DjFYbGz78kPkN44iQvDiaq8P63IEEyNU9mYXvaMd2cAyIM6OgqXM/IA3CK6XWIsRq+wjNpgw==}
-    engines: {node: '>=16'}
-    hasBin: true
-    dependencies:
-      npm-packlist: 5.1.3
-      picocolors: 1.0.0
-      sade: 1.8.1
     dev: true
 
   /punycode@2.3.1:
@@ -3020,12 +3019,15 @@ packages:
       svelte: 4.2.8
     dev: true
 
-  /svelte-mathquill@0.7.0(svelte@4.2.8):
-    resolution: {integrity: sha512-f2p8M2YLV08P/2A2rjRrfK7CcNpNIij8frWzaBnaTzPp6MJwwCvMRjju1k8A1dumv5uHGhchpz3tV5ZovUu41A==}
+  /svelte-mathquill@0.8.1(jquery@1.11.0)(mathquill@0.10.1-a)(svelte@4.2.8):
+    resolution: {integrity: sha512-7FxPP40Dro+p1gJhx7mQbdLO6qQ4DeumeefYd1mtC8lKIS6BFrWKiq4/P+TNEnCbyo0vxv+fJMxx9Epph4rR9Q==}
     peerDependencies:
-      svelte: ^3.54.0
+      jquery: ^1.11.0
+      mathquill: ^0.10.1-a
+      svelte: '>=4.0.0'
     dependencies:
-      publint: 0.1.16
+      jquery: 1.11.0
+      mathquill: 0.10.1-a
       svelte: 4.2.8
     dev: true
 

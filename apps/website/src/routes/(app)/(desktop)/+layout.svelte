@@ -4,6 +4,7 @@
 	import { page } from '$app/stores';
 	import { trpc } from '$lib/trpc/client';
 	import Toaster from './Toaster.svelte';
+	import { MathQuillSetup } from 'svelte-mathquill';
 
 	const showPingModal = () =>
 		pushState('', {
@@ -20,6 +21,7 @@
 	}
 </script>
 
+<MathQuillSetup />
 <Toaster officerName={data.officer.name} officerId={data.officer.id} />
 
 <nav>
