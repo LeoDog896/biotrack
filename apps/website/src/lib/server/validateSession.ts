@@ -6,6 +6,13 @@ interface Officer {
 	id: string;
 	admin: boolean;
 	archived: boolean;
+	sessions: {
+		expires: Date;
+		lastUsed: Date;
+		ip: string;
+		createdAt: Date;
+		userAgent: string;
+	}[];
 }
 
 export const validateSessionOptional = async (cookies: Cookies): Promise<Officer | null> => {
@@ -28,7 +35,19 @@ export const validateSessionOptional = async (cookies: Cookies): Promise<Officer
 			name: true,
 			id: true,
 			admin: true,
-			archived: true
+			archived: true,
+			sessions: {
+				select: {
+					expires: true,
+					lastUsed: true,
+					ip: true,
+					createdAt: true,
+					userAgent: true
+				},
+				orderBy: {
+					lastUsed: 'desc'
+				}
+			}
 		}
 	});
 

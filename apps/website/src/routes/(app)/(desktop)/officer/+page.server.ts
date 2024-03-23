@@ -5,7 +5,8 @@ export const load = async () => {
 		select: {
 			name: true,
 			id: true,
-			admin: true
+			admin: true,
+			sessions: true
 		}
 	});
 
