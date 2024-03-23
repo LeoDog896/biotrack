@@ -23,11 +23,6 @@ export const router = t.router({
 			})
 		)
 		.mutation(async ({ input, ctx }) => {
-			pingEvent.emit({
-				message: input.message.substring(0, 280),
-				officerID: ctx.officer.id,
-				officerName: ctx.officer.name
-			});
 			await prisma.message.create({
 				data: {
 					content: input.message.substring(0, 280),
@@ -37,7 +32,12 @@ export const router = t.router({
 						}
 					}
 				}
-			})
+			});
+			pingEvent.emit({
+				message: input.message.substring(0, 280),
+				officerID: ctx.officer.id,
+				officerName: ctx.officer.name
+			});
 		}),
 	pingSubscription: t.procedure.subscription(() => {
 		return observable<Message>((observer) => {

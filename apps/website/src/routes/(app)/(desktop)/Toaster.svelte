@@ -3,10 +3,13 @@
 	import { onMount } from 'svelte';
 	import { trpc } from '$lib/trpc/client';
 	import Message from './Message.svelte';
+	import { page } from '$app/stores';
 
 	onMount(() => {
 		const { unsubscribe } = trpc().pingSubscription.subscribe(undefined, {
 			onData({ message, officerID, officerName }) {
+				if ($page.url.pathname === '/pager') return;
+
 				toast(Message, {
 					style: 'border: 2px solid black; border-radius: 0;',
 					icon: '💬',
