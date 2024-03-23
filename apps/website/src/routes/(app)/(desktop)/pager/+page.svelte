@@ -14,13 +14,17 @@
 		message = '';
 	}
 
+    function isClose(a: number, b: number, threshold = 10) {
+        return Math.abs(a - b) < threshold;
+    }
+
 	onMount(() => {
 		messageBox.scrollTop = messageBox.scrollHeight;
 
 		const { unsubscribe } = trpc().pingSubscription.subscribe(undefined, {
 			async onData() {
-				const atBottom = messageBox.scrollTop + messageBox.clientHeight === messageBox.scrollHeight;
-				await invalidateAll();
+				const atBottom = isClose(messageBox.scrollTop + messageBox.clientHeight, messageBox.scrollHeight);
+                await invalidateAll();
 				if (atBottom) {
 					messageBox.scrollTop = messageBox.scrollHeight;
 				}
@@ -45,7 +49,7 @@
 
 <div class="messageBox">
 	<div class="messages" bind:this={messageBox}>
-		{#each data.messages as message}
+		{#each data.messages.slice().reverse() as message}
 			<div class="message">
 				<div class="author">
 					<a href="/officer/{message.officer.id}">

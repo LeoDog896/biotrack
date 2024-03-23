@@ -5,6 +5,6 @@
 </script>
 
 <div class="content">
-	<p>from: <a href="/officer/{id}">{author}</a></p>
+	<p>from: <a href="/officer/{id}">{author}</a> (<a href="/pager">go to pager</a>)</p>
 	<p>{message.substring(0, 280)}</p>
 </div>

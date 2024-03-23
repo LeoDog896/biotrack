@@ -10,7 +10,11 @@ export const load = async () => {
 						id: true
 					}
 				}
-			}
+			},
+			orderBy: {
+				createdAt: 'desc'
+			},
+			take: 200
 		})
 	};
 };
