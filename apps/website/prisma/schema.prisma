@@ -61,7 +61,7 @@ model Message {
   updatedAt DateTime @updatedAt
   content   String
 
-  // Whether the message was sent by an officer
+  // Which officer sent this message
   officer   Officer @relation(fields: [officerId], references: [id])
   officerId String
 }

@@ -33,6 +33,7 @@
 				<div class="links">
 					<a href="/player">players</a>
 					<a href="/game">games</a>
+					<a href="/session">sessions</a>
 				</div>
 			</div>
 		</div>

@@ -7,6 +7,10 @@
 		{
 			name: 'Game Dashboard',
 			link: '/game'
+		},
+		{
+			name: 'Session Dashboard',
+			link: '/session'
 		}
 	];
 
