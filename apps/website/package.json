@@ -49,6 +49,7 @@
 		"svelte-canvas": "^1.1.1",
 		"svelte-check": "^3.6.0",
 		"svelte-mathquill": "^0.8.2",
+		"svelte-select": "^5.8.3",
 		"trpc-sveltekit": "^3.6.1",
 		"ts-typed-events": "^3.0.0",
 		"tslib": "^2.4.1",

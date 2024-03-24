@@ -6,12 +6,13 @@
 
 	export let error: string | null = null;
 
-	let latex = '';
+	let latex = '0';
 
 	function safeParse(latex: string): BoxedExpression | null {
 		try {
 			return engine.parse(latex);
 		} catch (e) {
+			console.error(e);
 			error = 'invalid expression';
 			return null;
 		}
@@ -21,6 +22,7 @@
 		try {
 			return json.evaluate();
 		} catch (e) {
+			console.error(e);
 			error = 'could not evaluate';
 			return null;
 		}
@@ -42,4 +44,10 @@
 	}
 </script>
 
-<MathQuill bind:latex />
+<MathQuill 
+	bind:latex
+	config={{
+		autoCommands: "pi theta sqrt sum",
+		autoOperatorNames: "sin cos tan",
+	}}
+/>

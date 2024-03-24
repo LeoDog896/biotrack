@@ -82,7 +82,7 @@
 {/if}
 
 {#if $page.state.modalShowing === 'createScoreBlock'}
-	<Modal on:click={() => history.back()}>
+	<Modal on:close={() => history.back()}>
 		<h2>Create Score Block</h2>
 		<form method="POST" action="?/scoreBlock">
 			<input type="number" name="score" required hidden />
