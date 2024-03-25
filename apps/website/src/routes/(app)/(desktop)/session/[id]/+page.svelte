@@ -51,6 +51,7 @@
 		<button on:click={createScoreBlock}>create a score block</button>
 	</p>
 {:else}
+	<p><span class="accent">Total</span>: {data.session.scoreBlock.reduce((a, b) => a + b.score, 0)}</p>
 	<ul>
 		{#each data.session.scoreBlock as scoreBlock}
 			<li>
@@ -58,6 +59,7 @@
 			</li>
 		{/each}
 	</ul>
+	<button on:click={createScoreBlock}>create a score block</button>
 {/if}
 
 <h2>Data</h2>
@@ -85,7 +87,9 @@
 	<Modal on:close={() => history.back()}>
 		<h2>Create Score Block</h2>
 		<form method="POST" action="?/scoreBlock">
-			<input type="number" name="score" required hidden />
+			{#if result}
+				<input type="number" name="score" hidden value={Math.round(result)} />
+			{/if}
 			<label for="score">
 				score: {#if error}
 					<span class="negative">{error}</span>

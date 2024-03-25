@@ -93,11 +93,11 @@
 			<li>
 				<a href="/session/{session.id}">
 					{#if score > 0}
-						<span class="positive">+{session.id}</span>
+						<span class="positive">+{score}</span>
 					{:else if score == 0}
 						0
 					{:else}
-						<span class="negative">-{session.id}</span>
+						<span class="negative">-{score}</span>
 					{/if}
 					(with {session.scoreBlock.length} score blocks, {session.createdAt.toLocaleString()}) -
 					{#if session.active}

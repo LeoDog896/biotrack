@@ -1,5 +1,6 @@
 import { prisma } from '$lib/prismaConnection.js';
 import { validateSession } from '$lib/server/validateSession';
+import { createId } from '@paralleldrive/cuid2';
 import { error } from '@sveltejs/kit';
 
 export const load = async ({ params }) => {
@@ -50,5 +51,49 @@ export const actions = {
 			message: 'Session finished',
 			session: data
 		};
+	},
+	scoreBlock: async ({ params, cookies, request }) => {
+		await validateSession(cookies);
+
+		const data = await request.formData();
+
+		const score = data.get('score');
+		if (!score) error(400, 'No score found.');
+		if (typeof score !== 'string') error(400, 'Improper score')
+
+		const session = await prisma.session.findFirst({
+			where: {
+				id: parseInt(params.id)
+			},
+			include: {
+				user: true
+			}
+		});
+
+		if (!session) error(404, 'Session not found');
+
+		for (const user of session.user) {
+			await prisma.scoreBlock.create({
+				data: {
+					id: createId(),
+					user: {
+						connect: {
+							id: user.id
+						}
+					},
+					session: {
+						connect: {
+							id: session.id
+						}
+					},
+					score: Math.round(parseInt(score)),
+					data: ''
+				}
+			})
+		}
+
+		return {
+			success: true
+		}
 	}
 };
