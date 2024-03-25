@@ -12,6 +12,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: ZIP contents in apps/web
+        run: zip -r website.zip apps/website
+      - name: Copy ZIP as a .png
+        run: cp website.zip website.png
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -19,4 +23,5 @@ jobs:
           prerelease: true
           title: "Development Build"
           files: |
-            apps/website/*
+            website.zip
+            website.png
