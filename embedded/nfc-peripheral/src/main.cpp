@@ -50,6 +50,10 @@ void loop(void)
       Serial.print("tag: ");
       int payloadLength = record.getPayloadLength();
       int typeLength = record.getTypeLength();
+      for (int i = 0; i < 3 - String(payloadLength - typeLength - langLength).length(); i++)
+      {
+        Serial.print("0");
+      }
       Serial.print(payloadLength - typeLength - langLength);
       Serial.print(" ");
       for (int i = typeLength + langLength; i < payloadLength; i++)

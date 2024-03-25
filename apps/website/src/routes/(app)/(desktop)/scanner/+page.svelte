@@ -1,55 +1,41 @@
 <script lang="ts">
+	import ExternalNfc from '$lib/components/ExternalNFC.svelte';
 	import { onMount } from 'svelte';
 	import MdiRaspberryPi from '~icons/mdi/raspberry-pi';
+	import { state } from 'signal-async/src/index.ts';
+
+	let ready = state(false);
 
 	let hasSerial = false;
 	let mounted = false;
+	let nfc: ExternalNfc
 	let port: SerialPort | null = null;
 
-	onMount(() => {
+	onMount(async () => {
 		// Check for serial support
 		if ('serial' in navigator) {
 			hasSerial = true;
 		}
 
 		mounted = true;
+
+		await nfc.waitForInputString("log: init\n");
+		ready.set(true);
 	});
 
-	const productToName: Record<number, string> = {
-		0x2341: 'Arduino',
-		0x0403: 'RedBoard'
-	};
-
-	function getProductName(id: number | undefined) {
-		if (id === undefined) return;
-		return id in productToName ? productToName[id] : undefined;
-	}
-
-	async function scanSerial() {
-		port = await navigator.serial.requestPort({
-			filters: Object.keys(productToName).map((id) => ({
-				usbVendorId: parseInt(id)
-			}))
-		});
-
-		while (port.readable) {
-			const reader = port.readable.getReader();
-			try {
-				while (true) {
-					const { value, done } = await reader.read();
-					if (done) {
-						break;
-					}
-					console.log(value);
-				}
-			} catch (error) {
-				console.error(error);
-			} finally {
-				reader.releaseLock();
-			}
-		}
+	async function read() {
+		await ready.waitFor(true);
+		await nfc.writeSerialString("r");
+		await nfc.waitForInputString("log: read\ntag: ");
+		const input = await nfc.consume(4);
+		// get first three to get len
+		const len = input.slice(0, 3);
+		const data = await nfc.consume(parseInt(nfc.decoder.decode(len)));
+		console.log(data);
 	}
 </script>
+
+<ExternalNfc bind:port bind:this={nfc} />
 
 <h1>
 	<MdiRaspberryPi />
@@ -65,15 +51,21 @@
 		Please use a different browser. (i,e. chromium-derived browsers; chrome; edge; opera)
 	</p>
 {:else if port}
-	<p>
-		Product ID: {port.getInfo().usbVendorId}
-		{#if getProductName(port.getInfo().usbVendorId)}
-			(<span class="accent">{getProductName(port.getInfo().usbVendorId)}</span>)
-		{/if}
-	</p>
-	<p>Vendor ID: {port.getInfo().usbVendorId}</p>
+	{#if port.getInfo().usbVendorId}
+		<p>
+			Product ID: {port.getInfo().usbVendorId}
+			{#if nfc.getProductName(port.getInfo().usbVendorId)}
+				(<span class="accent">{nfc.getProductName(port.getInfo().usbVendorId)}</span>)
+			{/if}
+		</p>
+	{/if}
+	{#if port.getInfo().usbVendorId}
+		<p>Vendor ID: {port.getInfo().usbVendorId}</p>
+	{/if}
+	<button on:click={read}>read</button>
 {:else}
-	<button on:click={scanSerial}> initialize serial scan </button>
+	<button on:click={nfc.scanSerial(true)}>initialize serial scan</button>
+	<button on:click={nfc.scanSerial(false)}>initialize serial scan raw (ttyAMC0)</button>
 {/if}
 
 <style lang="scss">

@@ -71,6 +71,14 @@
 		return false;
 	}
 
+	export async function writeSerialString(data: string): Promise<boolean> {
+		return writeSerial(encoder.encode(data));
+	}
+
+	export async function waitForInputString(lookFor: string): Promise<void> {
+		await waitForInput(encoder.encode(lookFor));
+	}
+
 	export async function waitForInput(lookFor: Uint8Array): Promise<void> {
 		for await (const value of eventQueue.iterator) {
 			data = concatenateUint8Arrays(data, value);
@@ -83,16 +91,44 @@
 			}
 		}
 	}
+	
+	export async function consume(length: number): Promise<Uint8Array> {
+		let result = new Uint8Array();
+		while (result.length < length) {
+			const value = await eventQueue.iterator.next();
+			if (value.done) {
+				throw new Error('Unexpected end of input');
+			}
+			result = concatenateUint8Arrays(result, value.value);
+		}
+		
+		return result.slice(0, length);
+	}
+
+	export async function waitForInputPattern(lookFor: RegExp): Promise<RegExpMatchArray | null> {
+		for await (const value of eventQueue.iterator) {
+			data = concatenateUint8Arrays(data, value);
+			const match = decoder.decode(data).match(lookFor);
+			if (match && match.index !== undefined) {
+				data = data.slice(match.index + match[0].length);
+				return match;
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Initialize the serial port and begin scanning for data.
 	 */
-	export async function scanSerial() {
-		port = await navigator.serial.requestPort({
-			filters: Object.keys(productToName).map((id) => ({
-				usbVendorId: parseInt(id)
-			}))
-		});
+	export const scanSerial = (filter: boolean) => async () => {
+		if (filter)
+			port = await navigator.serial.requestPort({
+				filters: Object.keys(productToName).map((id) => ({
+					usbVendorId: parseInt(id)
+				}))
+			})
+		else
+			port = await navigator.serial.requestPort();
 
 		while (port.readable) {
 			const reader = port.readable.getReader();
