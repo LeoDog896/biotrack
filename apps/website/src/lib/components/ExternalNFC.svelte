@@ -10,8 +10,15 @@
 	}
 
 	function indexOf(haystack: number[], needle: number[]): number {
-		for (let i = 0; i < haystack.length - needle.length; i++) {
-			if (haystack.slice(i, i + needle.length).every((value, index) => value === needle[index])) {
+		for (let i = 0; i < haystack.length - needle.length + 1; i++) {
+			let found = true;
+			for (let j = 0; j < needle.length; j++) {
+				if (haystack[i + j] !== needle[j]) {
+					found = false;
+					break;
+				}
+			}
+			if (found) {
 				return i;
 			}
 		}
@@ -22,7 +29,6 @@
 <script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { event } from './event';
-	import Error from '../../routes/+error.svelte';
 
 	export let port: SerialPort | null = null;
 	let writable: WritableStreamDefaultWriter<Uint8Array>
@@ -41,12 +47,11 @@
 		}
 	});
 
-	const encoder = new TextEncoder();
-	const decoder = new TextDecoder();
+	export const encoder = new TextEncoder();
+	export const decoder = new TextDecoder();
 
 	/** Queued reader data to process in [waitForInput] */
 	const eventQueue = event<number>();
-	let data: number[] = []
 
 	/**
 	 * Write data to the serial port.
@@ -70,13 +75,13 @@
 		await waitForInput([...encoder.encode(lookFor)]);
 	}
 
-	export async function waitForInput(lookFor: number[]): Promise<void> {
+	export async function waitForInput(needle: number[]): Promise<void> {
+		let data: number[] = [];
 		for await (const value of eventQueue.iterator) {
 			data = [...data, value];
-			if (data.length >= lookFor.length) {
-				const index = indexOf(data, lookFor);
+			if (data.length >= needle.length) {
+				const index = indexOf(data, needle);
 				if (index !== -1) {
-					data = data.slice(index + lookFor.length);
 					return;
 				}
 			}
@@ -113,7 +118,7 @@
 		});
 
 		if (!port.writable) {
-			throw "No writable found.";
+			throw new Error("No writable found.");
 		}
 
 		writable = port.writable.getWriter();
@@ -129,7 +134,6 @@
 					}
 					dispatch('output', value);
 					for (const byte of value) {
-						console.log(byte);
 						eventQueue.enqueue(byte);
 					}
 				}

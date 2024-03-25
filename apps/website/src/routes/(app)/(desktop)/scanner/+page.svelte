@@ -2,11 +2,18 @@
 	import ExternalNfc, { getProductName } from '$lib/components/ExternalNFC.svelte';
 	import { onMount } from 'svelte';
 	import MdiRaspberryPi from '~icons/mdi/raspberry-pi';
+	import { state } from './state';
+
+	const ready = state(false);
+
+	const timeout = async (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 	let hasSerial = false;
 	let mounted = false;
 	let nfc: ExternalNfc
 	let port: SerialPort | null = null;
+
+	let pongAttempts = 0;
 
 	onMount(async () => {
 		// Check for serial support
@@ -15,22 +22,56 @@
 		}
 
 		mounted = true;
+
+		while (true) {
+			if (!port) {
+				await timeout(100);
+				continue;
+			}
+
+			await nfc.writeSerialString("p");
+			const timeoutPromise = timeout(2000);
+			const [promise] = await Promise.race([
+				timeoutPromise,
+				nfc.waitForInputString("log: pong\r\n")
+			].map(p => p.then(() => [p])));
+			pongAttempts++;
+			if (promise !== timeoutPromise) {
+				ready.set(true);
+				break;
+			}
+		}
 	});
 
+	let output = "";
+
 	async function read() {
+		await ready.waitFor(true);
 		await nfc.writeSerialString("r");
-		console.log("r")
-		await nfc.waitForInputString("log: read\ntag: ");
-		console.log("read")
-		const input = await nfc.consume(4);
-		// get first three to get len
-		const len = input.slice(0, 3);
-		const data = await nfc.consume(parseInt(nfc.decoder.decode(len)));
-		console.log(data);
+		await nfc.waitForInputString("log: read\r\ntag: ");
+		const length = await nfc.consume(3);
+		const parsedLength = parseInt(nfc.decoder.decode(new Uint8Array(length)));
+		
+		console.log(parsedLength)
+
+		if (parsedLength > 0) {
+			await nfc.consume(1); // extra space
+			const data = nfc.decoder.decode(new Uint8Array(await nfc.consume(parsedLength)));
+			await nfc.consume(1); // extra newline
+			console.log("data:", data);
+		} else {
+			console.log("data: no data");
+		}
 	}
+
+	const decoder = new TextDecoder();
 </script>
 
-<ExternalNfc bind:port bind:this={nfc} />
+<ExternalNfc
+	bind:port 
+	bind:this={nfc}
+	on:output={(e) => output += decoder.decode(e.detail)}
+/>
 
 <h1>
 	<MdiRaspberryPi />
@@ -57,7 +98,14 @@
 	{#if port.getInfo().usbVendorId}
 		<p>Vendor ID: {port.getInfo().usbVendorId}</p>
 	{/if}
-	<button on:click={read}>read</button>
+	{#await ready.waitFor(true)}
+		<p>Binding{".".repeat(pongAttempts)}</p>
+	{:then}
+		<button on:click={read}>read</button>
+	{/await}
+	<code class="log">
+		<pre>{output}</pre>
+	</code>
 {:else}
 	<button on:click={nfc.scanSerial(true)}>initialize serial scan</button>
 	<button on:click={nfc.scanSerial(false)}>initialize serial scan raw (ttyAMC0)</button>
@@ -76,5 +124,14 @@
 
 	.accent {
 		color: var(--accent);
+	}
+
+	.log {
+		overflow: auto;
+		background: black;
+		color: white;
+		padding: 1em;
+		display: block;
+		margin: 1rem;
 	}
 </style>
