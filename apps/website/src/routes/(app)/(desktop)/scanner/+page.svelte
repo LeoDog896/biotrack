@@ -2,9 +2,6 @@
 	import ExternalNfc from '$lib/components/ExternalNFC.svelte';
 	import { onMount } from 'svelte';
 	import MdiRaspberryPi from '~icons/mdi/raspberry-pi';
-	import { state } from './state';
-
-	let ready = state(false);
 
 	let hasSerial = false;
 	let mounted = false;
@@ -18,16 +15,11 @@
 		}
 
 		mounted = true;
-
-		await nfc.waitForInputString("log: init\n");
-		ready.set(true);
 	});
 
 	async function read() {
-		await ready.waitFor(true);
-		console.log("ready")
 		await nfc.writeSerialString("r");
-		console.log("ready to read")
+		console.log("r")
 		await nfc.waitForInputString("log: read\ntag: ");
 		console.log("read")
 		const input = await nfc.consume(4);

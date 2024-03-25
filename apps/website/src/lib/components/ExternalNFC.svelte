@@ -9,18 +9,7 @@
 		return id in productToName ? productToName[id] : undefined;
 	}
 
-	function concatenateUint8Arrays(...arrays: Uint8Array[]): Uint8Array {
-		const length = arrays.reduce((acc, arr) => acc + arr.length, 0);
-		const result = new Uint8Array(length);
-		let offset = 0;
-		for (const arr of arrays) {
-			result.set(arr, offset);
-			offset += arr.length;
-		}
-		return result;
-	}
-
-	function indexOf(haystack: Uint8Array, needle: Uint8Array): number {
+	function indexOf(haystack: number[], needle: number[]): number {
 		for (let i = 0; i < haystack.length - needle.length; i++) {
 			if (haystack.slice(i, i + needle.length).every((value, index) => value === needle[index])) {
 				return i;
@@ -54,8 +43,8 @@
 	const decoder = new TextDecoder();
 
 	/** Queued reader data to process in [waitForInput] */
-	const eventQueue = event<Uint8Array>();
-	let data = new Uint8Array();
+	const eventQueue = event<number>();
+	let data: number[] = []
 
 	/**
 	 * Write data to the serial port.
@@ -76,12 +65,12 @@
 	}
 
 	export async function waitForInputString(lookFor: string): Promise<void> {
-		await waitForInput(encoder.encode(lookFor));
+		await waitForInput([...encoder.encode(lookFor)]);
 	}
 
-	export async function waitForInput(lookFor: Uint8Array): Promise<void> {
+	export async function waitForInput(lookFor: number[]): Promise<void> {
 		for await (const value of eventQueue.iterator) {
-			data = concatenateUint8Arrays(data, value);
+			data = [...data, value];
 			if (data.length >= lookFor.length) {
 				const index = indexOf(data, lookFor);
 				if (index !== -1) {
@@ -92,29 +81,16 @@
 		}
 	}
 	
-	export async function consume(length: number): Promise<Uint8Array> {
-		let result = new Uint8Array();
+	export async function consume(length: number): Promise<number[]> {
+		let result: number[] = [];
 		while (result.length < length) {
 			const value = await eventQueue.iterator.next();
 			if (value.done) {
 				throw new Error('Unexpected end of input');
 			}
-			result = concatenateUint8Arrays(result, value.value);
+			result = [...result, value.value];
 		}
-		
-		return result.slice(0, length);
-	}
-
-	export async function waitForInputPattern(lookFor: RegExp): Promise<RegExpMatchArray | null> {
-		for await (const value of eventQueue.iterator) {
-			data = concatenateUint8Arrays(data, value);
-			const match = decoder.decode(data).match(lookFor);
-			if (match && match.index !== undefined) {
-				data = data.slice(match.index + match[0].length);
-				return match;
-			}
-		}
-		return null;
+		return result;
 	}
 
 	/**
@@ -139,7 +115,10 @@
 						break;
 					}
 					dispatch('output', value);
-					eventQueue.enqueue(value);
+					for (const byte of value) {
+						console.log(byte);
+						eventQueue.enqueue(byte);
+					}
 				}
 			} catch (error) {
 				dispatch('error', error);
