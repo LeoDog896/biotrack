@@ -12,6 +12,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: cd apps/website && npm install
       - name: ZIP contents in apps/web
         run: zip -r website.zip apps/website
       - name: Copy ZIP as a .png
