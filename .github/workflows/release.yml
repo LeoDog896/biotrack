@@ -15,7 +15,7 @@ jobs:
       - name: Install dependencies
         run: cd apps/website && npm install
       - name: ZIP contents in apps/web
-        run: zip -r website.zip apps/website
+        run: cd apps/website && gzip -c -r . > ../../website.zip
       - name: Copy ZIP as a .png
         run: cp website.zip website.png
       - uses: "marvinpinto/action-automatic-releases@latest"
