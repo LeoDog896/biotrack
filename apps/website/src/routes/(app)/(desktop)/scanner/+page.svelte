@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ExternalNfc from '$lib/components/ExternalNFC.svelte';
+	import ExternalNfc, { getProductName } from '$lib/components/ExternalNFC.svelte';
 	import { onMount } from 'svelte';
 	import MdiRaspberryPi from '~icons/mdi/raspberry-pi';
 
@@ -49,8 +49,8 @@
 	{#if port.getInfo().usbVendorId}
 		<p>
 			Product ID: {port.getInfo().usbVendorId}
-			{#if nfc.getProductName(port.getInfo().usbVendorId)}
-				(<span class="accent">{nfc.getProductName(port.getInfo().usbVendorId)}</span>)
+			{#if getProductName(port.getInfo().usbVendorId)}
+				(<span class="accent">{getProductName(port.getInfo().usbVendorId)}</span>)
 			{/if}
 		</p>
 	{/if}

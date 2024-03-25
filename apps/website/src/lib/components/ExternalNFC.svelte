@@ -22,8 +22,10 @@
 <script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { event } from './event';
+	import Error from '../../routes/+error.svelte';
 
 	export let port: SerialPort | null = null;
+	let writable: WritableStreamDefaultWriter<Uint8Array>
 
 	const dispatch = createEventDispatcher<{
 		hasSerial: boolean;
@@ -52,8 +54,8 @@
 	 * @returns Whether the write was successful.
 	 */
 	export async function writeSerial(data: Uint8Array): Promise<boolean> {
-		if (port && port.writable) {
-			await port.writable.getWriter().write(data);
+		if (writable) {
+			await writable.write(data);
 			return true;
 		}
 
@@ -106,12 +108,23 @@
 		else
 			port = await navigator.serial.requestPort();
 
+		await port.open({
+			baudRate: 9600
+		});
+
+		if (!port.writable) {
+			throw "No writable found.";
+		}
+
+		writable = port.writable.getWriter();
+
 		while (port.readable) {
 			const reader = port.readable.getReader();
 			try {
 				while (true) {
 					const { value, done } = await reader.read();
 					if (done) {
+						console.log('Read done');
 						break;
 					}
 					dispatch('output', value);
