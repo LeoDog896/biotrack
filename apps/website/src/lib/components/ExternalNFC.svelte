@@ -32,7 +32,7 @@
 
 <script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
-	import { event } from 'signal-async/dist';
+	import { event } from './event';
 
 	export let port: SerialPort | null = null;
 

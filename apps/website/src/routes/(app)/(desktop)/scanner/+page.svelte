@@ -2,7 +2,7 @@
 	import ExternalNfc from '$lib/components/ExternalNFC.svelte';
 	import { onMount } from 'svelte';
 	import MdiRaspberryPi from '~icons/mdi/raspberry-pi';
-	import { state } from 'signal-async/src/index.ts';
+	import { state } from './state';
 
 	let ready = state(false);
 
@@ -25,8 +25,11 @@
 
 	async function read() {
 		await ready.waitFor(true);
+		console.log("ready")
 		await nfc.writeSerialString("r");
+		console.log("ready to read")
 		await nfc.waitForInputString("log: read\ntag: ");
+		console.log("read")
 		const input = await nfc.consume(4);
 		// get first three to get len
 		const len = input.slice(0, 3);
