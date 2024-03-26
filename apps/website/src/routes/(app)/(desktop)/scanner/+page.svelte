@@ -3,6 +3,9 @@
 	import { onMount } from 'svelte';
 	import MdiRaspberryPi from '~icons/mdi/raspberry-pi';
 	import { state } from './state';
+	import { pushState } from '$app/navigation';
+	import { page } from '$app/stores';
+	import Modal from '$lib/components/Modal.svelte';
 
 	const ready = state(false);
 
@@ -30,7 +33,7 @@
 			}
 
 			await nfc.writeSerialString("p");
-			const timeoutPromise = timeout(2000);
+			const timeoutPromise = timeout(200);
 			const [canceller, waitPromise] = nfc.waitForInputString("log: pong\r\n");
 			const [promise] = await Promise.race([
 				timeoutPromise,
@@ -48,7 +51,7 @@
 
 	let output = "";
 
-	async function read() {
+	async function read(): Promise<string | undefined>{
 		await ready.waitFor(true);
 		await nfc.writeSerialString("r");
 		const [_, promise] = nfc.waitForInputString("log: read\r\ntag: ");
@@ -62,30 +65,54 @@
 			await nfc.consume(1); // extra space
 			const data = nfc.decoder.decode(new Uint8Array(await nfc.consume(parsedLength)));
 			await nfc.consume(1); // extra newline
-			console.log("data:", data);
+			return data;
 		} else {
-			console.log("data: no data");
+			return undefined;
 		}
 	}
 
 	const decoder = new TextDecoder();
 
 	let writeData = "";
-	async function write() {
+	const write = (writeString: string) => async () => {
 		await ready.waitFor(true);
 		await nfc.writeSerialString(`w`);
 		const [_, promise] = nfc.waitForInputString("log: write; how much?\r\n");
 		await promise;
-		await nfc.writeSerialString(`${writeData.length.toString().padStart(3, "0")}`);
-		const [__, promise2] = nfc.waitForInputString(`log: now, write ${writeData.length} bytes:\r\n`);
+		await nfc.writeSerialString(`${writeString.length.toString().padStart(3, "0")}`);
+		const [__, promise2] = nfc.waitForInputString(`log: now, write ${writeString.length} bytes:\r\n`);
 		await promise2;
-		await nfc.writeSerialString(writeData);
+		await nfc.writeSerialString(writeString);
 		const [___, promise3] = nfc.waitForInputString("log: begin writing; put in card\r\n");
 		await promise3;
 		const [____, promise4] = nfc.waitForInputString("log: done writing\r\n");
 		await promise4;
-		writeData = "";
 	}
+
+	let readPromise: Promise<string | undefined> | null = null;
+	function identifyPlayerModal() {
+		readPromise = read();
+		pushState('', {
+			modalShowing: 'identifyPlayer',
+		})
+	}
+
+	function loadPlayerModal() {
+		pushState('', {
+			modalShowing: 'loadPlayer',
+		})
+	}
+
+	let writePromise: Promise<void> | null = null;
+	let selectedUser = "";
+	const loadPlayerScanModal = (data: string) => () => {
+		writePromise = write(data)();
+		pushState('', {
+			modalShowing: 'loadPlayerScan',
+		})
+	}
+
+	export let data;
 </script>
 
 <ExternalNfc
@@ -120,19 +147,73 @@
 		<p>Vendor ID: {port.getInfo().usbVendorId}</p>
 	{/if}
 	{#await ready.waitFor(true)}
-		<p>Binding{".".repeat(pongAttempts)}</p>
+		<p>Loading...</p>
 	{:then}
-		<button on:click={read}>read</button>
+		<button on:click={identifyPlayerModal}>identify player</button>
+		<button on:click={loadPlayerModal}>load player</button>
 		<br />
-		<input bind:value={writeData} />
-		<button on:click={write}>write</button>
+		<br />
 	{/await}
-	<code class="log">
-		<pre>{output}</pre>
-	</code>
+	<details>
+		<summary>Debug Panel</summary>
+		<div>
+			{#await ready.waitFor(true)}
+				<p>Binding{".".repeat(pongAttempts)}</p>
+			{:then}
+				<button on:click={read}>read</button>
+				<br />
+				<br />
+				<input bind:value={writeData} />
+				<button on:click={async () => {
+					await write(writeData)();
+					writeData = "";
+				}}>write</button>
+			{/await}
+			<code class="log">
+				<pre>{output}</pre>
+			</code>
+		</div>
+	</details>
 {:else}
 	<button on:click={nfc.scanSerial(true)}>initialize serial scan</button>
 	<button on:click={nfc.scanSerial(false)}>initialize serial scan raw (ttyAMC0)</button>
+{/if}
+
+{#if $page.state.modalShowing === 'identifyPlayer'}
+	<Modal on:close={() => history.back()}>
+		<h1>Identify Player</h1>
+		<p>Scan the player's card to identify them.</p>
+		{#await readPromise}
+			<p>Loading...</p>
+		{:then data}
+			<p>Player identified! {data}</p>
+		{/await}
+	</Modal>
+{/if}
+
+{#if $page.state.modalShowing === 'loadPlayer'}
+	<Modal on:close={() => history.back()}>
+		<h1>Load Player</h1>
+		<p>Choose a player:</p>
+		<select bind:value={selectedUser}>
+			{#each data.users as user}
+				<option value={user.id}>{user.name}</option>
+			{/each}
+		</select>
+		<button on:click={loadPlayerScanModal(selectedUser)}>Scan Card</button>
+	</Modal>
+{/if}
+
+{#if $page.state.modalShowing === 'loadPlayerScan'}
+	<Modal on:close={() => history.back()}>
+		<h1>Load Player</h1>
+		<p>Scan the player's card to load them.</p>
+		{#await writePromise}
+			<p>Loading...</p>
+		{:then}
+			<p>Player loaded!</p>
+		{/await}
+	</Modal>
 {/if}
 
 <style lang="scss">

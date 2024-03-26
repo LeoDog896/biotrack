@@ -83,32 +83,33 @@
 		const promise = new Promise<void>(async (resolve, reject) => {
 			data = [];
 			const iterator = eventQueue.iterator();
+			controller.signal.addEventListener('abort', () => {
+				reject(new Error('Aborted'));
+			});
 			for await (const _ of iterator) {
 				await new Promise<void>((resolve) => queueMicrotask(resolve));
-				if (indexOf(data, needle) !== -1) {
+				const index = indexOf(data, needle);
+				if (index !== -1) {
+					data = data.slice(index + needle.length);
 					resolve();
 					break;
 				}
 			}
-			controller.signal.addEventListener('abort', () => {
-				reject(new Error('Aborted'));
-			});
 		});
 
 		return [controller, promise];
 	}
 	
 	export async function consume(length: number): Promise<number[]> {
-		let result: number[] = [];
-		while (result.length < length) {
-			const iterator = eventQueue.iterator();
-			const value = await iterator.next();
-			iterator.cancel();
-			if (value.done) {
-				throw new Error('Unexpected end of input');
+		const iterator = eventQueue.iterator();
+		for await (const _ of iterator) {
+			await new Promise<void>((resolve) => queueMicrotask(resolve));
+			if (data.length >= length) {
+				break;
 			}
-			result = [...result, value.value];
 		}
+		const result = data.slice(0, length);
+		data = data.slice(length);
 		return result;
 	}
 
