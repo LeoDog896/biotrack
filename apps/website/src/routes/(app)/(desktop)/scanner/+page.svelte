@@ -31,14 +31,17 @@
 
 			await nfc.writeSerialString("p");
 			const timeoutPromise = timeout(2000);
+			const [canceller, waitPromise] = nfc.waitForInputString("log: pong\r\n");
 			const [promise] = await Promise.race([
 				timeoutPromise,
-				nfc.waitForInputString("log: pong\r\n")
+				waitPromise
 			].map(p => p.then(() => [p])));
 			pongAttempts++;
 			if (promise !== timeoutPromise) {
 				ready.set(true);
 				break;
+			} else {
+				canceller.abort();
 			}
 		}
 	});
@@ -48,7 +51,8 @@
 	async function read() {
 		await ready.waitFor(true);
 		await nfc.writeSerialString("r");
-		await nfc.waitForInputString("log: read\r\ntag: ");
+		const [_, promise] = nfc.waitForInputString("log: read\r\ntag: ");
+		await promise;
 		const length = await nfc.consume(3);
 		const parsedLength = parseInt(nfc.decoder.decode(new Uint8Array(length)));
 		

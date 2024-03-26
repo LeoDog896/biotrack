@@ -67,31 +67,42 @@
 		return false;
 	}
 
+	let data: number[] = [];
+
 	export async function writeSerialString(data: string): Promise<boolean> {
 		return writeSerial(encoder.encode(data));
 	}
 
-	export async function waitForInputString(lookFor: string): Promise<void> {
-		await waitForInput([...encoder.encode(lookFor)]);
+	export function waitForInputString(lookFor: string): [controller: AbortController, promise: Promise<void>] {
+		return waitForInput([...encoder.encode(lookFor)]);
 	}
 
-	export async function waitForInput(needle: number[]): Promise<void> {
-		let data: number[] = [];
-		for await (const value of eventQueue.iterator) {
-			data = [...data, value];
-			if (data.length >= needle.length) {
-				const index = indexOf(data, needle);
-				if (index !== -1) {
-					return;
+	export function waitForInput(needle: number[]): [controller: AbortController, promise: Promise<void>] {
+		const controller = new AbortController();
+
+		const promise = new Promise<void>(async (resolve, reject) => {
+			const iterator = eventQueue.iterator();
+			for await (const _ of iterator) {
+				await new Promise<void>((resolve) => queueMicrotask(resolve));
+				if (indexOf(data, needle) !== -1) {
+					resolve();
+					break;
 				}
 			}
-		}
+			controller.signal.addEventListener('abort', () => {
+				reject(new Error('Aborted'));
+			});
+		});
+
+		return [controller, promise];
 	}
 	
 	export async function consume(length: number): Promise<number[]> {
 		let result: number[] = [];
 		while (result.length < length) {
-			const value = await eventQueue.iterator.next();
+			const iterator = eventQueue.iterator();
+			const value = await iterator.next();
+			iterator.cancel();
 			if (value.done) {
 				throw new Error('Unexpected end of input');
 			}
@@ -134,7 +145,8 @@
 					}
 					dispatch('output', value);
 					for (const byte of value) {
-						eventQueue.enqueue(byte);
+						data.push(byte);
+						await eventQueue.enqueue(byte);
 					}
 				}
 			} catch (error) {
