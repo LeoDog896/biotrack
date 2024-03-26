@@ -15,30 +15,30 @@ export interface Dirty {
 /**
  * A signal that waits for it to be marked as dirty, where
  * the promise will complete.
- * 
+ *
  * This is the underlying system powering the rest
  * of this library.
- * 
+ *
  * @example
  * Appropriate usage; one may also await the signal.
  * ```
  * const marker = dirty();
- * 
+ *
  * marker.signal().then(() => {
  * 	console.log("I'm dirty!");
  * });
- * 
+ *
  * marker.emit();
  * ```
- * 
+ *
  * @example
  * Signals are not received if the emit request is made before;
  * if this behavior is desired, use {@link event} instead.
  * ```
  * const marker = dirty();
- * 
+ *
  * marker.emit();
- * 
+ *
  * await marker.signal(); // This will not resolve.
  * ```
  */
@@ -59,6 +59,6 @@ export function dirty() {
 			return new Promise<void>((resolve) => {
 				resolveQueue.push(resolve);
 			});
-		},
+		}
 	};
 }

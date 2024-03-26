@@ -6,6 +6,7 @@
 	import dayjs from 'dayjs';
 	import duration from 'dayjs/plugin/duration';
 	import relativeTime from 'dayjs/plugin/relativeTime';
+	import Select from 'svelte-select';
 
 	dayjs.extend(duration);
 	dayjs.extend(relativeTime);
@@ -26,6 +27,12 @@
 	function newJoinRequestModal() {
 		pushState('', {
 			modalShowing: 'newJoinRequest'
+		});
+	}
+
+	function quickCreateSessionModal() {
+		pushState('', {
+			modalShowing: 'quickCreateSession'
 		});
 	}
 </script>
@@ -85,6 +92,7 @@
 	{#if data.game.sessions.filter((session) => session.active).length > 0}
 		<span class="positive">(currently active)</span>
 	{/if}
+	<button on:click={quickCreateSessionModal}>quick create session</button>
 </h3>
 {#if data.game.sessions.length > 0}
 	<ul>
@@ -156,6 +164,28 @@
 			</form>
 			<button on:click={() => history.back()}>Cancel</button>
 		</div>
+	</Modal>
+{/if}
+
+{#if $page.state.modalShowing === 'quickCreateSession'}
+	<Modal on:close={() => history.back()}>
+		<h1>Quick Create Session</h1>
+		<form method="POST" action="?/createSession">
+			<Select
+				name="users"
+				items={data.users.map((user) => ({
+					label: user.name,
+					value: user.id
+				}))}
+				multiple
+				placeholder="Select all players..."
+			/>
+			<br />
+			<div class="buttons">
+				<button>Create</button>
+				<button on:click={() => history.back()}>Cancel</button>
+			</div>
+		</form>
 	</Modal>
 {/if}
 

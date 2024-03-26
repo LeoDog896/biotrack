@@ -1,6 +1,3 @@
-// Shows the content of a Mifare Classic tag formatted as an NDEF tag
-// This example requires #define NDEF_USE_SERIAL to be uncommented in Ndef.h
-
 #include <SPI.h>
 #include <MFRC522.h>
 #include "NfcAdapter.h"
@@ -14,12 +11,12 @@ NfcAdapter nfc = NfcAdapter(&mfrc522);
 void setup(void)
 {
   Serial.begin(9600);
-  Serial.println("log: init");
   // Init SPI bus
   SPI.begin();
   // Init MFRC522
   mfrc522.PCD_Init();
   nfc.begin();
+  Serial.println("log: init");
 }
 
 enum command
@@ -124,6 +121,11 @@ void loop(void)
       cmd = write;
       amount[strlen(amount)] = '\0';
       Serial.println("log: write; how much?");
+      return;
+    }
+    else if (inChar == 'p')
+    {
+      Serial.println("log: pong");
       return;
     }
   }

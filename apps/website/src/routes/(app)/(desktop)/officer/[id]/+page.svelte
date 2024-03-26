@@ -38,9 +38,11 @@
 	</Modal>
 {/if}
 
-<h2>Actions</h2>
+{#if data.thisOfficer.admin && !data.officer.admin}
+	<h2>Actions</h2>
 
-<button>archive</button>
+	<button>archive</button>
+{/if}
 
 <style lang="scss">
 	.accent {

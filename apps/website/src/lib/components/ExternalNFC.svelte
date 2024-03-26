@@ -10,8 +10,15 @@
 	}
 
 	function indexOf(haystack: number[], needle: number[]): number {
-		for (let i = 0; i < haystack.length - needle.length; i++) {
-			if (haystack.slice(i, i + needle.length).every((value, index) => value === needle[index])) {
+		for (let i = 0; i < haystack.length - needle.length + 1; i++) {
+			let found = true;
+			for (let j = 0; j < needle.length; j++) {
+				if (haystack[i + j] !== needle[j]) {
+					found = false;
+					break;
+				}
+			}
+			if (found) {
 				return i;
 			}
 		}
@@ -22,10 +29,9 @@
 <script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { event } from './event';
-	import Error from '../../routes/+error.svelte';
 
 	export let port: SerialPort | null = null;
-	let writable: WritableStreamDefaultWriter<Uint8Array>
+	let writable: WritableStreamDefaultWriter<Uint8Array>;
 
 	const dispatch = createEventDispatcher<{
 		hasSerial: boolean;
@@ -41,12 +47,11 @@
 		}
 	});
 
-	const encoder = new TextEncoder();
-	const decoder = new TextDecoder();
+	export const encoder = new TextEncoder();
+	export const decoder = new TextDecoder();
 
 	/** Queued reader data to process in [waitForInput] */
 	const eventQueue = event<number>();
-	let data: number[] = []
 
 	/**
 	 * Write data to the serial port.
@@ -62,36 +67,52 @@
 		return false;
 	}
 
+	let data: number[] = [];
+
 	export async function writeSerialString(data: string): Promise<boolean> {
 		return writeSerial(encoder.encode(data));
 	}
 
-	export async function waitForInputString(lookFor: string): Promise<void> {
-		await waitForInput([...encoder.encode(lookFor)]);
+	export function waitForInputString(
+		lookFor: string
+	): [controller: AbortController, promise: Promise<void>] {
+		return waitForInput([...encoder.encode(lookFor)]);
 	}
 
-	export async function waitForInput(lookFor: number[]): Promise<void> {
-		for await (const value of eventQueue.iterator) {
-			data = [...data, value];
-			if (data.length >= lookFor.length) {
-				const index = indexOf(data, lookFor);
+	export function waitForInput(
+		needle: number[]
+	): [controller: AbortController, promise: Promise<void>] {
+		const controller = new AbortController();
+
+		const promise = new Promise<void>(async (resolve, reject) => {
+			data = [];
+			const iterator = eventQueue.iterator();
+			controller.signal.addEventListener('abort', () => {
+				reject(new Error('Aborted'));
+			});
+			for await (const _ of iterator) {
+				await new Promise<void>((resolve) => queueMicrotask(resolve));
+				const index = indexOf(data, needle);
 				if (index !== -1) {
-					data = data.slice(index + lookFor.length);
-					return;
+					resolve();
+					break;
 				}
 			}
-		}
+		});
+
+		return [controller, promise];
 	}
-	
+
 	export async function consume(length: number): Promise<number[]> {
-		let result: number[] = [];
-		while (result.length < length) {
-			const value = await eventQueue.iterator.next();
-			if (value.done) {
-				throw new Error('Unexpected end of input');
+		const iterator = eventQueue.iterator();
+		for await (const _ of iterator) {
+			await new Promise<void>((resolve) => queueMicrotask(resolve));
+			if (data.length >= length) {
+				break;
 			}
-			result = [...result, value.value];
 		}
+		const result = data.slice(0, length);
+		data = data.slice(length);
 		return result;
 	}
 
@@ -104,16 +125,15 @@
 				filters: Object.keys(productToName).map((id) => ({
 					usbVendorId: parseInt(id)
 				}))
-			})
-		else
-			port = await navigator.serial.requestPort();
+			});
+		else port = await navigator.serial.requestPort();
 
 		await port.open({
 			baudRate: 9600
 		});
 
 		if (!port.writable) {
-			throw "No writable found.";
+			throw new Error('No writable found.');
 		}
 
 		writable = port.writable.getWriter();
@@ -129,8 +149,8 @@
 					}
 					dispatch('output', value);
 					for (const byte of value) {
-						console.log(byte);
-						eventQueue.enqueue(byte);
+						data.push(byte);
+						await eventQueue.enqueue(byte);
 					}
 				}
 			} catch (error) {
@@ -140,5 +160,5 @@
 				dispatch('lockRelease');
 			}
 		}
-	}
+	};
 </script>

@@ -3,12 +3,9 @@ interface State<T> {
 	set(value: T): void;
 }
 
-export function state<T>(
-	initial: T,
-	comparison: (a: T, b: T) => boolean = Object.is
-): State<T> {
+export function state<T>(initial: T, comparison: (a: T, b: T) => boolean = Object.is): State<T> {
 	let current = initial;
-	const listeners: ([needle: T, resolve: () => void])[] = [];
+	const listeners: [needle: T, resolve: () => void][] = [];
 
 	return {
 		waitFor(target: T) {
@@ -29,5 +26,5 @@ export function state<T>(
 
 			current = newValue;
 		}
-	}
+	};
 }

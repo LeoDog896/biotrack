@@ -1,6 +1,14 @@
 import { prisma } from '$lib/prismaConnection.js';
 import { validateSession } from '$lib/server/validateSession.js';
 import { error } from '@sveltejs/kit';
+import { z } from 'zod';
+
+const usersSchema = z.array(
+	z.object({
+		label: z.string(),
+		value: z.string()
+	})
+);
 
 export const load = async ({ params }) => {
 	const game = await prisma.game.findUnique({
@@ -202,6 +210,51 @@ export const actions = {
 			success: true,
 			message: 'Join request created',
 			joinRequest
+		};
+	},
+
+	createSession: async ({ params, cookies, request }) => {
+		await validateSession(cookies);
+
+		const data = await request.formData();
+		const users = data.get('users');
+
+		if (!users) error(400, 'users is required');
+		if (typeof users !== 'string') error(400, 'users must be a string');
+
+		const parsedUsers = usersSchema.parse(JSON.parse(users));
+
+		const game = await prisma.game.findUnique({
+			where: {
+				id: parseInt(params.id)
+			}
+		});
+
+		if (!game) error(404, 'Game not found');
+
+		const session = await prisma.session.create({
+			data: {
+				game: {
+					connect: {
+						id: game.id
+					}
+				},
+				active: true,
+				data: '',
+				user: {
+					connect: parsedUsers.map((user) => {
+						return {
+							id: user.value
+						};
+					})
+				}
+			}
+		});
+
+		return {
+			success: true,
+			message: 'Session created',
+			session
 		};
 	}
 };

@@ -59,7 +59,7 @@ export const actions = {
 
 		const score = data.get('score');
 		if (!score) error(400, 'No score found.');
-		if (typeof score !== 'string') error(400, 'Improper score')
+		if (typeof score !== 'string') error(400, 'Improper score');
 
 		const session = await prisma.session.findFirst({
 			where: {
@@ -89,11 +89,11 @@ export const actions = {
 					score: Math.round(parseInt(score)),
 					data: ''
 				}
-			})
+			});
 		}
 
 		return {
 			success: true
-		}
+		};
 	}
 };

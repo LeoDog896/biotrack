@@ -1,21 +1,25 @@
-import { dirty } from "./dirty.js";
+import { dirty } from './dirty.js';
 
 export interface QueueEvent<T> {
-	readonly iterator: AsyncGenerator<T>;
+	iterator(): {
+		[Symbol.asyncIterator](): AsyncGenerator<T>;
+		cancel(): void;
+		next(): Promise<IteratorResult<T>>;
+	};
 	enqueue(...item: T[]): Promise<void>;
 }
 
 /**
  * Allows appending items to a queue, where the queue
  * can be consumed as an async iterator.
- * 
+ *
  * @example
  * ```
  * const { iterator, enqueue } = event<number>();
- * 
+ *
  * enqueue(1);
  * enqueue(2);
- * 
+ *
  * for await (const item of iterator) {
  * 	console.log(item);	// 1, 2
  * }
@@ -23,27 +27,47 @@ export interface QueueEvent<T> {
  */
 export function event<T>(): QueueEvent<T> {
 	// collecting a list of items
-	const items: T[] = [];
+	let items: T[] = [];
 	// notifies the iterator that there are new items
 	const marker = dirty();
 
-	const iterator = async function* () {
+	const iteratorInternal = async function* (cancelSignal: AbortSignal) {
 		while (true) {
-			// empty the queue
-			while (items.length > 0) {
-				yield items.shift()!;
+			if (cancelSignal.aborted) {
+				break;
 			}
+
+			// empty the queue
+			yield* items;
+
+			// clear the queue
+			items = [];
 
 			// wait for changes
 			await marker.signal();
 		}
 	};
 
+	const iterator = function () {
+		const abortController = new AbortController();
+		const generator = iteratorInternal(abortController.signal);
+
+		return {
+			[Symbol.asyncIterator]: () => generator,
+			cancel() {
+				abortController.abort();
+			},
+			next() {
+				return generator.next();
+			}
+		};
+	};
+
 	return {
-		iterator: iterator(),
+		iterator,
 		async enqueue(item: T) {
-			items.push(item);
+			items = [...items, item];
 			marker.emit();
-		},
+		}
 	};
 }

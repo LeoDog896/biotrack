@@ -44,10 +44,10 @@
 	}
 </script>
 
-<MathQuill 
+<MathQuill
 	bind:latex
 	config={{
-		autoCommands: "pi theta sqrt sum",
-		autoOperatorNames: "sin cos tan",
+		autoCommands: 'pi theta sqrt sum',
+		autoOperatorNames: 'sin cos tan'
 	}}
 />
