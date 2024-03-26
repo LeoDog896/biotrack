@@ -4,8 +4,7 @@
 			"path": "."
 		},
 		{
-			"name": "nfc-peripheral",
-			"path": "embedded/nfc-peripheral"
+			"path": "embedded/esp8266"
 		}
 	],
 	"settings": {}
