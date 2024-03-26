@@ -6,6 +6,17 @@ export const load = async ({ params }) => {
 		where: {
 			id: params.id,
 			archived: false
+		},
+		include: {
+			scoreLedger: {
+				include: {
+					session: {
+						include: {
+							game: true
+						}
+					}
+				}
+			}
 		}
 	});
 
