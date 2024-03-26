@@ -1,4 +1,4 @@
-#include <SPI.h>
+// #include <SPI.h>
 #include <MFRC522.h>
 #include "NfcAdapter.h"
 
