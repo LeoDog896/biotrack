@@ -69,6 +69,23 @@
 	}
 
 	const decoder = new TextDecoder();
+
+	let writeData = "";
+	async function write() {
+		await ready.waitFor(true);
+		await nfc.writeSerialString(`w`);
+		const [_, promise] = nfc.waitForInputString("log: write; how much?\r\n");
+		await promise;
+		await nfc.writeSerialString(`${writeData.length.toString().padStart(3, "0")}`);
+		const [__, promise2] = nfc.waitForInputString(`log: now, write ${writeData.length} bytes:\r\n`);
+		await promise2;
+		await nfc.writeSerialString(writeData);
+		const [___, promise3] = nfc.waitForInputString("log: begin writing; put in card\r\n");
+		await promise3;
+		const [____, promise4] = nfc.waitForInputString("log: done writing\r\n");
+		await promise4;
+		writeData = "";
+	}
 </script>
 
 <ExternalNfc
@@ -106,6 +123,9 @@
 		<p>Binding{".".repeat(pongAttempts)}</p>
 	{:then}
 		<button on:click={read}>read</button>
+		<br />
+		<input bind:value={writeData} />
+		<button on:click={write}>write</button>
 	{/await}
 	<code class="log">
 		<pre>{output}</pre>

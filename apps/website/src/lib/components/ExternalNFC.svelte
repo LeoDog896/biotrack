@@ -81,6 +81,7 @@
 		const controller = new AbortController();
 
 		const promise = new Promise<void>(async (resolve, reject) => {
+			data = [];
 			const iterator = eventQueue.iterator();
 			for await (const _ of iterator) {
 				await new Promise<void>((resolve) => queueMicrotask(resolve));
