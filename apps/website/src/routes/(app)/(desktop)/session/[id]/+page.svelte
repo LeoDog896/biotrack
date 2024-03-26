@@ -57,7 +57,7 @@
 	<ul>
 		{#each data.session.scoreBlock as scoreBlock}
 			<li>
-				{scoreBlock.id}: {scoreBlock.score}
+				<span class="accent">{scoreBlock.createdAt.toLocaleString()}</span>: {scoreBlock.score}
 			</li>
 		{/each}
 	</ul>
