@@ -26,7 +26,7 @@
 	<li>
 		<a href="/scanner" class="noUnderscore">
 			<MdiRaspberryPi />
-			<span class="underscore">use the <b>hardware-powered</b> check-in</span>
+			<span class="underscore">use the <b>hardware-powered</b> check-in (currently finnicky..)</span>
 		</a>
 	</li>
 	<li>
