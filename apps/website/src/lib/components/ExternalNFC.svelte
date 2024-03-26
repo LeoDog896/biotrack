@@ -94,7 +94,6 @@
 				await new Promise<void>((resolve) => queueMicrotask(resolve));
 				const index = indexOf(data, needle);
 				if (index !== -1) {
-					data = data.slice(index + needle.length);
 					resolve();
 					break;
 				}
