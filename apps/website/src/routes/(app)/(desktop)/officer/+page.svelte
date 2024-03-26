@@ -2,7 +2,7 @@
 	import { UAParser } from 'ua-parser-js';
 	import MdiShieldAdd from '~icons/mdi/shield-add';
 	import { pushState } from '$app/navigation';
-	import { page } from '$app/stores'
+	import { page } from '$app/stores';
 	import Modal from '$lib/components/Modal.svelte';
 
 	export let data;
@@ -80,14 +80,26 @@
 		<h1>Change Password</h1>
 		<p>Enter your new password:</p>
 		<form method="POST" action="?/changePassword">
-			<input class="input" name="password" type="password" autocomplete="new-password" placeholder="New Password" bind:value={password} />
-			<input class="input" type="password" placeholder="Confirm password" bind:value={confirmPassword} />
+			<input
+				class="input"
+				name="password"
+				type="password"
+				autocomplete="new-password"
+				placeholder="New Password"
+				bind:value={password}
+			/>
+			<input
+				class="input"
+				type="password"
+				placeholder="Confirm password"
+				bind:value={confirmPassword}
+			/>
 			<button
 				class="submitButton"
 				type="submit"
 				disabled={password !== confirmPassword || password.length < 1}
-				on:click={changePassword}
-			>change password</button>
+				on:click={changePassword}>change password</button
+			>
 		</form>
 	</Modal>
 {/if}

@@ -14,17 +14,20 @@
 		message = '';
 	}
 
-    function isClose(a: number, b: number, threshold = 10) {
-        return Math.abs(a - b) < threshold;
-    }
+	function isClose(a: number, b: number, threshold = 10) {
+		return Math.abs(a - b) < threshold;
+	}
 
 	onMount(() => {
 		messageBox.scrollTop = messageBox.scrollHeight;
 
 		const { unsubscribe } = trpc().pingSubscription.subscribe(undefined, {
 			async onData() {
-				const atBottom = isClose(messageBox.scrollTop + messageBox.clientHeight, messageBox.scrollHeight);
-                await invalidateAll();
+				const atBottom = isClose(
+					messageBox.scrollTop + messageBox.clientHeight,
+					messageBox.scrollHeight
+				);
+				await invalidateAll();
 				if (atBottom) {
 					messageBox.scrollTop = messageBox.scrollHeight;
 				}

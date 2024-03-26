@@ -171,12 +171,15 @@
 	<Modal on:close={() => history.back()}>
 		<h1>Quick Create Session</h1>
 		<form method="POST" action="?/createSession">
-			<Select name="users" items={
-				data.users.map((user) => ({
+			<Select
+				name="users"
+				items={data.users.map((user) => ({
 					label: user.name,
 					value: user.id
-				}))
-			} multiple placeholder="Select all players..." />
+				}))}
+				multiple
+				placeholder="Select all players..."
+			/>
 			<br />
 			<div class="buttons">
 				<button>Create</button>

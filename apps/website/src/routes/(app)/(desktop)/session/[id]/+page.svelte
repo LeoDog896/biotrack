@@ -51,7 +51,9 @@
 		<button on:click={createScoreBlock}>create a score block</button>
 	</p>
 {:else}
-	<p><span class="accent">Total</span>: {data.session.scoreBlock.reduce((a, b) => a + b.score, 0)}</p>
+	<p>
+		<span class="accent">Total</span>: {data.session.scoreBlock.reduce((a, b) => a + b.score, 0)}
+	</p>
 	<ul>
 		{#each data.session.scoreBlock as scoreBlock}
 			<li>

@@ -3,10 +3,12 @@ import { validateSession } from '$lib/server/validateSession.js';
 import { error } from '@sveltejs/kit';
 import { z } from 'zod';
 
-const usersSchema = z.array(z.object({
-	label: z.string(),
-	value: z.string()
-}))
+const usersSchema = z.array(
+	z.object({
+		label: z.string(),
+		value: z.string()
+	})
+);
 
 export const load = async ({ params }) => {
 	const game = await prisma.game.findUnique({

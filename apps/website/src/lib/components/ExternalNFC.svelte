@@ -31,7 +31,7 @@
 	import { event } from './event';
 
 	export let port: SerialPort | null = null;
-	let writable: WritableStreamDefaultWriter<Uint8Array>
+	let writable: WritableStreamDefaultWriter<Uint8Array>;
 
 	const dispatch = createEventDispatcher<{
 		hasSerial: boolean;
@@ -73,11 +73,15 @@
 		return writeSerial(encoder.encode(data));
 	}
 
-	export function waitForInputString(lookFor: string): [controller: AbortController, promise: Promise<void>] {
+	export function waitForInputString(
+		lookFor: string
+	): [controller: AbortController, promise: Promise<void>] {
 		return waitForInput([...encoder.encode(lookFor)]);
 	}
 
-	export function waitForInput(needle: number[]): [controller: AbortController, promise: Promise<void>] {
+	export function waitForInput(
+		needle: number[]
+	): [controller: AbortController, promise: Promise<void>] {
 		const controller = new AbortController();
 
 		const promise = new Promise<void>(async (resolve, reject) => {
@@ -99,7 +103,7 @@
 
 		return [controller, promise];
 	}
-	
+
 	export async function consume(length: number): Promise<number[]> {
 		const iterator = eventQueue.iterator();
 		for await (const _ of iterator) {
@@ -122,16 +126,15 @@
 				filters: Object.keys(productToName).map((id) => ({
 					usbVendorId: parseInt(id)
 				}))
-			})
-		else
-			port = await navigator.serial.requestPort();
+			});
+		else port = await navigator.serial.requestPort();
 
 		await port.open({
 			baudRate: 9600
 		});
 
 		if (!port.writable) {
-			throw new Error("No writable found.");
+			throw new Error('No writable found.');
 		}
 
 		writable = port.writable.getWriter();
@@ -158,5 +161,5 @@
 				dispatch('lockRelease');
 			}
 		}
-	}
+	};
 </script>

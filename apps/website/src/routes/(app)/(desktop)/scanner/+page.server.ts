@@ -1,7 +1,7 @@
-import { prisma } from "$lib/prismaConnection"
+import { prisma } from '$lib/prismaConnection';
 
 export const load = async () => {
-    return {
-        users: await prisma.user.findMany()
-    }
-}
+	return {
+		users: await prisma.user.findMany()
+	};
+};

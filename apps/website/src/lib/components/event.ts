@@ -1,4 +1,4 @@
-import { dirty } from "./dirty.js";
+import { dirty } from './dirty.js';
 
 export interface QueueEvent<T> {
 	iterator(): {
@@ -12,14 +12,14 @@ export interface QueueEvent<T> {
 /**
  * Allows appending items to a queue, where the queue
  * can be consumed as an async iterator.
- * 
+ *
  * @example
  * ```
  * const { iterator, enqueue } = event<number>();
- * 
+ *
  * enqueue(1);
  * enqueue(2);
- * 
+ *
  * for await (const item of iterator) {
  * 	console.log(item);	// 1, 2
  * }
@@ -48,7 +48,7 @@ export function event<T>(): QueueEvent<T> {
 		}
 	};
 
-	const iterator = function() {
+	const iterator = function () {
 		const abortController = new AbortController();
 		const generator = iteratorInternal(abortController.signal);
 
@@ -61,13 +61,13 @@ export function event<T>(): QueueEvent<T> {
 				return generator.next();
 			}
 		};
-	}
+	};
 
 	return {
 		iterator,
 		async enqueue(item: T) {
 			items = [...items, item];
 			marker.emit();
-		},
+		}
 	};
 }

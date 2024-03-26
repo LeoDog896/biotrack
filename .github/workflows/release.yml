@@ -1,14 +1,14 @@
-name: "pre-release"
+name: 'pre-release'
 
 on:
   push:
     branches:
-      - "main"
+      - 'main'
 
 jobs:
   pre-release:
-    name: "Pre Release"
-    runs-on: "ubuntu-latest"
+    name: 'Pre Release'
+    runs-on: 'ubuntu-latest'
 
     steps:
       - uses: actions/checkout@v4
@@ -18,12 +18,12 @@ jobs:
         run: cd apps/website && gzip -c -r . > ../../website.zip
       - name: Copy ZIP as a .png
         run: cp website.zip website.png
-      - uses: "marvinpinto/action-automatic-releases@latest"
+      - uses: 'marvinpinto/action-automatic-releases@latest'
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
+          repo_token: '${{ secrets.GITHUB_TOKEN }}'
+          automatic_release_tag: 'latest'
           prerelease: true
-          title: "Development Build"
+          title: 'Development Build'
           files: |
             website.zip
             website.png

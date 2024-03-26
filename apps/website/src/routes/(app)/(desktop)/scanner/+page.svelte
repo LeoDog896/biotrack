@@ -13,7 +13,7 @@
 
 	let hasSerial = false;
 	let mounted = false;
-	let nfc: ExternalNfc
+	let nfc: ExternalNfc;
 	let port: SerialPort | null = null;
 
 	let pongAttempts = 0;
@@ -32,13 +32,12 @@
 				continue;
 			}
 
-			await nfc.writeSerialString("p");
+			await nfc.writeSerialString('p');
 			const timeoutPromise = timeout(200);
-			const [canceller, waitPromise] = nfc.waitForInputString("log: pong\r\n");
-			const [promise] = await Promise.race([
-				timeoutPromise,
-				waitPromise
-			].map(p => p.then(() => [p])));
+			const [canceller, waitPromise] = nfc.waitForInputString('log: pong\r\n');
+			const [promise] = await Promise.race(
+				[timeoutPromise, waitPromise].map((p) => p.then(() => [p]))
+			);
 			pongAttempts++;
 			if (promise !== timeoutPromise) {
 				ready.set(true);
@@ -49,17 +48,17 @@
 		}
 	});
 
-	let output = "";
+	let output = '';
 
-	async function read(): Promise<string | undefined>{
+	async function read(): Promise<string | undefined> {
 		await ready.waitFor(true);
-		await nfc.writeSerialString("r");
-		const [_, promise] = nfc.waitForInputString("log: read\r\ntag: ");
+		await nfc.writeSerialString('r');
+		const [_, promise] = nfc.waitForInputString('log: read\r\ntag: ');
 		await promise;
 		const length = await nfc.consume(3);
 		const parsedLength = parseInt(nfc.decoder.decode(new Uint8Array(length)));
-		
-		console.log(parsedLength)
+
+		console.log(parsedLength);
 
 		if (parsedLength > 0) {
 			await nfc.consume(1); // extra space
@@ -73,53 +72,51 @@
 
 	const decoder = new TextDecoder();
 
-	let writeData = "";
+	let writeData = '';
 	const write = (writeString: string) => async () => {
 		await ready.waitFor(true);
 		await nfc.writeSerialString(`w`);
-		const [_, promise] = nfc.waitForInputString("log: write; how much?\r\n");
+		const [_, promise] = nfc.waitForInputString('log: write; how much?\r\n');
 		await promise;
-		await nfc.writeSerialString(`${writeString.length.toString().padStart(3, "0")}`);
-		const [__, promise2] = nfc.waitForInputString(`log: now, write ${writeString.length} bytes:\r\n`);
+		await nfc.writeSerialString(`${writeString.length.toString().padStart(3, '0')}`);
+		const [__, promise2] = nfc.waitForInputString(
+			`log: now, write ${writeString.length} bytes:\r\n`
+		);
 		await promise2;
 		await nfc.writeSerialString(writeString);
-		const [___, promise3] = nfc.waitForInputString("log: begin writing; put in card\r\n");
+		const [___, promise3] = nfc.waitForInputString('log: begin writing; put in card\r\n');
 		await promise3;
-		const [____, promise4] = nfc.waitForInputString("log: done writing\r\n");
+		const [____, promise4] = nfc.waitForInputString('log: done writing\r\n');
 		await promise4;
-	}
+	};
 
 	let readPromise: Promise<string | undefined> | null = null;
 	function identifyPlayerModal() {
 		readPromise = read();
 		pushState('', {
-			modalShowing: 'identifyPlayer',
-		})
+			modalShowing: 'identifyPlayer'
+		});
 	}
 
 	function loadPlayerModal() {
 		pushState('', {
-			modalShowing: 'loadPlayer',
-		})
+			modalShowing: 'loadPlayer'
+		});
 	}
 
 	let writePromise: Promise<void> | null = null;
-	let selectedUser = "";
+	let selectedUser = '';
 	const loadPlayerScanModal = (data: string) => () => {
 		writePromise = write(data)();
 		pushState('', {
-			modalShowing: 'loadPlayerScan',
-		})
-	}
+			modalShowing: 'loadPlayerScan'
+		});
+	};
 
 	export let data;
 </script>
 
-<ExternalNfc
-	bind:port 
-	bind:this={nfc}
-	on:output={(e) => output += decoder.decode(e.detail)}
-/>
+<ExternalNfc bind:port bind:this={nfc} on:output={(e) => (output += decoder.decode(e.detail))} />
 
 <h1>
 	<MdiRaspberryPi />
@@ -158,16 +155,18 @@
 		<summary>Debug Panel</summary>
 		<div>
 			{#await ready.waitFor(true)}
-				<p>Binding{".".repeat(pongAttempts)}</p>
+				<p>Binding{'.'.repeat(pongAttempts)}</p>
 			{:then}
 				<button on:click={read}>read</button>
 				<br />
 				<br />
 				<input bind:value={writeData} />
-				<button on:click={async () => {
-					await write(writeData)();
-					writeData = "";
-				}}>write</button>
+				<button
+					on:click={async () => {
+						await write(writeData)();
+						writeData = '';
+					}}>write</button
+				>
 			{/await}
 			<code class="log">
 				<pre>{output}</pre>
