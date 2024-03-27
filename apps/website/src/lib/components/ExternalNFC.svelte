@@ -1,6 +1,7 @@
 <script lang="ts" context="module">
 	export const productToName: Record<number, string> = {
 		0x2341: 'Arduino',
+		0x2A03: 'Arduino',
 		0x0403: 'RedBoard'
 	};
 
