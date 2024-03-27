@@ -31,6 +31,12 @@
 		});
 	}
 
+	function showQuickSessionModal() {
+		pushState('', {
+			modalShowing: 'quickSession'
+		});
+	}
+
 	$: activeSession = data.sessions.find((session) => session.active);
 
 	let archiveInput = '';
@@ -69,11 +75,24 @@
 		(<a href="/session/{activeSession.id}">see active session →</a>)
 	{/if}
 </p>
-<p>active join request: <span class="accent">{data.activeJoinRequest > 0}</span></p>
+<p>active join request: <span class="accent">{data.activeJoinRequest.length > 0}</span></p>
+{#if data.activeJoinRequest.length > 0}
+	<ul>
+		{#each data.activeJoinRequest as joinRequest}
+			<li>
+				to <a href="/game/{joinRequest.game.id}">{joinRequest.game.name}</a> @
+				{joinRequest.createdAt.toLocaleString()}
+			</li>
+		{/each}
+	</ul>
+{/if}
 {#if data.sessions.length > 0 || data.joinRequests > 0}
 	(<a href="/player/{data.user.id}/play">see play info →</a>)
 {/if}
 <button on:click={showSendModal}>send join request</button>
+<br />
+<br />
+<button on:click={showQuickSessionModal}>make quick session</button>
 {#if form && form.joinRequest}
 	<p>
 		new join request sent to
@@ -99,7 +118,7 @@
 	<Modal on:close={() => history.back()}>
 		<h2>Send Join Request</h2>
 		<p>To which game should the join request be sent to?</p>
-		<form action="/player/{data.user.id}?/join" method="POST">
+		<form action="?/join" method="POST">
 			<select name="gameId">
 				{#each data.games as game}
 					<option value={game.id}>{game.name}</option>
@@ -123,13 +142,28 @@
 			placeholder="Type the name to confirm"
 		/>
 		<div class="buttons">
-			<form action="/player/{data.user.id}?/archive" method="POST">
+			<form action="?/archive" method="POST">
 				<button class="red" type="submit" disabled={archiveInput !== data.user.name}
 					>Yes, archive</button
 				>
 			</form>
 			<button on:click={() => history.back()}>No, cancel</button>
 		</div>
+	</Modal>
+{/if}
+
+{#if $page.state.modalShowing === 'quickSession'}
+	<Modal on:close={() => history.back()}>
+		<h2>Quick Session</h2>
+		<p>Which game should the quick session be for?</p>
+		<form action="?/quickSession" method="POST">
+			<select name="gameId">
+				{#each data.games as game}
+					<option value={game.id}>{game.name}</option>
+				{/each}
+			</select><br />
+			<button class="submissionButton" type="submit">Start</button>
+		</form>
 	</Modal>
 {/if}
 

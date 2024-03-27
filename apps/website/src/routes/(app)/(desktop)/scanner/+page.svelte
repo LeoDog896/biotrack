@@ -58,8 +58,11 @@
 		const str = 'log: read\r\ntag: ';
 		const [_, promise] = nfc.waitForInputString(str);
 		await promise;
-		const index = (bindedData.map((v) => String.fromCharCode(v)).join('')
-		).indexOf(str) + str.length;
+		const index =
+			bindedData
+				.map((v) => String.fromCharCode(v))
+				.join('')
+				.indexOf(str) + str.length;
 		bindedData = bindedData.slice(index);
 		const length = await nfc.consume(3);
 		const parsedLength = parseInt(nfc.decoder.decode(new Uint8Array(length)));
@@ -120,7 +123,12 @@
 	export let data;
 </script>
 
-<ExternalNfc bind:data={bindedData} bind:port bind:this={nfc} on:output={(e) => (output += decoder.decode(e.detail))} />
+<ExternalNfc
+	bind:data={bindedData}
+	bind:port
+	bind:this={nfc}
+	on:output={(e) => (output += decoder.decode(e.detail))}
+/>
 
 <h1>
 	<MdiRaspberryPi />
@@ -191,9 +199,7 @@
 			<p>Loading...</p>
 		{:then loadedData}
 			{@const user = data.users.find((u) => u.id === loadedData)}
-			<p>
-				Player identified!
-			</p>
+			<p>Player identified!</p>
 			<p>
 				Card data: {loadedData}
 			</p>
@@ -202,9 +208,7 @@
 					Player: <a href="/player/{user.id}">{user.name}</a>
 				</p>
 			{:else}
-				<p class="error">
-					Player not found.
-				</p>
+				<p class="error">Player not found.</p>
 			{/if}
 		{/await}
 	</Modal>

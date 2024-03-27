@@ -7,7 +7,8 @@
 {#each data.user.scoreLedger as score}
 	<div class="score">
 		<p>created at: <span class="accent">{score.createdAt.toLocaleString()}</span></p>
-		<p>amount:
+		<p>
+			amount:
 			{#if score.score > 0}
 				<span class="positive">{score.score}</span>
 			{:else if score.score < 0}

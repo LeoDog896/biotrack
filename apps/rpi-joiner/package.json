@@ -1,11 +1,11 @@
 {
-  "name": "rpi-joiner",
-  "private": true,
-  "main": "dist/index.js",
-  "scripts": {
-    "start": "tsx src/index.ts"
-  },
-  "devDependencies": {
-    "tsx": "^4.7.1"
-  }
+	"name": "rpi-joiner",
+	"private": true,
+	"main": "dist/index.js",
+	"scripts": {
+		"start": "tsx src/index.ts"
+	},
+	"devDependencies": {
+		"tsx": "^4.7.1"
+	}
 }

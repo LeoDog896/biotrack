@@ -39,7 +39,7 @@ export const load = async ({ params }) => {
 				userId: user.id
 			}
 		}),
-		activeJoinRequest: await prisma.joinRequest.count({
+		activeJoinRequest: await prisma.joinRequest.findMany({
 			where: {
 				userId: user.id,
 				acknowledged: false,
@@ -47,6 +47,9 @@ export const load = async ({ params }) => {
 				linkedJoinRequest: {
 					is: null
 				}
+			},
+			include: {
+				game: true
 			}
 		}),
 		games: await prisma.game.findMany()
@@ -171,6 +174,45 @@ export const actions = {
 			success: true,
 			message: 'Join request sent',
 			joinRequest
+		};
+	},
+	quickSession: async ({ params, cookies, request }) => {
+		const officer = await validateSession(cookies);
+
+		const user = await prisma.user.findUnique({
+			where: {
+				id: params.id,
+				archived: false
+			}
+		});
+
+		if (!user) {
+			error(404, 'User not found');
+		}
+
+		const data = await request.formData();
+		const gameId = data.get('gameId');
+		if (!gameId) error(400, { message: 'Game not specified' });
+		if (typeof gameId !== 'string') error(400, { message: 'Game ID must be a string' });
+
+		const session = await prisma.session.create({
+			data: {
+				gameId: parseInt(gameId),
+				user: {
+					connect: {
+						id: user.id
+					}
+				},
+				active: true,
+				data: '',
+				createdByOfficerId: officer.id
+			},
+		});
+
+		return {
+			success: true,
+			message: 'Quick session created',
+			session
 		};
 	}
 };
