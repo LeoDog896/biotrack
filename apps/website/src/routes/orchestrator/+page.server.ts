@@ -102,5 +102,39 @@ export const actions = {
 		return {
 			officer
 		};
+	},
+	password: async ({ request, url }) => {
+		const isLocal = url.host === 'localhost:5000';
+
+		if (!isLocal) error(403, 'You are not authorized to perform this action');
+
+		const data = await request.formData();
+
+		const id = data.get('id');
+		const password = data.get('password');
+		const confirmPassword = data.get('confirmPassword');
+
+		if (!id) error(400, 'ID is required');
+		if (!password) error(400, 'Password is required');
+		if (password !== confirmPassword) error(400, 'Passwords do not match');
+
+		if (typeof id !== 'string') error(400, 'ID must be a string');
+		if (typeof password !== 'string') error(400, 'Password must be a string');
+
+		const { hash: hashedPassword, salt } = await makePassword(password);
+
+		const officer = await prisma.officer.update({
+			where: {
+				id
+			},
+			data: {
+				password: hashedPassword,
+				salt
+			}
+		});
+
+		return {
+			officer
+		};
 	}
 };

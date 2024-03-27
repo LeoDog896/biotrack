@@ -114,7 +114,11 @@
 {/if}
 
 {#if $page.state.modalShowing === 'editOfficer' && selectedOfficer}
-	<Modal on:close={() => history.back()}>
+	<Modal on:close={() => {
+		history.back();
+		password = '';
+		passwordConfirm = '';
+	}}>
 		<div class="title">
 			<h1>
 				Officer
@@ -135,6 +139,34 @@
 				<button type="submit" class="marginY">promote</button>
 			</form>
 		{/if}
+		<form method="POST" action="?/password">
+			<div class="input">
+				<label for="password">Password:</label>
+				<input
+					bind:value={password}
+					type="password"
+					autocomplete="new-password"
+					name="password"
+					id="password"
+					required
+				/>
+			</div>
+			<div class="input">
+				<label for="confirmPassword">Confirm Password:</label>
+				<input
+					bind:value={passwordConfirm}
+					type="password"
+					name="confirmPassword"
+					id="confirmPassword"
+					required
+				/>
+			</div>
+			<button
+				type="submit"
+				class="marginY full"
+				disabled={!password || password !== passwordConfirm}>Change Password</button
+			>
+		</form>
 	</Modal>
 {/if}
 
