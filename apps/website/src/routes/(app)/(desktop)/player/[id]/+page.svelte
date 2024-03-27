@@ -34,6 +34,8 @@
 	$: activeSession = data.sessions.find((session) => session.active);
 
 	let archiveInput = '';
+
+	export let form;
 </script>
 
 <h2>General Information</h2>
@@ -72,6 +74,12 @@
 	(<a href="/player/{data.user.id}/play">see play info →</a>)
 {/if}
 <button on:click={showSendModal}>send join request</button>
+{#if form && form.joinRequest}
+	<p>
+		new join request sent to
+		<a href="/game/{form.joinRequest.game.id}">{form.joinRequest.game.name}</a>
+	</p>
+{/if}
 
 <h2>Log</h2>
 <p>created at: {data.user.createdAt.toLocaleString()}</p>

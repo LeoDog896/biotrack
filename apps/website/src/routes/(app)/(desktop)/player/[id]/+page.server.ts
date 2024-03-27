@@ -161,6 +161,9 @@ export const actions = {
 				userId: user.id,
 				gameId: game.id,
 				forceSentId: officer.id
+			},
+			include: {
+				game: true
 			}
 		});
 

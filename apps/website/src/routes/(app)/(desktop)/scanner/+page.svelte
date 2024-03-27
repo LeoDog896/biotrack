@@ -48,17 +48,21 @@
 		}
 	});
 
+	let bindedData: number[] = [];
 	let output = '';
 
 	async function read(): Promise<string | undefined> {
 		await ready.waitFor(true);
+		bindedData = [];
 		await nfc.writeSerialString('r');
-		const [_, promise] = nfc.waitForInputString('log: read\r\ntag: ');
+		const str = 'log: read\r\ntag: ';
+		const [_, promise] = nfc.waitForInputString(str);
 		await promise;
+		const index = (bindedData.map((v) => String.fromCharCode(v)).join('')
+		).indexOf(str) + str.length;
+		bindedData = bindedData.slice(index);
 		const length = await nfc.consume(3);
 		const parsedLength = parseInt(nfc.decoder.decode(new Uint8Array(length)));
-
-		console.log(parsedLength);
 
 		if (parsedLength > 0) {
 			await nfc.consume(1); // extra space
@@ -116,7 +120,7 @@
 	export let data;
 </script>
 
-<ExternalNfc bind:port bind:this={nfc} on:output={(e) => (output += decoder.decode(e.detail))} />
+<ExternalNfc bind:data={bindedData} bind:port bind:this={nfc} on:output={(e) => (output += decoder.decode(e.detail))} />
 
 <h1>
 	<MdiRaspberryPi />
@@ -148,6 +152,7 @@
 	{:then}
 		<button on:click={identifyPlayerModal}>identify player</button>
 		<button on:click={loadPlayerModal}>load player</button>
+		<a href="/player/new">create player</a>
 		<br />
 		<br />
 	{/await}
@@ -184,8 +189,23 @@
 		<p>Scan the player's card to identify them.</p>
 		{#await readPromise}
 			<p>Loading...</p>
-		{:then data}
-			<p>Player identified! {data}</p>
+		{:then loadedData}
+			{@const user = data.users.find((u) => u.id === loadedData)}
+			<p>
+				Player identified!
+			</p>
+			<p>
+				Card data: {loadedData}
+			</p>
+			{#if user}
+				<p>
+					Player: <a href="/player/{user.id}">{user.name}</a>
+				</p>
+			{:else}
+				<p class="error">
+					Player not found.
+				</p>
+			{/if}
 		{/await}
 	</Modal>
 {/if}

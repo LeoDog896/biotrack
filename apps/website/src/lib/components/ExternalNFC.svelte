@@ -67,7 +67,7 @@
 		return false;
 	}
 
-	let data: number[] = [];
+	export let data: number[] = [];
 
 	export async function writeSerialString(data: string): Promise<boolean> {
 		return writeSerial(encoder.encode(data));
