@@ -187,8 +187,17 @@
 		</div>
 	</details>
 {:else}
+	<p>
+		Make sure to connect either an <b>arduino</b> or a <b>redboard</b> to your computer.
+		If it has issues, try:
+	</p>
+	<ul>
+		<li>refreshing this tab</li>
+		<li>unplugging and replugging the device</li>
+	</ul>
+	<p>if it still has issues, please send a <a href="/pager">page</a>!</p>
+	<p>the UI is still a WIP, and workflows may be more convoluted than they aim to be.</p>
 	<button on:click={nfc.scanSerial(true)}>initialize serial scan</button>
-	<button on:click={nfc.scanSerial(false)}>initialize serial scan raw (ttyAMC0)</button>
 {/if}
 
 {#if $page.state.modalShowing === 'identifyPlayer'}
@@ -206,6 +215,9 @@
 			{#if user}
 				<p>
 					Player: <a href="/player/{user.id}">{user.name}</a>
+				</p>
+				<p>
+					Score: {user.scoreLedger.reduce((acc, score) => acc + score.score, 0)}
 				</p>
 			{:else}
 				<p class="error">Player not found.</p>

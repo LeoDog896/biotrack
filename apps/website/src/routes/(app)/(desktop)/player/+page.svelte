@@ -18,6 +18,14 @@
 	<a href="/player/new"><MdiAccountPlus width="100%" height="2rem" /></a>
 </div>
 
+<p>
+	<b>Players</b> hold a list of two things:
+</p>
+<ul>
+	<li><b>Join Requests</b> - usually made by hardware devices, and are requests to start a session</li>
+	<li><b>Sessions</b> - times, active or not, where the player was playing a game.</li>
+</ul>
+
 {#if data.users.length === 0}
 	<p>No players found. Perhaps <a href="/player/new">create one</a>?</p>
 {:else}
